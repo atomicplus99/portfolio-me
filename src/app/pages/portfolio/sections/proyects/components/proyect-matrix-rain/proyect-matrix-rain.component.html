@@ -1,0 +1,8 @@
+<div class="matrix-rain">
+      <div *ngFor="let rain of matrixRain(); trackBy: trackByRain"
+           class="rain-column"
+           [style.left.%]="rain.x"
+           [style.animation-delay.ms]="rain.delay">
+        {{ rain.chars }}
+      </div>
+    </div>

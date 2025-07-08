@@ -1,0 +1,47 @@
+.logo-container {
+      text-align: center;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s ease-out;
+    }
+
+    .logo-container.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .logo-text {
+      font-family: 'Aboreto', cursive;
+      font-size: clamp(48px, 8vw, 72px);
+      color: #ffffff;
+      font-weight: 400;
+      letter-spacing: 8px;
+      margin-bottom: 12px;
+      text-shadow: 0 0 30px rgba(96, 165, 250, 0.5);
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 20px rgba(96, 165, 250, 0.5); }
+      to { text-shadow: 0 0 40px rgba(96, 165, 250, 0.8); }
+    }
+
+    .logo-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: 18px;
+      color: #94a3b8;
+      font-weight: 300;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 768px) {
+      .logo-text {
+        font-size: 40px;
+        letter-spacing: 4px;
+      }
+      
+      .logo-subtitle {
+        font-size: 16px;
+      }
+    }

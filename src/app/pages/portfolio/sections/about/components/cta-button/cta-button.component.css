@@ -1,0 +1,15 @@
+.cta-button {
+      position: relative;
+      background-size: 200% 200%;
+      animation: gradientFlow 3s ease infinite;
+    }
+    
+    @keyframes gradientFlow {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    
+    .cta-button:focus {
+      outline: 2px solid #3b82f6;
+      outline-offset: 2px;
+    }

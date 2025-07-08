@@ -1,0 +1,17 @@
+<nav class="flex items-center space-x-4 md:space-x-6 lg:space-x-8">
+      <header-nav-link 
+        label="CONTACTO"
+        [isVisible]="isVisible()"
+        delay="0.5s"
+        linkClasses="hidden sm:block group relative cursor-pointer text-white text-sm font-semibold tracking-[0.25em] uppercase hover:text-blue-300 transition-all duration-800 ease-out"
+        (linkClick)="contactClick.emit()">
+      </header-nav-link>
+      
+      <header-button [isVisible]="isVisible()"></header-button>
+      
+      <header-burger-button 
+        [isVisible]="isVisible()"
+        [isActive]="menuOpen()"
+        (toggle)="menuToggle.emit()">
+      </header-burger-button>
+    </nav>

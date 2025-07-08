@@ -1,0 +1,56 @@
+:host {
+      display: block;
+      width: 100%;
+      min-height: 100vh;
+      position: relative;
+      background: transparent;
+    }
+
+    .projects-container {
+      position: relative;
+      background: transparent;
+      min-height: 100vh;
+      overflow: hidden;
+      -webkit-overflow-scrolling: touch;
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+    }
+
+    /* Screen reader only */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* Performance optimizations */
+    .projects-container {
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+
+    /* Print styles */
+    @media print {
+      .projects-container {
+        background: white;
+        color: black;
+      }
+
+      app-threejs-canvas,
+      app-floating-particles,
+      app-matrix-rain,
+      app-mobile-controls,
+      app-loading-overlay,
+      app-interaction-guide,
+      app-stats-panel {
+        display: none;
+      }
+    }

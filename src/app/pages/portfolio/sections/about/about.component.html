@@ -1,0 +1,33 @@
+<section class="about-section relative w-full min-h-screen overflow-hidden flex items-center justify-center"
+             [ngClass]="{'opacity-100': isVisible, 'opacity-0': !isVisible}">
+      
+      <!-- Three.js Canvas Container -->
+      <div #threeContainer class="absolute inset-0 pointer-events-none z-2"></div>
+      
+      <!-- Elementos decorativos sutiles del fondo -->
+      <div class="absolute inset-0 pointer-events-none z-3">
+        <div class="absolute top-1/3 left-0 w-2/3 h-0.5 bg-gradient-to-r from-transparent via-purple-400/20 to-transparent transform rotate-6 animate-pulse" 
+             style="animation-delay: 2s;">
+        </div>
+      </div>
+      
+      <!-- Contenido principal -->
+      <div class="max-w-6xl mx-auto px-4 text-center relative z-10">
+        
+        <!-- Quote Section -->
+        <app-quote-section 
+          [titleLines]="config.quote.title"
+          [subtitle]="config.quote.subtitle">
+        </app-quote-section>
+        
+        <!-- CTA Button -->
+        <app-cta-button 
+          [text]="config.cta.text"
+          [email]="config.cta.email"
+          [subject]="config.cta.subject"
+          (hoverChange)="onButtonHover($event)">
+        </app-cta-button>
+        
+      </div>
+      
+    </section>

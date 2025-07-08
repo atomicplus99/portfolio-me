@@ -1,0 +1,53 @@
+.massive-text {
+  font-size: 4.5rem;
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+  font-weight: 900;
+}
+
+@media (min-width: 640px) {
+  .massive-text { font-size: 5rem; }
+}
+@media (min-width: 768px) {
+  .massive-text { font-size: 6.5rem; }
+}
+@media (min-width: 1024px) {
+  .massive-text { font-size: 8rem; }
+}
+@media (min-width: 1280px) {
+  .massive-text { font-size: 10rem; }
+}
+@media (min-width: 1536px) {
+  .massive-text { font-size: 12rem; }
+}
+@media (min-width: 1920px) {
+  .massive-text { font-size: 16rem; }
+}
+@media (min-width: 2560px) {
+  .massive-text { font-size: 18rem; }
+}
+
+.craft-glow {
+  color: var(--color-blue-400, #60a5fa);
+  animation: craftPulse 3s ease-in-out infinite;
+  text-shadow: 0 0 20px rgba(96, 165, 250, 0.4);
+}
+
+@keyframes craftPulse {
+  0%, 100% {
+    transform: scale(1);
+    text-shadow: 0 0 20px rgba(96, 165, 250, 0.4);
+  }
+  50% {
+    transform: scale(1.02);
+    text-shadow: 0 0 30px rgba(96, 165, 250, 0.6);
+  }
+}
+
+.massive-text-container {
+  transform-origin: right center;
+  will-change: transform;
+  overflow: visible !important;
+}

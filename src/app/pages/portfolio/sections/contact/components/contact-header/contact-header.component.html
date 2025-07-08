@@ -1,0 +1,20 @@
+<div class="text-center mb-16">
+      <h1 class="tech-title text-5xl md:text-7xl font-bold mb-6 tracking-tight">
+        <span class="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+          {{ title }}
+        </span>
+      </h1>
+      
+      <p class="text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed mb-8">
+        {{ subtitle }}
+      </p>
+      
+      <div class="status-indicator flex items-center justify-center gap-3 font-medium"
+           [class.text-emerald-400]="status.available"
+           [class.text-orange-400]="!status.available">
+        <div class="status-dot w-3 h-3 rounded-full"
+             [class.bg-emerald-400]="status.available"
+             [class.bg-orange-400]="!status.available"></div>
+        <span>{{ status.text }}</span>
+      </div>
+    </div>

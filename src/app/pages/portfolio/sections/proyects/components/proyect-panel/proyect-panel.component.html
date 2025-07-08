@@ -1,0 +1,77 @@
+<div class="project-info-panel" 
+         [class.visible]="isVisible"
+         [class.mobile]="isMobile"
+         *ngIf="project">
+      
+      <div class="info-content">
+        
+        <!-- Header del proyecto -->
+        <div class="project-header">
+          <div class="project-meta">
+            <div class="status-indicator" [class]="getStatusClass(project.status)"></div>
+            <span class="status-text">{{ project.status }}</span>
+            <div class="project-icon"></div>
+          </div>
+          
+          <h3 class="project-title">{{ project.name }}</h3>
+          <p class="project-description">{{ project.description }}</p>
+        </div>
+
+        <!-- Tech Stack -->
+        <div class="tech-section">
+          <h4 class="section-title">Tecnologías</h4>
+          <div class="tech-tags">
+            <span *ngFor="let tech of project.techStack" 
+                  class="tech-tag" 
+                  [class]="tech | techClass">
+              {{ tech }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="action-section">
+          <div class="action-buttons desktop" *ngIf="!isMobile">
+            <button class="action-btn primary" (click)="onActionClick('demo')">
+              <span class="btn-icon">▶</span>
+              Ver Demo
+            </button>
+            <button class="action-btn secondary" (click)="onActionClick('code')">
+              <span class="btn-icon">⚡</span>
+              Código
+            </button>
+          </div>
+
+          <div class="action-buttons mobile" *ngIf="isMobile">
+            <button class="action-btn primary full" (click)="onActionClick('demo')">
+              <span class="btn-icon">▶</span>
+              Ver Demo
+            </button>
+            <button class="action-btn secondary full" (click)="onActionClick('code')">
+              <span class="btn-icon">⚡</span>
+              Ver Código
+            </button>
+          </div>
+        </div>
+
+        <!-- Navegación móvil -->
+        <div class="mobile-navigation" *ngIf="isMobile">
+          <button class="nav-btn" (click)="onNavigate('previous')">
+            <span class="nav-icon">‹</span>
+            Anterior
+          </button>
+          
+          <div class="project-counter">
+            <span>{{ currentIndex }} / {{ totalProjects }}</span>
+          </div>
+          
+          <button class="nav-btn" (click)="onNavigate('next')">
+            Siguiente
+            <span class="nav-icon">›</span>
+          </button>
+        </div>
+
+        <!-- Botón cerrar -->
+        <button class="close-btn" (click)="onClose()">×</button>
+      </div>
+    </div>

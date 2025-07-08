@@ -1,0 +1,11 @@
+<div class="absolute inset-3">
+  <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+    <!-- Background ring -->
+    <circle cx="50" cy="50" r="47" [attr.stroke]="'rgba(71, 85, 105, 0.1)'" stroke-width="1" fill="transparent" />
+    <!-- Progress ring -->
+    <circle cx="50" cy="50" r="47" [attr.stroke]="color" stroke-width="2" fill="transparent" stroke-linecap="round"
+      [style.stroke-dasharray]="getStrokeDashArray(47)"
+      [style.stroke-dashoffset]="getStrokeDashOffset(47, level, isVisible)"
+      class="transition-all duration-3000 ease-out opacity-50 group-hover:opacity-100" />
+  </svg>
+</div>

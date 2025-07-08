@@ -1,0 +1,11 @@
+<div class="stats-panel" *ngIf="isVisible">
+      <h4 class="stats-title">Performance</h4>
+      <div class="stats-content">
+        <div class="stat-line">FPS: <span>{{ stats.fps }}</span></div>
+        <div class="stat-line">Objetos: <span>{{ stats.objectCount }}</span></div>
+        <div class="stat-line">Partículas: <span>{{ stats.particleCount }}</span></div>
+        <div class="stat-line mobile-stat" *ngIf="isMobile">
+          Móvil: <span>{{ isPerformanceMode ? 'Eco' : 'Alto' }}</span>
+        </div>
+      </div>
+    </div>

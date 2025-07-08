@@ -1,0 +1,37 @@
+ <header class="fixed top-0 left-0 right-0 w-full h-14 sm:h-16 md:h-20 
+                   bg-transparent 
+                   flex items-center 
+                   px-3 sm:px-4 md:px-6 lg:px-8 xl:px-12 z-50 
+                   font-sans 
+                   transition-all duration-300"
+                   style="justify-content: space-between;">
+
+      <div style="flex: 1;">
+        <header-desktop-nav 
+          [items]="navigationItems"
+          [isVisible]="isVisible()"
+          (navClick)="navigateToSection($event)">
+        </header-desktop-nav>
+      </div>
+
+      <header-logo 
+        [isVisible]="isVisible()"
+        (logoClick)="navigateToHome()">
+      </header-logo>
+
+      <div style="flex: 1; display: flex; justify-content: flex-end;">
+        <header-right-nav 
+          [isVisible]="isVisible()"
+          [menuOpen]="mobileMenuOpen()"
+          (contactClick)="navigateToSection('contacto')"
+          (menuToggle)="toggleMobileMenu()">
+        </header-right-nav>
+      </div>
+
+      <header-responsive-mobile-menu 
+        [items]="navigationItems"
+        [isOpen]="mobileMenuOpen()"
+        (navClick)="navigateToSection($event)"
+        (menuClose)="closeMobileMenu()">
+      </header-responsive-mobile-menu>
+    </header>

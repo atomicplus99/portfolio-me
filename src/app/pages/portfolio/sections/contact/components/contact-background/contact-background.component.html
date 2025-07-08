@@ -1,0 +1,10 @@
+ <div class="tech-background absolute inset-0 opacity-30 pointer-events-none">
+      <!-- Floating particles -->
+      <div class="tech-particles">
+        <div class="tech-particle" *ngFor="let particle of particles; let i = index" 
+             [style.left.%]="particle.x" [style.top.%]="particle.y" 
+             [style.width.px]="particle.size" [style.height.px]="particle.size"
+             [style.animation-delay.s]="particle.delay">
+        </div>
+      </div>
+    </div>

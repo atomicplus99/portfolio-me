@@ -1,0 +1,56 @@
+<div class="interaction-guide desktop" 
+         [class.hidden]="!isVisible || isMobile"
+         *ngIf="!isMobile">
+      <div class="guide-content">
+        <h3 class="guide-title">Explora mis proyectos</h3>
+        <div class="guide-steps">
+          <div class="guide-step">
+            <span class="step-number">1</span>
+            <span class="step-text">Haz <strong>clic y arrastra</strong> para rotar la vista</span>
+          </div>
+          <div class="guide-step">
+            <span class="step-number">2</span>
+            <span class="step-text">Usa el <strong>scroll</strong> para hacer zoom</span>
+          </div>
+          <div class="guide-step">
+            <span class="step-number">3</span>
+            <span class="step-text"><strong>Haz clic</strong> en cualquier holograma para ver detalles</span>
+          </div>
+        </div>
+        <p class="guide-highlight">¡Interactúa con los hologramas 3D!</p>
+      </div>
+    </div>
+
+    <!-- Mobile Guide -->
+    <div class="interaction-guide mobile" 
+         [class.hidden]="!isVisible || !isMobile"
+         *ngIf="isMobile">
+      <div class="guide-content">
+        <h3 class="guide-title">Controles Táctiles</h3>
+        <div class="guide-steps">
+          <div class="guide-step">
+            <span class="step-number">1</span>
+            <span class="step-text"><strong>Arrastra</strong> con un dedo para rotar</span>
+          </div>
+          <div class="guide-step">
+            <span class="step-number">2</span>
+            <span class="step-text"><strong>Pellizca</strong> para hacer zoom</span>
+          </div>
+          <div class="guide-step">
+            <span class="step-number">3</span>
+            <span class="step-text"><strong>Toca</strong> cualquier holograma</span>
+          </div>
+        </div>
+        <p class="guide-highlight">¡Experimenta en 3D!</p>
+      </div>
+    </div>
+
+    <!-- Mobile Hint -->
+    <div class="mobile-hint" 
+         [class.hidden]="!showMobileHint || !isMobile"
+         *ngIf="isMobile && showMobileHint">
+      <div class="hint-content">
+        <p class="hint-text">Toca la pantalla para comenzar</p>
+        <button class="hint-close" (click)="dismissHint()">×</button>
+      </div>
+    </div>

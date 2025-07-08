@@ -1,0 +1,72 @@
+<!-- proyects.component.html -->
+<div class="projects-container">
+  
+  <!-- Partículas flotantes -->
+  <app-floating-particles [isMobile]="isMobile()"></app-floating-particles>
+
+  <!-- Canvas Three.js -->
+  <app-threejs-canvas
+    #threejsCanvas
+    [performanceMode]="performanceMode()"
+    [isMobile]="isMobile()"
+    (projectSelected)="onProjectSelected($event)"
+    (firstInteraction)="onFirstInteraction()"
+    (cursorChanged)="onCursorChanged($event)">
+  </app-threejs-canvas>
+
+  <!-- Título principal - CORREGIDO: Pasar el valor del computed signal -->
+  <app-hero-header [stats]="projectStats()"></app-hero-header>
+
+  <!-- Loading overlay -->
+  <app-loading-overlay [isVisible]="isLoading()"></app-loading-overlay>
+
+  <!-- Guías de interacción -->
+  <app-interaction-guide
+    [isVisible]="showInstructions()"
+    [isMobile]="isMobile()"
+    [showMobileHint]="showMobileHint()"
+    (hintDismissed)="onHintDismissed()">
+  </app-interaction-guide>
+
+  <!-- Panel de información del proyecto -->
+  <app-project-panel
+    [project]="selectedProject()"
+    [isVisible]="!!selectedProject()"
+    [isMobile]="isMobile()"
+    [currentIndex]="currentProjectIndex()"
+    [totalProjects]="projects().length"
+    (actionClicked)="onActionClicked($event)"
+    (navigate)="onNavigate($event)"
+    (close)="onCloseProject()">
+  </app-project-panel>
+
+  <!-- Controles móviles flotantes -->
+  <app-mobile-controls
+    [isMobile]="isMobile()"
+    [isProjectSelected]="!!selectedProject()"
+    [isPerformanceMode]="performanceMode()"
+    (resetView)="onResetView()"
+    (togglePerformanceMode)="onTogglePerformanceMode()">
+  </app-mobile-controls>
+
+  <!-- Panel de estadísticas -->
+  <app-stats-panel
+    [isVisible]="showStats()"
+    [stats]="performanceStats()"
+    [isMobile]="isMobile()"
+    [isPerformanceMode]="performanceMode()">
+  </app-stats-panel>
+
+  <!-- Matrix rain de fondo -->
+  <app-matrix-rain [isMobile]="isMobile()"></app-matrix-rain>
+
+  <!-- Accessibility -->
+  <div class="sr-only" aria-live="polite">
+    <span *ngIf="selectedProject()">
+      Proyecto seleccionado: {{ selectedProject()!.name }}. {{ selectedProject()!.description }}
+    </span>
+    <span *ngIf="!selectedProject() && !isLoading()">
+      Vista 3D de proyectos cargada. {{ isMobile() ? 'Usa gestos táctiles para navegar.' : 'Usa el mouse para navegar.' }}
+    </span>
+  </div>
+</div>

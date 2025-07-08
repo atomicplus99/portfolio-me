@@ -1,0 +1,102 @@
+.mobile-controls {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 35;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+    }
+
+    .control-btn {
+      width: 48px;
+      height: 48px;
+      border: none;
+      border-radius: 50%;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      position: relative;
+      overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    .control-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.3s ease;
+    }
+
+    .control-btn:active::before {
+      left: 100%;
+    }
+
+    .control-btn:active {
+      transform: scale(0.9);
+    }
+
+    .control-btn.reset {
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    }
+
+    .control-btn.performance {
+      background: #10b981;
+    }
+
+    .control-btn.performance.eco {
+      background: #f59e0b;
+    }
+
+    .control-icon {
+      font-size: 20px;
+      font-weight: bold;
+      transition: transform 0.2s ease;
+    }
+
+    .control-btn:active .control-icon {
+      transform: scale(0.9);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+      .mobile-controls {
+        bottom: 20px;
+        right: 20px;
+      }
+
+      .control-btn {
+        width: 44px;
+        height: 44px;
+      }
+
+      .control-icon {
+        font-size: 18px;
+      }
+    }
+
+    /* Focus states for accessibility */
+    .control-btn:focus,
+    .control-btn:focus-visible {
+      outline: 2px solid rgba(59, 130, 246, 0.8);
+      outline-offset: 2px;
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .control-btn {
+        transition: none;
+      }
+    }

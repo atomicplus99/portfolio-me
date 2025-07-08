@@ -1,0 +1,264 @@
+/* CURSOR OPTIMIZADO CON MEJORES PRÁCTICAS CSS */
+
+/* FORZAR CURSOR NONE GLOBALMENTE */
+*,
+*::before,
+*::after,
+html,
+body,
+button,
+a,
+input,
+textarea,
+select {
+  cursor: none !important;
+}
+
+/* VARIABLES CSS PARA MANTENIMIENTO */
+:root {
+  --cursor-primary-color: #64b5f6;
+  --cursor-secondary-color: #2196f3;
+  --cursor-accent-color: #1976d2;
+  --cursor-active-color: #0d47a1;
+  --cursor-primary-alpha: rgba(100, 181, 246, 0.5);
+  --cursor-secondary-alpha: rgba(33, 150, 243, 0.3);
+  --cursor-accent-alpha: rgba(25, 118, 210, 0.6);
+  --cursor-shadow-light: rgba(100, 181, 246, 0.2);
+  --cursor-shadow-medium: rgba(100, 181, 246, 0.3);
+  --cursor-shadow-strong: rgba(100, 181, 246, 0.5);
+  --cursor-animation-fast: 0.4s;
+  --cursor-animation-medium: 1s;
+  --cursor-animation-slow: 2.5s;
+  --cursor-animation-very-slow: 4s;
+}
+
+/* MIRA TÁCTICA CENTRAL - OPTIMIZADA */
+.tactical-reticle {
+  /* Layout y posicionamiento */
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 18px;
+  height: 18px;
+  z-index: 999999 !important;
+  
+  /* Comportamiento */
+  pointer-events: none !important;
+  transform: translate(-50%, -50%);
+  opacity: 1 !important;
+  visibility: visible !important;
+  
+  /* Optimización de rendimiento */
+  will-change: transform;
+  backface-visibility: hidden;
+  contain: layout style paint;
+  isolation: isolate;
+  
+  /* Apariencia */
+  background: transparent;
+  border: 2px solid var(--cursor-primary-color);
+  border-radius: 50%;
+  
+  /* Efectos */
+  box-shadow: 
+    0 0 8px var(--cursor-primary-alpha),
+    0 0 16px var(--cursor-shadow-light);
+    
+  /* Animación optimizada */
+  animation: reticlePulse 3s ease-in-out infinite;
+}
+
+/* Líneas de mira optimizadas con pseudo-elementos */
+.tactical-reticle::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 32px;
+  height: 1px;
+  background: linear-gradient(to right, 
+    transparent 0%, 
+    var(--cursor-primary-color) 30%, 
+    var(--cursor-primary-color) 70%, 
+    transparent 100%);
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 4px var(--cursor-shadow-medium);
+}
+
+.tactical-reticle::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1px;
+  height: 32px;
+  background: linear-gradient(to bottom, 
+    transparent 0%, 
+    var(--cursor-primary-color) 30%, 
+    var(--cursor-primary-color) 70%, 
+    transparent 100%);
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 4px var(--cursor-shadow-medium);
+}
+
+/* Animaciones con mejor rendimiento */
+@keyframes reticlePulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.05);
+    opacity: 1;
+  }
+}
+
+
+
+/* PARTÍCULAS OPTIMIZADAS */
+.interference-particle {
+  /* Layout */
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 2px;
+  z-index: 999995 !important;
+  
+  /* Comportamiento */
+  pointer-events: none !important;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  opacity: 0.5 !important;
+  
+  /* Optimización crítica */
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  contain: layout style paint;
+  
+  /* Apariencia simple */
+  background: var(--cursor-primary-color);
+  box-shadow: 0 0 3px var(--cursor-shadow-medium);
+  
+  /* Animación eficiente */
+  animation: particleFade 1.5s ease-out forwards;
+}
+
+@keyframes particleFade {
+  0% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+}
+
+/* ESTADOS INTERACTIVOS */
+
+/* Estado Hover */
+.tactical-reticle.hover {
+  width: 24px !important;
+  height: 24px !important;
+  border: 3px solid var(--cursor-accent-color);
+  box-shadow: 
+    0 0 12px var(--cursor-accent-alpha),
+    0 0 24px var(--cursor-secondary-alpha);
+  animation: targetFocus var(--cursor-animation-medium) ease-in-out infinite;
+}
+
+@keyframes targetFocus {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+
+/* Estado Click */
+.tactical-reticle.clicked {
+  width: 28px !important;
+  height: 28px !important;
+  border: 4px solid var(--cursor-active-color);
+  animation: fireBlast var(--cursor-animation-fast) ease-out;
+  box-shadow: 
+    0 0 20px rgba(13, 71, 161, 0.8),
+    0 0 40px rgba(13, 71, 161, 0.4);
+}
+
+@keyframes fireBlast {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+}
+
+/* RESPONSIVE - DESHABILITAR EN MÓVIL */
+@media (max-width: 768px) {
+  .tactical-reticle,
+  .interference-particle {
+    display: none !important;
+  }
+  
+  *,
+  *::before,
+  *::after,
+  html,
+  body {
+    cursor: auto !important;
+  }
+}
+
+/* OPTIMIZACIONES GLOBALES ADICIONALES */
+.tactical-reticle,
+.interference-particle {
+  /* Aceleración por GPU mejorada */
+  transform: translate3d(-50%, -50%, 0);
+  
+  /* Reducir repaints y reflows */
+  contain: layout style paint;
+  
+  /* Optimizar compositing */
+  isolation: isolate;
+  
+  /* Mejorar antialiasing */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* PREVENIR SELECCIÓN Y MEJORAR UX */
+::selection {
+  background: var(--cursor-shadow-light);
+  color: #ffffff;
+}
+
+::-moz-selection {
+  background: var(--cursor-shadow-light);
+  color: #ffffff;
+}
+
+/* MODO REDUCIDO PARA DISPOSITIVOS DE BAJO RENDIMIENTO */
+@media (prefers-reduced-motion: reduce) {
+  .tactical-reticle,
+  .interference-particle {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* MODO ALTO CONTRASTE */
+@media (prefers-contrast: high) {
+  :root {
+    --cursor-primary-color: #ffffff;
+    --cursor-secondary-color: #ffffff;
+    --cursor-accent-color: #ffffff;
+    --cursor-active-color: #ffffff;
+  }
+}

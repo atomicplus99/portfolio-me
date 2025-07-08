@@ -1,0 +1,57 @@
+.matrix-rain {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      opacity: 0.03;
+      z-index: 0;
+    }
+
+    .rain-column {
+      position: absolute;
+      animation: subtleRain 25s linear infinite;
+      white-space: nowrap;
+      font-size: 6px;
+      line-height: 8px;
+      opacity: 0.05;
+      color: #3b82f6;
+      font-family: monospace;
+      will-change: transform;
+    }
+
+    @keyframes subtleRain {
+      0% {
+        transform: translateY(-100vh);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.05;
+      }
+      90% {
+        opacity: 0.05;
+      }
+      100% {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .matrix-rain {
+        opacity: 0.02;
+      }
+
+      .rain-column {
+        font-size: 4px;
+        line-height: 6px;
+        opacity: 0.03;
+      }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .rain-column {
+        animation: none;
+      }
+    }

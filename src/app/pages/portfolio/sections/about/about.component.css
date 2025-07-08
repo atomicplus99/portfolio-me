@@ -1,0 +1,136 @@
+/* About Section Simple */
+.about-section {
+  transition: opacity 2s cubic-bezier(0.165, 0.84, 0.44, 1);
+  min-height: 100vh;
+  user-select: none;
+}
+
+/* Three.js Canvas Styling */
+#three-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Animated Gradient Text */
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradientShift 4s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Quote Container Animation */
+.quote-container {
+  animation: floatIn 2s ease-out;
+}
+
+@keyframes floatIn {
+  from {
+    opacity: 0;
+    transform: translateY(50px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Interactive CTA Button */
+.cta-button {
+  position: relative;
+  background-size: 200% 200%;
+  animation: gradientFlow 3s ease infinite;
+}
+
+@keyframes gradientFlow {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Mobile Optimizations */
+@media (max-width: 1024px) {
+  .quote-container .text-6xl {
+    font-size: 3rem;
+  }
+  
+  .quote-container .lg\:text-8xl {
+    font-size: 4rem;
+  }
+  
+  /* Reducir intensidad de Three.js en mobile */
+  #three-canvas {
+    opacity: 0.7;
+  }
+}
+
+@media (max-width: 768px) {
+  .quote-container .text-6xl {
+    font-size: 2.5rem;
+  }
+  
+  .quote-container .lg\:text-8xl {
+    font-size: 3rem;
+  }
+  
+  .subtitle {
+    font-size: 1rem;
+    padding: 0 1rem;
+  }
+  
+  .cta-button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  /* Ocultar Three.js en mobile para performance */
+  #three-canvas {
+    display: none;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .animate-gradient,
+  .cta-button,
+  #three-canvas {
+    animation: none;
+  }
+  
+  .about-section {
+    transition: opacity 0.3s ease;
+  }
+  
+  /* Desactivar Three.js si prefieren movimiento reducido */
+  #three-canvas {
+    display: none;
+  }
+}
+
+/* Focus States for Accessibility */
+.cta-button:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .cta-button {
+    border: 2px solid currentColor;
+  }
+}

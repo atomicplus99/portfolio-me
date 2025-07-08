@@ -1,0 +1,10 @@
+<!-- floating-particles.component.html -->
+<div class="floating-dots">
+  <div 
+    *ngFor="let particle of particles(); trackBy: trackByParticle"
+    class="dot"
+    [style.animation-delay.s]="particle.initialDelay"
+    [style.animation-duration.s]="particle.animationDuration"
+    [style.background-color]="particle.color">
+  </div>
+</div>

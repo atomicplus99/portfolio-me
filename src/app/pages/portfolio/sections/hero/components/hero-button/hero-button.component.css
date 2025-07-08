@@ -1,0 +1,131 @@
+.galactic-button {
+  background: linear-gradient(135deg, 
+    #1e40af 0%, 
+    #3730a3 25%, 
+    #4338ca 50%, 
+    #3730a3 75%, 
+    #1e3a8a 100%);
+  background-size: 200% 200%;
+  border: 2px solid rgba(99, 102, 241, 0.4);
+  backdrop-filter: blur(12px);
+  box-shadow: 
+    0 8px 32px rgba(59, 130, 246, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: galacticPulse 4s ease-in-out infinite;
+  color: white;
+  border-radius: 1rem;
+  padding: 1rem 2rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1.125rem;
+  width: 100%;
+  max-width: 20rem;
+}
+
+.galactic-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg, 
+    rgba(255, 255, 255, 0.1) 0%, 
+    transparent 30%, 
+    rgba(99, 102, 241, 0.1) 50%,
+    transparent 70%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  transition: transform 0.8s ease-out;
+}
+
+.galactic-button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.4) 0%, transparent 70%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.6s ease-out;
+}
+
+.galactic-button:hover {
+  transform: translateY(-4px) scale(1.02);
+  background-position: 100% 100%;
+  box-shadow: 
+    0 16px 48px rgba(59, 130, 246, 0.4),
+    0 8px 24px rgba(99, 102, 241, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border-color: rgba(147, 197, 253, 0.6);
+}
+
+.galactic-button:hover::before {
+  transform: translateX(100%) translateY(100%) rotate(45deg);
+}
+
+.galactic-button:hover::after {
+  width: 100px;
+  height: 100px;
+}
+
+.galactic-button:active {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 
+    0 8px 24px rgba(59, 130, 246, 0.3),
+    inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes galacticPulse {
+  0%, 100% {
+    box-shadow: 
+      0 8px 32px rgba(59, 130, 246, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+  50% {
+    box-shadow: 
+      0 12px 40px rgba(59, 130, 246, 0.35),
+      0 0 20px rgba(99, 102, 241, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+}
+
+@media (max-width: 1023px) {
+  .galactic-button {
+    font-size: 1rem;
+    padding: 1rem 2rem;
+    margin-top: 2rem;
+    max-width: 300px;
+  }
+
+  .galactic-button:hover {
+    transform: translateY(-2px) scale(1.01);
+  }
+}
+
+@media (max-width: 768px) {
+  .galactic-button {
+    font-size: 0.9rem;
+    padding: 0.875rem 1.75rem;
+    max-width: 280px;
+    margin-top: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .galactic-button {
+    font-size: 0.85rem;
+    padding: 0.75rem 1.5rem;
+    max-width: 260px;
+    margin-top: 1.5rem;
+  }
+}

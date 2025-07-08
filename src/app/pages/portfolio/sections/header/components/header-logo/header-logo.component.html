@@ -1,0 +1,12 @@
+<div class="logo-container">
+      <a (click)="logoClick.emit()"
+         [ngClass]="isVisible() ? 'scale-100 opacity-100 rotate-0' : 'scale-90 opacity-0 rotate-3'"
+         class="text-white text-lg md:text-xl xl:text-2xl 
+                font-black tracking-[0.35em] 
+                hover:scale-110 hover:text-blue-300
+                transition-all duration-300 ease-out
+                cursor-pointer"
+         style="transition-delay: 0.4s">
+        {{ text() }}
+      </a>
+    </div>

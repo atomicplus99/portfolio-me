@@ -1,0 +1,86 @@
+.skill-orb {
+  animation: fadeInScale 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+.skill-orb:hover {
+  transform: translateY(-10px) scale(1.05);
+  animation: orbFloat 3s ease-in-out infinite;
+}
+
+.skill-orb>div>div {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.skill-orb:hover>div>div {
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.skill-orb img {
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+  transition: all 0.3s ease;
+}
+
+.skill-orb:hover img {
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5)) brightness(1.2);
+}
+
+.fallback-icon {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.skill-orb .absolute.-bottom-16 {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateX(-50%) translateY(10px);
+}
+
+.skill-orb:hover .absolute.-bottom-16 {
+  transform: translateX(-50%) translateY(0);
+}
+
+.skill-orb:focus {
+  outline: 2px solid rgba(59, 130, 246, 0.5);
+  outline-offset: 4px;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes orbFloat {
+  0%, 100% {
+    transform: translateY(-10px) scale(1.05);
+  }
+
+  50% {
+    transform: translateY(-18px) scale(1.07);
+  }
+}
+
+@media (max-width: 768px) {
+  .skill-orb>div {
+    width: 7rem !important;
+    height: 7rem !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .skill-orb>div {
+    width: 6rem !important;
+    height: 6rem !important;
+  }
+}

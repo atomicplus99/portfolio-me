@@ -1,0 +1,39 @@
+ <div class="geometric-lines absolute inset-0 pointer-events-none z-4">
+      <div class="line-1 absolute top-1/4 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-blue-400/30 to-transparent 
+                    transform -rotate-12 animate-pulse"></div>
+      <div class="line-2 absolute bottom-1/3 right-0 w-full h-0.5 bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent 
+                    transform rotate-12 animate-pulse" style="animation-delay: 1s;"></div>
+      <div class="line-3 absolute right-1/4 top-0 h-full w-0.5 bg-gradient-to-b from-transparent via-blue-500/20 to-transparent 
+                    animate-pulse" style="animation-delay: 2s;"></div>
+    </div>
+
+    <div class="floating-shapes absolute inset-0 pointer-events-none z-3" [ngClass]="showDesktopElements() ? 'hidden lg:block' : 'hidden'">
+      <div class="triangle absolute top-[20%] right-[12%] w-0 h-0 border-l-[15px] border-r-[15px] border-b-[25px] 
+                    border-l-transparent border-r-transparent border-b-blue-400/20 
+                    animate-pulse transform rotate-45"></div>
+      <div class="square absolute bottom-[30%] right-[8%] w-6 h-6 bg-gradient-to-br from-blue-400/20 to-slate-400/10 
+                    transform rotate-45 animate-pulse" style="animation-delay: 1.5s;"></div>
+      <div class="plus absolute top-[60%] right-[25%] text-blue-400/30 text-2xl font-bold animate-pulse"
+          style="animation-delay: 3s;">+</div>
+    </div>
+
+    <div class="circles-container absolute inset-0 pointer-events-none z-10"
+        [ngClass]="showDesktopElements() ? 'hidden lg:block' : 'hidden'">
+      <div class="circle-1 absolute w-20 h-20 xl:w-24 xl:h-24 2xl:w-28 2xl:h-28 
+                    top-[15%] right-[25%] rounded-full 
+                    bg-gradient-to-br from-blue-400/10 to-transparent
+                    border-2 border-blue-400/20 animate-pulse"></div>
+
+      <div class="circle-2 absolute w-28 h-28 xl:w-32 xl:h-32 2xl:w-36 2xl:h-36 
+                    top-[35%] right-[18%] rounded-full border-2 border-slate-500/30
+                    animate-spin-slow"></div>
+
+      <div class="circle-3 absolute w-16 h-16 xl:w-18 xl:h-18 2xl:w-20 2xl:h-20 
+                    bottom-[30%] right-[40%] rounded-full 
+                    border-2 border-cyan-400/15"></div>
+
+      <div class="circle-4 absolute w-22 h-22 xl:w-26 xl:h-26 2xl:w-30 2xl:h-30 
+                    top-[25%] right-[12%] rounded-full 
+                    bg-gradient-to-r from-blue-500/20 via-transparent to-cyan-400/20
+                    border-2 border-blue-500/25 animate-pulse"></div>
+    </div>

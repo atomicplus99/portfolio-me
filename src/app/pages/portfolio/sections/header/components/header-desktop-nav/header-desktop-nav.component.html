@@ -1,0 +1,9 @@
+ <nav class="hidden lg:flex items-center space-x-6 xl:space-x-10 navigation-links">
+      <header-nav-link 
+        *ngFor="let item of items(); trackBy: trackById"
+        [label]="item.label"
+        [isVisible]="isVisible()"
+        [delay]="item.delay"
+        (linkClick)="navClick.emit(item.id)">
+      </header-nav-link>
+    </nav>

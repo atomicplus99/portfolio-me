@@ -1,0 +1,100 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  /* Asegurar que el host también tenga el fondo correcto */
+  background: linear-gradient(135deg, #0f172a 0%, #1f2937 50%, #18181b 100%);
+}
+
+.portfolio-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -10;
+  overflow: hidden;
+
+  /* Gradiente base del hero */
+  background: transparent;
+
+  /* Transición suave */
+  transition: opacity 2s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+/* Pattern overlay metálico global */
+.portfolio-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.1;
+  pointer-events: none;
+  background-image: radial-gradient(circle at 30% 30%, rgba(59, 130, 246, 0.1) 1px, transparent 1px);
+  background-size: 100px 100px;
+  z-index: 1;
+}
+
+/* Gradient overlay azul global */
+.portfolio-background::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top right, rgba(30, 58, 138, 0.2) 0%, transparent 50%, rgba(51, 65, 85, 0.2) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Clase para contenido que va encima del fondo */
+.portfolio-content {
+  position: relative;
+  z-index: 10;
+}
+
+/* =============== NUEVAS TRANSICIONES PARA REVEAL INSTANTÁNEO =============== */
+
+/* Transición suave del contenido principal */
+.flex.flex-col.w-full.min-h-screen {
+  transition: opacity 0.4s ease-out;
+}
+
+/* Transición de las partículas */
+app-particles {
+  transition: opacity 0.4s ease-out;
+}
+
+/* Clase de utilidad para ocultar elementos */
+.opacity-0 {
+  opacity: 0;
+}
+
+/* Asegurar que el zoom-container tenga el fondo correcto */
+.zoom-container {
+  background: linear-gradient(135deg, #0f172a 0%, #1f2937 50%, #18181b 100%);
+  min-height: 100vh;
+}
+
+/* Optimizaciones de rendimiento */
+.portfolio-background * {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Asegurar que todos los componentes estén listos para ser revelados */
+app-header,
+app-hero,
+app-about,
+app-about-me,
+app-projects,
+app-skills,
+app-contact,
+app-footer,
+app-avatar {
+  transition: opacity 0.3s ease-out;
+}

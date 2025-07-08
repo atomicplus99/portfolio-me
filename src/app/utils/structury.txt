@@ -1,0 +1,73 @@
+portfolio-angular/
+├── src/
+│   ├── app/
+│   │   ├── core/                    # Servicios y utilidades globales
+│   │   │   ├── services/
+│   │   │   │   ├── projects.service.ts
+│   │   │   │   ├── theme.service.ts
+│   │   │   │   └── contact.service.ts
+│   │   │   ├── guards/
+│   │   │   │   └── auth.guard.ts
+│   │   │   ├── interceptors/
+│   │   │   │   └── loading.interceptor.ts
+│   │   │   └── models/
+│   │   │       ├── project.model.ts
+│   │   │       └── contact.model.ts
+│   │   │
+│   │   ├── shared/                  # Componentes reutilizables
+│   │   │   ├── components/
+│   │   │   │   ├── button/
+│   │   │   │   │   ├── button.component.ts
+│   │   │   │   │   ├── button.component.html
+│   │   │   │   │   └── button.component.scss
+│   │   │   │   ├── card/
+│   │   │   │   ├── modal/
+│   │   │   │   └── loading-spinner/
+│   │   │   ├── pipes/
+│   │   │   │   └── truncate.pipe.ts
+│   │   │   └── directives/
+│   │   │       └── fade-in.directive.ts
+│   │   │
+│   │   ├── layout/                  # Componentes de diseño
+│   │   │   ├── header/
+│   │   │   │   ├── header.component.ts
+│   │   │   │   ├── header.component.html
+│   │   │   │   └── header.component.scss
+│   │   │   ├── footer/
+│   │   │   └── navigation/
+│   │   │
+│   │   ├── pages/                   # Páginas principales
+│   │   │   ├── home/
+│   │   │   │   ├── home.component.ts
+│   │   │   │   ├── home.component.html
+│   │   │   │   └── home.component.scss
+│   │   │   ├── about/
+│   │   │   ├── projects/
+│   │   │   ├── contact/
+│   │   │   └── not-found/
+│   │   │
+│   │   ├── components/              # Componentes específicos
+│   │   │   ├── project-card/
+│   │   │   ├── skill-badge/
+│   │   │   ├── timeline/
+│   │   │   └── contact-form/
+│   │   │
+│   │   ├── app.component.ts         # Componente raíz
+│   │   ├── app.component.html
+│   │   ├── app.component.scss
+│   │   ├── app.config.ts            # Configuración de la app
+│   │   └── app.routes.ts            # Definición de rutas
+│   │
+│   ├── assets/                      # Recursos estáticos
+│   │   ├── images/
+│   │   ├── icons/
+│   │   ├── data/
+│   │   │   ├── projects.json
+│   │   │   └── skills.json
+│   │   └── fonts/
+│   │
+│   └── styles/                      # Estilos globales
+│       ├── _variables.scss
+│       ├── _mixins.scss
+│       ├── _components.scss
+│       └── styles.scss

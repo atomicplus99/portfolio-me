@@ -1,0 +1,24 @@
+.brand-section {
+  text-align: left;
+}
+
+.brand-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: rgba(59, 130, 246, 1);
+  margin-bottom: 0.25rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.brand-subtitle {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+  font-weight: 400;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+  .brand-section {
+    text-align: center;
+  }
+}
