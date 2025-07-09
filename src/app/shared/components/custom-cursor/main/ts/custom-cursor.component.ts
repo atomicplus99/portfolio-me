@@ -12,19 +12,13 @@ import {
 
 import { CursorConfigService } from '../../services/cursor-config.service'; 
 import { DeviceDetectionService } from '../../services/device-detection.service'; 
-import { ParticlePoolService } from '../../services/particle-pool.service'; 
-import { AnimationService } from '../../services/animation.service';
 import { TacticalElementsService } from '../../services/tacticals-elements.service';
-
-// NUEVOS SERVICIOS MODULARIZADOS
-
 import { CursorEventHandlerService } from '../../services/cursor-event-handler.service';
-
 import { CursorStatusService } from '../../services/cursor-status.service';
-
 import { CursorConfig, TacticalStatus } from '../../interfaces/cursor.interfaces';
 import { CursorPerformanceService } from '../../services/cursor-perfomance.service';
 import { CursorLifecycleService } from '../../services/cursor-life-cycle.service';
+import { AnimationService } from '../../services/animation.service';
 
 @Component({
   selector: 'app-custom-cursor',
@@ -33,7 +27,6 @@ import { CursorLifecycleService } from '../../services/cursor-life-cycle.service
   styleUrls: ['../css/custom-cursor.component.css'],
   encapsulation: ViewEncapsulation.None,
   providers: [
-    ParticlePoolService,
     TacticalElementsService,
     AnimationService,
     CursorPerformanceService,

@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { 
-  ChangeDetectorRef, 
-  Component, 
-  OnInit, 
-  inject, 
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  inject,
   AfterViewInit,
   OnDestroy,
   ChangeDetectionStrategy,
@@ -29,7 +29,6 @@ import { AppLifecycleManagerService } from './core/global/config/app-life-cycle.
 import { AppConfigurationService } from './core/global/config/app-configuration.service';
 
 
-
 @Component({
   selector: 'app-root',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -53,11 +52,11 @@ import { AppConfigurationService } from './core/global/config/app-configuration.
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
-  
+
   // SERVICIOS PRINCIPALES (solo 2!)
   private readonly lifecycleManager = inject(AppLifecycleManagerService);
   private readonly configurationService = inject(AppConfigurationService);
-  
+
   // DEPENDENCIAS BÁSICAS
   readonly loaderService = inject(LoaderService);
   private readonly renderer = inject(Renderer2);
@@ -87,6 +86,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.lifecycleManager.initializeAfterViewInit();
+    setTimeout(() => {
+    }, 3000);
+
   }
 
   ngOnDestroy(): void {

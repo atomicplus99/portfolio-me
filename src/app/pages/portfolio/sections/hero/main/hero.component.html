@@ -1,14 +1,13 @@
-<section class="hero-section relative w-screen h-screen overflow-hidden flex items-center justify-center"
-             [ngClass]="{'opacity-100': isVisible(), 'opacity-0': !isVisible()}">
-      
-      <div class="hero-main-container relative w-full h-full max-w-[1920px] mx-auto
-                  px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20">
-
-        <app-geometric-elements></app-geometric-elements>
-        <app-profile-section></app-profile-section>
-        <app-massive-text></app-massive-text>
-        <app-code-snippet></app-code-snippet>
-        <app-motivational-quote></app-motivational-quote>
-        <app-scroll-indicator (scrollClick)="scrollToNext()"></app-scroll-indicator>
-      </div>
-    </section>
+<section class="hero-section relative w-screen h-screen flex items-center justify-center"
+         [ngClass]="{'opacity-100': isVisible(), 'opacity-0': !isVisible()}">
+         
+  <div class="hero-main-container relative w-full h-full max-w-[1920px] mx-auto
+              px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20">
+    <app-geometric-elements></app-geometric-elements>
+    <app-profile-section></app-profile-section>
+    <app-massive-text></app-massive-text>
+    <app-code-snippet></app-code-snippet>
+    <app-motivational-quote></app-motivational-quote>
+    <app-scroll-indicator (scrollClick)="scrollToNext()"></app-scroll-indicator>
+  </div>
+</section>

@@ -1,11 +1,9 @@
 import { CommonModule } from "@angular/common";
-
 import { ParticleConfig } from "../../interfaces/particles.interface";
 import { AfterViewInit, Component, ElementRef, Input, NgZone, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { ParticleSystem } from "../../classes/particle.class";
 import { ParticleConfigService } from "../../services/particle-config.service";
 import { DeviceDetectorDirective } from "../../directives/device-dectector.directive";
-
 
 @Component({
   selector: 'app-particles',
@@ -17,7 +15,7 @@ import { DeviceDetectorDirective } from "../../directives/device-dectector.direc
 export class ParticlesComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() customConfig?: Partial<ParticleConfig>;
   @ViewChild('particlesCanvas', { static: false }) canvasRef!: ElementRef<HTMLCanvasElement>;
-  
+
   private particleSystem!: ParticleSystem;
   private isMobile = false;
   private resizeObserver?: ResizeObserver;
@@ -25,7 +23,7 @@ export class ParticlesComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     private ngZone: NgZone,
     private particleConfigService: ParticleConfigService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.setupResizeObserver();
@@ -34,6 +32,7 @@ export class ParticlesComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit(): void {
     this.ngZone.runOutsideAngular(() => {
       this.initializeParticleSystem();
+       this.observeContainer(); 
     });
   }
 
@@ -65,7 +64,7 @@ export class ParticlesComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private getParticleConfig(): ParticleConfig {
     const baseConfig = this.particleConfigService.getConfig(this.isMobile);
-    return this.customConfig 
+    return this.customConfig
       ? this.particleConfigService.createCustomConfig({ ...baseConfig, ...this.customConfig })
       : baseConfig;
   }

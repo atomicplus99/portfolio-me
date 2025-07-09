@@ -1,13 +1,12 @@
-/* VOLVER A LA CONFIGURACIÓN ORIGINAL */
 :host {
   display: block;
-  position: fixed; /* VOLVER a fixed */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh; /* VOLVER a 100vh */
+  height: 100%; /* ← SOLUCIÓN: Cubre toda la página */
   pointer-events: none;
-  z-index: 1;
+  z-index: 15; /* ← También cambiar a 15 para coincidir */
   overflow: hidden;
 }
 

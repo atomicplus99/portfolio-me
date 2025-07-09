@@ -1,7 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { TacticalStatus } from '../interfaces/cursor.interfaces';
 import { AnimationService } from './animation.service';
-import { ParticlePoolService } from './particle-pool.service';
 import { CursorConfigService } from './cursor-config.service';
 import { CursorPerformanceService } from './cursor-perfomance.service';
 import { CursorLifecycleService } from './cursor-life-cycle.service';
@@ -20,7 +19,6 @@ export class CursorStatusService {
 
   constructor(
     private animationService: AnimationService,
-    private particlePoolService: ParticlePoolService,
     private configService: CursorConfigService,
     private performanceService: CursorPerformanceService,
     private lifecycleService: CursorLifecycleService
@@ -38,13 +36,12 @@ export class CursorStatusService {
   // ACTUALIZACIÓN DE STATUS
   updateStatus(): void {
     const animationState = this.animationService.animationState();
-    const particleStatus = this.particlePoolService.getPoolStatus();
 
     const newStatus: TacticalStatus = {
       reticlePosition: animationState.cursorPosition,
       isTargeting: animationState.isTargeting,
       isFiring: animationState.isFiring,
-      activeParticles: particleStatus.activeParticles,
+      activeParticles: 0,
       systemStatus: this.lifecycleService.isInitialized ? 'operational' : 'inactive'
     };
 
@@ -59,7 +56,7 @@ export class CursorStatusService {
         isRunning: this.animationService.isRunning(),
         state: this.animationService.animationState()
       },
-      particles: this.particlePoolService.getPoolStatus(),
+      particles: 0,
       config: this.configService.config(),
       performance: this.performanceService.getPerformanceMetrics(),
       lifecycle: this.lifecycleService.getStatus()

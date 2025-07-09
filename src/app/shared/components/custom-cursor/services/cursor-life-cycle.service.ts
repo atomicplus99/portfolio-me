@@ -1,6 +1,5 @@
 import { Injectable, Renderer2 } from '@angular/core';
 import { DeviceDetectionService } from './device-detection.service';
-import { ParticlePoolService } from './particle-pool.service';
 import { TacticalElementsService } from './tacticals-elements.service';
 import { AnimationService } from './animation.service';
 import { CursorPerformanceService } from './cursor-perfomance.service';
@@ -15,7 +14,7 @@ export class CursorLifecycleService {
   constructor(
     private renderer: Renderer2,
     private deviceDetectionService: DeviceDetectionService,
-    private particlePoolService: ParticlePoolService,
+
     private tacticalElementsService: TacticalElementsService,
     private animationService: AnimationService,
     private performanceService: CursorPerformanceService
@@ -37,7 +36,6 @@ export class CursorLifecycleService {
     try {
       this.injectGlobalStyles();
       this.performanceService.initializeHeaderCache();
-      this.particlePoolService.initializePool();
       this.tacticalElementsService.createElement();
       this.animationService.startAnimation();
       
@@ -55,7 +53,6 @@ export class CursorLifecycleService {
     try {
       this.animationService.stopAnimation();
       this.tacticalElementsService.destroyElements();
-      this.particlePoolService.destroyPool();
       this.performanceService.cleanup();
       this.removeGlobalStyles();
       

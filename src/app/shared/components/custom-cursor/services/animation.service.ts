@@ -2,7 +2,6 @@ import { Injectable, signal } from '@angular/core';
 import { AnimationState, CursorPosition } from '../interfaces/cursor.interfaces';
 import { CursorConfigService } from './cursor-config.service';
 
-import { ParticlePoolService } from './particle-pool.service';
 import { TacticalElementsService } from './tacticals-elements.service';
 
 
@@ -32,7 +31,7 @@ export class AnimationService {
   constructor(
     private configService: CursorConfigService,
     private tacticalElementsService: TacticalElementsService,
-    private particlePoolService: ParticlePoolService
+
   ) {}
 
   startAnimation(): void {
@@ -96,7 +95,6 @@ export class AnimationService {
     this.tacticalElementsService.updateCornerPositions(state.cursorPosition);
 
     
-    this.particlePoolService.animateActiveParticles();
   }
 
   private calculateRadarPosition(state: AnimationState, lerpFactor: number): CursorPosition {

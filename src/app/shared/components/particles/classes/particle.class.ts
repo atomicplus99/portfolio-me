@@ -23,17 +23,15 @@ export class ParticleSystem {
   }
 
   private initializeCamera(): void {
-    // VOLVER A LA CONFIGURACIÓN ORIGINAL
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    
+    const containerRect = this.container.getBoundingClientRect();
+
     this.camera = new THREE.PerspectiveCamera(
       75,
-      width / height,
+      containerRect.width / containerRect.height,
       0.1,
       1000
     );
-    this.camera.position.set(0, 0, 20);
+    this.camera.position.set(0, 0, 30);
   }
 
   private initializeRenderer(): void {
@@ -42,12 +40,9 @@ export class ParticleSystem {
       antialias: true,
       alpha: true
     });
-    
-    // VOLVER A LA CONFIGURACIÓN ORIGINAL
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    
-    this.renderer.setSize(width, height);
+
+    const containerRect = this.container.getBoundingClientRect();
+    this.renderer.setSize(containerRect.width, containerRect.height);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   }
 
@@ -56,10 +51,14 @@ export class ParticleSystem {
     const positions = new Float32Array(this.config.count * 3);
     const colors = new Float32Array(this.config.count * 3);
 
+    const containerRect = this.container.getBoundingClientRect();
+    const width = containerRect.width;
+    const height = containerRect.height;
+
     for (let i = 0; i < this.config.count * 3; i += 3) {
-      positions[i] = (Math.random() - 0.5) * 200;
-      positions[i + 1] = (Math.random() - 0.5) * 200;
-      positions[i + 2] = (Math.random() - 0.5) * 200;
+      positions[i] = (Math.random() - 0.5) * width;      // X: ancho completo
+      positions[i + 1] = (Math.random() - 0.5) * height; // Y: alto completo  
+      positions[i + 2] = (Math.random() - 0.5) * 50; // Z más cerca de la cámara
 
       const color = new THREE.Color();
       color.setHSL(
@@ -103,25 +102,24 @@ export class ParticleSystem {
     if (!this.particles) return;
 
     this.particles.rotation.y = elapsedTime * this.config.speed;
-    
+
     const positions = this.particles.geometry.attributes['position'].array as Float32Array;
-    
+
     for (let i = 0; i < positions.length; i += 3) {
       positions[i + 1] += Math.sin(elapsedTime + positions[i]) * 0.01;
     }
-    
+
     this.particles.geometry.attributes['position'].needsUpdate = true;
   }
 
   public handleResize(): void {
     if (!this.camera || !this.renderer) return;
 
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    
-    this.camera.aspect = width / height;
+    const containerRect = this.container.getBoundingClientRect();
+
+    this.camera.aspect = containerRect.width / containerRect.height;
     this.camera.updateProjectionMatrix();
-    this.renderer.setSize(width, height);
+    this.renderer.setSize(containerRect.width, containerRect.height);
   }
 
   public updateConfig(newConfig: Partial<ParticleConfig>): void {

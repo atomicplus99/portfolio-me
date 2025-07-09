@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CursorPosition } from '../interfaces/cursor.interfaces';
 import { AnimationService } from './animation.service';
-import { ParticlePoolService } from './particle-pool.service';
+
 import { TacticalElementsService } from './tacticals-elements.service';
 import { CursorPerformanceService } from './cursor-perfomance.service';
 
@@ -11,7 +11,6 @@ export class CursorEventHandlerService {
 
   constructor(
     private animationService: AnimationService,
-    private particlePoolService: ParticlePoolService,
     private tacticalElementsService: TacticalElementsService,
     private performanceService: CursorPerformanceService
   ) {}
@@ -36,11 +35,7 @@ export class CursorEventHandlerService {
 
       // Actualizar posición del cursor
       this.animationService.updateCursorPosition(position);
-      
-      // Crear partículas solo si no está sobre header o scrolleando
-      if (!this.performanceService.isOverHeader && !this.performanceService.isScrolling) {
-        this.particlePoolService.activateParticle(position);
-      }
+
     });
   }
 
@@ -54,10 +49,7 @@ export class CursorEventHandlerService {
       y: event.clientY
     };
 
-    // Menos burst si está sobre header
-    if (!this.performanceService.isOverHeader) {
-      this.particlePoolService.createBurst(position);
-    }
+
   }
 
   // MOUSE UP
@@ -94,7 +86,7 @@ export class CursorEventHandlerService {
       y: event.clientY
     };
 
-    this.particlePoolService.createDefensivePattern(position);
+   
   }
 
   // SCROLL

@@ -14,7 +14,7 @@
   position: relative;
   width: 100vw;
   min-height: 100vh;
-  background: linear-gradient(135deg, #0f172a 0%, #1f2937 50%, #18181b 100%);
+  background: transparent;
   overflow-x: hidden;
   
   /* IMPORTANTE: Asegurar altura total para que las partículas cubran todo */
@@ -46,19 +46,19 @@
   contain: strict;
 }
 
-/* ===== PARTÍCULAS GLOBALES (ARREGLADO) ===== */
 .particles-layer {
-  position: absolute; /* CAMBIO: de fixed a absolute */
-  inset: 0;
-  z-index: 1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 15;
   pointer-events: none;
   transition: opacity 0.4s ease-out;
   
   /* Optimizaciones de rendering */
   transform: translateZ(0);
   will-change: transform, opacity;
-  contain: strict;
-  isolation: isolate;
 }
 
 /* ===== WRAPPER DE CONTENIDO ===== */
@@ -189,7 +189,6 @@ html {
 /* ===== SECCIÓN HERO OPTIMIZADA ===== */
 .hero-section {
   position: relative;
-  overflow: hidden;
   background: transparent;
   contain: layout style paint;
 }
@@ -268,11 +267,6 @@ html {
   /* Vendor prefixes para mejor compatibilidad */
   -webkit-transform: translateZ(0);
   -webkit-backface-visibility: hidden;
-}
-
-/* Header separado para evitar conflictos */
-.header-fixed {
-  /* Ya tiene sus propias optimizaciones arriba */
 }
 
 /* Optimizaciones durante scroll */

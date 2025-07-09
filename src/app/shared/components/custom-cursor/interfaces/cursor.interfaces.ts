@@ -1,10 +1,4 @@
-export interface ParticlePool {
-  element: HTMLElement;
-  isActive: boolean;
-  x: number;
-  y: number;
-  startTime: number;
-}
+
 
 export interface CursorPosition {
   x: number;

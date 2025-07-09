@@ -15,11 +15,8 @@
     class="loader-layer">
   </app-loader>
 
-  <!-- VOLVER A: Una sola instancia de partículas como antes -->
-  <app-particles 
-    [customConfig]="particleConfig" 
-    class="particles-layer">
-  </app-particles>
+  
+  <app-particles class="particles-layer"></app-particles>
 
   <div class="content-wrapper" [class.content-hidden]="loaderService.state().isLoading">
     <app-header class="header-fixed"></app-header>

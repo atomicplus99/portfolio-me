@@ -7,52 +7,52 @@ import { CursorConfig } from '../interfaces/cursor.interfaces';
 export class CursorConfigService {
   
   private defaultConfig: CursorConfig = {
-    maxParticles: 4, // Reducido de 8
-    poolSize: 8, // Reducido de 12
-    particleDelay: 300, // Aumentado de 200 para menos frecuencia
-    cornerOffset: 20, // Reducido de 25
+    maxParticles: 15,        // Aumentado de 4 a 15
+    poolSize: 30,            // Aumentado de 8 a 30
+    particleDelay: 150,      // Reducido de 300 a 150 (más frecuentes)
+    cornerOffset: 25,        // Aumentado de 20 a 25
     numCorners: 2,
-    radarLerp: 0.06, // Reducido de 0.08 para menos suavidad pero mejor performance
-    cornerLerp: 0.12, // Reducido de 0.15
-    particleLifetime: 1200, // Reducido de 1500 para que duren menos
-    burstParticles: 3, // Reducido de 4
-    defensiveParticles: 4, // Reducido de 6
+    radarLerp: 0.08,         // Aumentado de 0.06 a 0.08
+    cornerLerp: 0.15,        // Aumentado de 0.12 a 0.15
+    particleLifetime: 2000,  // Aumentado de 1200 a 2000 (duran más)
+    burstParticles: 8,       // Aumentado de 3 a 8
+    defensiveParticles: 12,  // Aumentado de 4 a 12
     optimizedMode: false
   };
 
-  // NUEVO: Configuración específica para header
+  // CONFIGURACIÓN PARA HEADER (también aumentada)
   private headerOptimizedConfig: Partial<CursorConfig> = {
-    maxParticles: 2,
-    poolSize: 4,
-    particleDelay: 500, // Muy espaciado durante hover en header
-    cornerOffset: 15,
-    radarLerp: 0.04,
-    cornerLerp: 0.08,
-    particleLifetime: 800,
-    burstParticles: 1,
-    defensiveParticles: 2
+    maxParticles: 8,         // Aumentado de 2 a 8
+    poolSize: 16,            // Aumentado de 4 a 16
+    particleDelay: 250,      // Reducido de 500 a 250
+    cornerOffset: 20,
+    radarLerp: 0.06,
+    cornerLerp: 0.10,
+    particleLifetime: 1500,  // Aumentado de 800 a 1500
+    burstParticles: 4,       // Aumentado de 1 a 4
+    defensiveParticles: 6    // Aumentado de 2 a 6
   };
 
   private optimizedConfig: Partial<CursorConfig> = {
-    particleDelay: 400, // Aumentado de 300
-    maxParticles: 3, // Reducido de 4
-    poolSize: 6, // Reducido de 8
-    radarLerp: 0.04, // Más reducido
-    cornerLerp: 0.08, // Más reducido
-    particleLifetime: 1000 // Reducido
+    particleDelay: 200,      // Reducido de 400 a 200
+    maxParticles: 10,        // Aumentado de 3 a 10
+    poolSize: 20,            // Aumentado de 6 a 20
+    radarLerp: 0.06,         // Aumentado de 0.04 a 0.06
+    cornerLerp: 0.12,        // Aumentado de 0.08 a 0.12
+    particleLifetime: 1500   // Aumentado de 1000 a 1500
   };
 
-  // NUEVO: Configuración para dispositivos de baja potencia
+  // CONFIGURACIÓN PARA DISPOSITIVOS DE BAJA POTENCIA (mejorada)
   private lowEndConfig: Partial<CursorConfig> = {
-    maxParticles: 2,
-    poolSize: 4,
-    particleDelay: 600,
-    cornerOffset: 15,
-    radarLerp: 0.03,
-    cornerLerp: 0.06,
-    particleLifetime: 600,
-    burstParticles: 1,
-    defensiveParticles: 1
+    maxParticles: 6,         // Aumentado de 2 a 6
+    poolSize: 12,            // Aumentado de 4 a 12
+    particleDelay: 300,      // Reducido de 600 a 300
+    cornerOffset: 18,
+    radarLerp: 0.05,
+    cornerLerp: 0.08,
+    particleLifetime: 1000,  // Aumentado de 600 a 1000
+    burstParticles: 3,       // Aumentado de 1 a 3
+    defensiveParticles: 4    // Aumentado de 1 a 4
   };
 
   private configSignal = signal<CursorConfig>(this.defaultConfig);
@@ -84,14 +84,14 @@ export class CursorConfigService {
     this.resetToDefaults();
   }
 
-  // NUEVO: Modo durante scroll
+  // MODO DURANTE SCROLL (también mejorado)
   public enableScrollMode(): void {
     this.isScrolling.set(true);
     this.updateConfig({
-      maxParticles: 1,
-      particleDelay: 800,
-      radarLerp: 0.02,
-      cornerLerp: 0.04
+      maxParticles: 5,       // Aumentado de 1 a 5
+      particleDelay: 400,    // Reducido de 800 a 400
+      radarLerp: 0.04,
+      cornerLerp: 0.06
     });
   }
 
@@ -104,7 +104,6 @@ export class CursorConfigService {
     }
   }
 
-  // NUEVO: Configuración automática según capacidad del dispositivo
   public enableLowEndMode(): void {
     this.updateConfig({
       ...this.lowEndConfig,
@@ -130,7 +129,7 @@ export class CursorConfigService {
     this.configSignal.set(this.defaultConfig);
   }
 
-  // NUEVO: Configuración adaptativa
+  // CONFIGURACIÓN ADAPTATIVA
   public setAdaptiveConfig(deviceInfo: {
     isMobile: boolean;
     isLowEnd: boolean;
@@ -161,7 +160,18 @@ export class CursorConfigService {
     } as const;
   }
 
-  // NUEVO: Getters para estados
+  // NUEVO: Configuración extrema para pruebas
+  public enableExtremeMode(): void {
+    this.updateConfig({
+      maxParticles: 25,      // Máximo de partículas
+      poolSize: 50,          // Pool grande
+      particleDelay: 100,    // Muy frecuentes
+      particleLifetime: 3000, // Duran mucho
+      burstParticles: 15,    // Explosiones grandes
+      defensiveParticles: 20  // Patrón defensivo denso
+    });
+  }
+
   public get isInHeaderMode(): boolean {
     return this.isHeaderMode();
   }

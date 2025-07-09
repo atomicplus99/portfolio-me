@@ -117,7 +117,7 @@ export class AppConfigurationService {
     if (device.isMobile) {
       this.setMobileOptimized();
     } else if (device.isLowEnd) {
-      this.setPerformanceMode('low');
+      this.setPerformanceMode('high');
     } else {
       this.setPerformanceMode('high');
     }
