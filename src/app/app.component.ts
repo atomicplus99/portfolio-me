@@ -28,7 +28,6 @@ import { FooterComponent } from './pages/portfolio/sections/footer/footer.compon
 import { AppLifecycleManagerService } from './core/global/config/app-life-cycle.service';
 import { AppConfigurationService } from './core/global/config/app-configuration.service';
 
-
 @Component({
   selector: 'app-root',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -53,7 +52,7 @@ import { AppConfigurationService } from './core/global/config/app-configuration.
 })
 export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  // SERVICIOS PRINCIPALES (solo 2!)
+  // SERVICIOS PRINCIPALES
   private readonly lifecycleManager = inject(AppLifecycleManagerService);
   private readonly configurationService = inject(AppConfigurationService);
 
@@ -62,7 +61,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   private readonly renderer = inject(Renderer2);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  // GETTERS PARA EL TEMPLATE (ultra simples)
+  // GETTERS PARA EL TEMPLATE (simplificados)
   get loadedSections() {
     return this.configurationService.loadedSections();
   }
@@ -71,31 +70,58 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.configurationService.cursorConfig();
   }
 
-  get particleConfig() {
-    return this.configurationService.particleConfig();
-  }
+  // ELIMINADO: particleConfig - ParticlesComponent usa ParticleConfigService directamente
 
   get isAppReady(): boolean {
     return this.lifecycleManager.isReady;
   }
 
-  // CICLO DE VIDA (ultra simplificado)
+  // CICLO DE VIDA SIMPLIFICADO
   async ngOnInit(): Promise<void> {
     await this.lifecycleManager.initializeApp(this.cdr, this.renderer);
+    this.forceLoadAllSections();
   }
 
   ngAfterViewInit(): void {
     this.lifecycleManager.initializeAfterViewInit();
+    
+    // Verificación final de secciones
     setTimeout(() => {
-    }, 3000);
-
+      this.ensureAllSectionsLoaded();
+    }, 1000);
   }
 
   ngOnDestroy(): void {
     this.lifecycleManager.destroyApp(this.renderer);
   }
 
-  // EVENTOS (delegados completamente)
+  // SIMPLIFICADO: Carga directa de todas las secciones
+  private forceLoadAllSections(): void {
+    setTimeout(() => {
+      this.lifecycleManager.loadAllSections();
+      this.cdr.detectChanges();
+      
+      console.log('🌌 Secciones cargadas:', this.loadedSections);
+    }, 500);
+  }
+
+  // Verificación de secciones cargadas
+  private ensureAllSectionsLoaded(): void {
+    const loaded = this.loadedSections;
+    const requiredSections = ['about', 'aboutMe', 'projects', 'skills', 'contact', 'footer'];
+    
+    const missing = requiredSections.filter(section => !loaded[section as keyof typeof loaded]);
+    
+    if (missing.length > 0) {
+      console.log(`🔧 Cargando secciones faltantes: ${missing.join(', ')}`);
+      this.lifecycleManager.loadAllSections();
+      this.cdr.detectChanges();
+    } else {
+      console.log('✅ Todas las secciones cargadas');
+    }
+  }
+
+  // EVENTOS (delegados)
   onCursorStatusChange(status: any): void {
     this.lifecycleManager.handleCursorStatusChange(status, this.renderer);
   }
@@ -108,36 +134,40 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     this.lifecycleManager.handleHeaderInteraction(isActive, this.renderer);
   }
 
-  // API PÚBLICA (ultra simple)
+  // API PÚBLICA
   optimizePerformance(): void {
     this.lifecycleManager.optimizePerformance();
   }
 
   loadAllSections(): void {
     this.lifecycleManager.loadAllSections();
+    this.cdr.detectChanges();
   }
 
   resetSections(): void {
     this.lifecycleManager.resetSections();
   }
 
-  // DEBUGGING (una sola línea)
-  logStatus(): void {
-    this.lifecycleManager.logAppStatus();
-  }
 
-  // MÉTRICAS (delegado)
+  // MÉTRICAS
   getMetrics() {
     return this.lifecycleManager.getAppMetrics();
   }
 
-  // DIAGNÓSTICOS (delegado)
+  // DIAGNÓSTICOS
   runDiagnostics() {
     return this.lifecycleManager.runDiagnostics();
   }
 
-  // CONFIGURACIÓN MANUAL (si es necesario)
+  // CONFIGURACIÓN MANUAL
   setPerformanceMode(mode: 'high' | 'medium' | 'low'): void {
     this.configurationService.setPerformanceMode(mode);
+  }
+
+  // MÉTODO DE EMERGENCIA
+  emergencyLoadSections(): void {
+    console.log('🚨 Carga de emergencia activada');
+    this.lifecycleManager.loadAllSections();
+    this.cdr.detectChanges();
   }
 }

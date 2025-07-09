@@ -31,7 +31,8 @@ export class ParticleSystem {
       0.1,
       1000
     );
-    this.camera.position.set(0, 0, 30);
+    // CORREGIDO: Mover cámara más lejos para mejor vista
+    this.camera.position.set(0, 0, 50);
   }
 
   private initializeRenderer(): void {
@@ -51,21 +52,27 @@ export class ParticleSystem {
     const positions = new Float32Array(this.config.count * 3);
     const colors = new Float32Array(this.config.count * 3);
 
-    const containerRect = this.container.getBoundingClientRect();
-    const width = containerRect.width;
-    const height = containerRect.height;
+    // GALÁCTICO: Distribución simple en todo el espacio
+    const spread = 150; // Área amplia
+    const height = 300; // Altura para múltiples secciones
+    const depth = 80;   // Profundidad moderada
 
     for (let i = 0; i < this.config.count * 3; i += 3) {
-      positions[i] = (Math.random() - 0.5) * width;      // X: ancho completo
-      positions[i + 1] = (Math.random() - 0.5) * height; // Y: alto completo  
-      positions[i + 2] = (Math.random() - 0.5) * 50; // Z más cerca de la cámara
+      // SIMPLE: Distribución uniforme
+      positions[i] = (Math.random() - 0.5) * spread;        // X
+      positions[i + 1] = (Math.random() - 0.5) * height;    // Y (todo el scroll)
+      positions[i + 2] = (Math.random() - 0.5) * depth;     // Z
 
+      // GALÁCTICO: Colores azules/morados simples
       const color = new THREE.Color();
+      const intensity = 0.3 + Math.random() * 0.7; // Variación de brillo
+      
       color.setHSL(
-        this.config.colors.hue + Math.random() * this.config.colors.variance,
-        this.config.colors.saturation,
-        this.config.colors.lightness
+        0.55 + Math.random() * 0.2, // Azul a morado
+        0.6 + Math.random() * 0.3,  // Saturación moderada
+        intensity                    // Brillo variable
       );
+      
       colors[i] = color.r;
       colors[i + 1] = color.g;
       colors[i + 2] = color.b;
@@ -74,16 +81,44 @@ export class ParticleSystem {
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
     geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
+    // GALÁCTICO MEJORADO: Material con un poco más de presencia
     const material = new THREE.PointsMaterial({
       size: this.config.size,
       vertexColors: true,
       transparent: true,
       opacity: this.config.opacity,
-      blending: THREE.AdditiveBlending
+      blending: THREE.AdditiveBlending,
+      sizeAttenuation: true,
+      // AÑADIR: Textura circular simple para mejor definición
+      map: this.createSimpleCircleTexture(),
+      alphaTest: 0.1
     });
 
     this.particles = new THREE.Points(geometry, material);
     this.scene.add(this.particles);
+  }
+
+  // NUEVO: Textura circular simple pero efectiva
+  private createSimpleCircleTexture(): THREE.Texture {
+    const canvas = document.createElement('canvas');
+    canvas.width = 32; // REDUCIDO: menos resolución = mejor performance
+    canvas.height = 32;
+    
+    const ctx = canvas.getContext('2d')!;
+    
+    // Gradiente radial simple pero efectivo
+    const gradient = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
+    gradient.addColorStop(0, 'rgba(255, 255, 255, 1.0)');   // Centro sólido
+    gradient.addColorStop(0.4, 'rgba(255, 255, 255, 0.7)'); // Medio
+    gradient.addColorStop(0.8, 'rgba(255, 255, 255, 0.2)'); // Borde suave
+    gradient.addColorStop(1, 'rgba(255, 255, 255, 0.0)');   // Transparente
+    
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, 32, 32);
+    
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.needsUpdate = true;
+    return texture;
   }
 
   public startAnimation(): void {
@@ -101,15 +136,20 @@ export class ParticleSystem {
   private updateParticles(elapsedTime: number): void {
     if (!this.particles) return;
 
+    // GALÁCTICO: Rotación lenta pero perceptible
     this.particles.rotation.y = elapsedTime * this.config.speed;
+    this.particles.rotation.x = elapsedTime * this.config.speed * 0.3;
 
+    // SUTIL: Movimiento muy ligero solo en algunas partículas
     const positions = this.particles.geometry.attributes['position'].array as Float32Array;
-
-    for (let i = 0; i < positions.length; i += 3) {
-      positions[i + 1] += Math.sin(elapsedTime + positions[i]) * 0.01;
+    
+    // Solo actualizar cada 3 frames para performance
+    if (Math.floor(elapsedTime * 60) % 3 === 0) {
+      for (let i = 0; i < positions.length; i += 9) { // Solo cada 3ra partícula
+        positions[i + 1] += Math.sin(elapsedTime * 0.5 + positions[i] * 0.1) * 0.01;
+      }
+      this.particles.geometry.attributes['position'].needsUpdate = true;
     }
-
-    this.particles.geometry.attributes['position'].needsUpdate = true;
   }
 
   public handleResize(): void {

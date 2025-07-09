@@ -1,92 +1,96 @@
 import { Injectable } from "@angular/core";
 import { ParticleConfig } from "../interfaces/particles.interface";
+import { AppPerformanceService } from "../../../../core/global/services/portfolio-perfomance.service";
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class ParticleConfigService {
-  // OPTIMIZADO: Aumentadas las partículas para mejor efecto visual
+
+  
+  constructor(private performanceService: AppPerformanceService) {}
+
+
   private readonly defaultConfig: ParticleConfig = {
-    count: 2000,
-    size: 0.4,        // MUY GRANDE (era 0.8)
-    opacity: 1.0,     // COMPLETAMENTE VISIBLE (era 0.6)
-    speed: 0.08,
+    count: 800,       // Densidad galáctica completa
+    size: 1.5,        // Puntos visibles
+    opacity: 0.7,     // Presencia moderada
+    speed: 0.03,      // Movimiento galáctico lento
     colors: {
-      hue: 0.5,         // CAMBIAR COLOR A NARANJA/ROJO
-      saturation: 1.0,  // SATURACIÓN MÁXIMA
-      lightness: 0.7,   // MÁS BRILLANTE
-      variance: 0.1
+      hue: 0.6,       // Azul galáctico
+      saturation: 0.8, // Vibrante
+      lightness: 0.6,  // Brillante
+      variance: 0.25   // Variación natural
     }
   };
+
   private readonly mobileConfig: ParticleConfig = {
-    count: 600,       // Aumentado de 300 a 600
-    size: 0.4,        // Aumentado de 0.3 a 0.4
-    opacity: 0.4,     // Aumentado de 0.3 a 0.4
-    speed: 0.05,      // Aumentado de 0.04 a 0.05
+    count: 500,       // Equilibrado para móvil
+    size: 1.2,        
+    opacity: 0.6,     
+    speed: 0.02,      
     colors: {
-      hue: 0.5,
-      saturation: 0.8,
+      hue: 0.6,
+      saturation: 0.7,
       lightness: 0.5,
-      variance: 0.1
+      variance: 0.2
     }
   };
 
-  // NUEVO: Configuración para dispositivos de baja potencia
   private readonly lowEndConfig: ParticleConfig = {
-    count: 400,       // Aumentado de 200 a 400
-    size: 0.3,
-    opacity: 0.3,
-    speed: 0.03,
+    count: 300,       // Mínimo funcional
+    size: 1.0,        
+    opacity: 0.5,     
+    speed: 0.01,      
     colors: {
-      hue: 0.5,
-      saturation: 0.8,
-      lightness: 0.5,
-      variance: 0.1
+      hue: 0.6,
+      saturation: 0.6,
+      lightness: 0.4,
+      variance: 0.15
     }
   };
 
-  getConfig(isMobile: boolean): ParticleConfig {
-    // COMENTAR ESTAS LÍNEAS PARA FORZAR SIEMPRE EL DEFAULT
-    // const isLowEnd = this.isLowEndDevice();
-    // if (isLowEnd) {
-    //   return this.lowEndConfig;
-    // }
-
-    // FORZAR SIEMPRE EL DEFAULT (1200 partículas)
-    return this.defaultConfig;
-
-    // O si quieres mantener móvil diferente:
-    // return isMobile ? this.mobileConfig : this.defaultConfig;
+  // UNIFICADO: Usa detección de AppPerformanceService
+  getConfig(isMobile?: boolean): ParticleConfig {
+    const deviceInfo = this.performanceService.deviceInfo();
+    const mobile = isMobile ?? deviceInfo.isMobile;
+    
+    if (deviceInfo.isLowEnd) {
+      return this.lowEndConfig;
+    }
+    
+    return mobile ? this.mobileConfig : this.defaultConfig;
   }
 
   createCustomConfig(overrides: Partial<ParticleConfig>): ParticleConfig {
-    const baseConfig = this.getConfig(this.isMobile());
+    const baseConfig = this.getConfig();
     return { ...baseConfig, ...overrides };
   }
 
-  // NUEVO: Detectar dispositivos de baja potencia
-  private isLowEndDevice(): boolean {
-    return navigator.hardwareConcurrency < 4 ||
-      (navigator as any).deviceMemory < 4;
-  }
-
-  // NUEVO: Detectar móviles
+  // SIMPLIFICADO: Ya no necesita su propia detección
   private isMobile(): boolean {
-    return window.innerWidth < 768;
+    return this.performanceService.deviceInfo().isMobile;
   }
 
-  // NUEVO: Configuraciones específicas según performance
+  private isLowEndDevice(): boolean {
+    return this.performanceService.deviceInfo().isLowEnd;
+  }
+
+  // Configuraciones específicas según performance
   getOptimizedConfig(performanceLevel: 'high' | 'medium' | 'low'): ParticleConfig {
     const configs = {
       high: {
         ...this.defaultConfig,
-        count: 1500,      // Versión ultra alta
-        opacity: 0.7
+        count: 1000,      // Ultra densidad
+        size: 2.0,        
+        opacity: 0.8
       },
       medium: {
         ...this.defaultConfig,
-        count: 900,       // Versión media
-        opacity: 0.5
+        count: 800,       // Configuración default
+        size: 1.5,
+        opacity: 0.7
       },
       low: this.lowEndConfig
     };
@@ -94,19 +98,46 @@ export class ParticleConfigService {
     return configs[performanceLevel];
   }
 
-  // NUEVO: Configuración extrema para pruebas
+  // Configuración extrema para pruebas
   getExtremeConfig(): ParticleConfig {
     return {
-      count: 2000,      // Para pruebas de máximo rendimiento
-      size: 0.6,
-      opacity: 0.8,
-      speed: 0.1,
+      count: 1200,      // Máximo para pruebas
+      size: 2.5,        
+      opacity: 0.9,
+      speed: 0.05,
       colors: {
-        hue: 0.5,
-        saturation: 0.8,
-        lightness: 0.5,
-        variance: 0.2
+        hue: 0.6,
+        saturation: 1.0,
+        lightness: 0.7,
+        variance: 0.3
       }
     };
+  }
+
+  // DEBUGGING: Ver qué configuración se está usando
+  getCurrentConfig(isMobile?: boolean): { config: ParticleConfig; type: string; deviceInfo: any } {
+    const deviceInfo = this.performanceService.deviceInfo();
+    const mobile = isMobile ?? deviceInfo.isMobile;
+    
+    if (deviceInfo.isLowEnd) {
+      return { config: this.lowEndConfig, type: 'lowEnd', deviceInfo };
+    }
+    
+    if (mobile) {
+      return { config: this.mobileConfig, type: 'mobile', deviceInfo };
+    }
+    
+    return { config: this.defaultConfig, type: 'default', deviceInfo };
+  }
+
+  // NUEVO: Método para debugging desde consola
+  debugConfig(): void {
+    const current = this.getCurrentConfig();
+    console.group('🌌 Particle Config Debug');
+    console.log('Type:', current.type);
+    console.log('Config:', current.config);
+    console.log('Device Info:', current.deviceInfo);
+    console.log('Performance Service:', this.performanceService.getPerformanceMetrics());
+    console.groupEnd();
   }
 }

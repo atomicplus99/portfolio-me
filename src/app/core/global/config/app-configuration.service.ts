@@ -2,7 +2,6 @@ import { Injectable, computed, signal } from '@angular/core';
 import { AppPerformanceService } from '../services/portfolio-perfomance.service';
 import { SectionLoadingService } from '../services/portfolio-loading.service';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -22,11 +21,7 @@ export class AppConfigurationService {
     return { ...baseConfig, ...overrides.cursor };
   });
 
-  readonly particleConfig = computed(() => {
-    const baseConfig = this.performanceService.getParticleConfig();
-    const overrides = this.configOverrides();
-    return { ...baseConfig, ...overrides.particles };
-  });
+  // ELIMINADO: particleConfig - ahora ParticleConfigService es la única fuente
 
   readonly loadedSections = computed(() => {
     return this.sectionLoadingService.loadedSections();
@@ -48,27 +43,19 @@ export class AppConfigurationService {
     }));
   }
 
-  updateParticleConfig(config: any): void {
-    this.configOverrides.update(current => ({
-      ...current,
-      particles: { ...current.particles, ...config }
-    }));
-  }
+  // ELIMINADO: updateParticleConfig - ya no maneja partículas
 
-  // CONFIGURACIONES PREDEFINIDAS
+  // CONFIGURACIONES PREDEFINIDAS (solo cursor)
   setPerformanceMode(mode: 'high' | 'medium' | 'low'): void {
     const configs = {
       high: {
-        cursor: { maxParticles: 8, particleDelay: 150 },
-        particles: { count: 50, maxFPS: 60 }
+        cursor: { maxParticles: 8, particleDelay: 150 }
       },
       medium: {
-        cursor: { maxParticles: 4, particleDelay: 250 },
-        particles: { count: 30, maxFPS: 45 }
+        cursor: { maxParticles: 4, particleDelay: 250 }
       },
       low: {
-        cursor: { maxParticles: 2, particleDelay: 400 },
-        particles: { count: 15, maxFPS: 30 }
+        cursor: { maxParticles: 2, particleDelay: 400 }
       }
     };
 
@@ -77,30 +64,20 @@ export class AppConfigurationService {
 
   setMobileOptimized(): void {
     this.configOverrides.set({
-      cursor: { 
-        maxParticles: 1, 
+      cursor: {
+        maxParticles: 1,
         particleDelay: 500,
-        optimizedMode: true 
-      },
-      particles: { 
-        count: 10, 
-        maxFPS: 30,
-        enableGPUAcceleration: false 
+        optimizedMode: true
       }
     });
   }
 
   setDesktopOptimized(): void {
     this.configOverrides.set({
-      cursor: { 
-        maxParticles: 6, 
+      cursor: {
+        maxParticles: 6,
         particleDelay: 200,
-        optimizedMode: false 
-      },
-      particles: { 
-        count: 40, 
-        maxFPS: 60,
-        enableGPUAcceleration: true 
+        optimizedMode: false
       }
     });
   }
@@ -117,20 +94,20 @@ export class AppConfigurationService {
     if (device.isMobile) {
       this.setMobileOptimized();
     } else if (device.isLowEnd) {
-      this.setPerformanceMode('high');
+      this.setPerformanceMode('low');
     } else {
       this.setPerformanceMode('high');
     }
   }
 
-  // MÉTRICAS DE CONFIGURACIÓN
+  // MÉTRICAS DE CONFIGURACIÓN (sin particleConfig)
   getConfigurationStatus() {
     return {
       cursorConfig: this.cursorConfig(),
-      particleConfig: this.particleConfig(),
       deviceInfo: this.deviceInfo(),
       overrides: this.configOverrides(),
       loadedSections: this.loadedSections()
+      // particleConfig eliminado - usar ParticleConfigService directamente
     };
   }
 }

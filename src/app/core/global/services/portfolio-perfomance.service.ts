@@ -56,7 +56,7 @@ export class AppPerformanceService {
     return passiveSupported;
   }
 
-  // CONFIGURACIONES OPTIMIZADAS
+  // CONFIGURACIONES OPTIMIZADAS SOLO PARA CURSOR
   getCursorConfig() {
     const device = this.deviceInfoSignal();
     return {
@@ -73,32 +73,7 @@ export class AppPerformanceService {
     };
   }
 
-  getParticleConfig() {
-    const device = this.deviceInfoSignal();
-    return {
-      count: this.getOptimalParticleCount(),
-      size: 1.2,
-      colors: {
-        hue: 0.3,
-        saturation: 0.9,
-        lightness: 0.6,
-        variance: 0.2
-      },
-      performance: {
-        maxFPS: device.isMobile ? 30 : 60,
-        enableGPUAcceleration: !device.isLowEnd,
-        pauseOnInactive: true,
-        throttleResize: 300
-      }
-    };
-  }
-
-  private getOptimalParticleCount(): number {
-    const device = this.deviceInfoSignal();
-    if (device.isMobile) return 15;
-    if (device.isLowEnd) return 25;
-    return 40;
-  }
+  // ELIMINADO: getParticleConfig() - ahora solo ParticleConfigService maneja esto
 
   // GESTIÓN DE SCROLL
   handleScroll(renderer: Renderer2): void {
@@ -178,13 +153,13 @@ export class AppPerformanceService {
     }
   }
 
-  // MÉTRICAS
+  // MÉTRICAS (sin particleConfig)
   getPerformanceMetrics() {
     return {
       deviceInfo: this.deviceInfoSignal(),
       isScrolling: this.isScrollingSignal(),
-      cursorConfig: this.getCursorConfig(),
-      particleConfig: this.getParticleConfig()
+      cursorConfig: this.getCursorConfig()
+      // particleConfig eliminado - ahora usa ParticleConfigService
     };
   }
 }
