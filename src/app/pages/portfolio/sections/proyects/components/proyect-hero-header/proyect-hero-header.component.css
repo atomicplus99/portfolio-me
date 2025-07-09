@@ -91,7 +91,7 @@
       }
     }
 
-    /* Responsive */
+    
     @media (max-width: 1024px) {
       .title-overlay {
         top: 30px;

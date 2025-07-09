@@ -4,7 +4,7 @@
 
 html {
   font-size: 16px;
-  /* Fondo coherente para evitar flashes blancos */
+  
   background: linear-gradient(135deg, #0f172a 0%, #1f2937 50%, #18181b 100%);
 }
 
@@ -13,29 +13,29 @@ body {
   padding: 0;
   overflow-x: hidden;
   width: 100%;
-  /* Mismo fondo que el portfolio para transición perfecta */
+  
   background: linear-gradient(135deg, #0f172a 0%, #1f2937 50%, #18181b 100%);
   min-height: 100vh;
 }
 
-/* Contenedor principal que se adapta al zoom */
+
 .zoom-container {
   transform-origin: 0 0;
   width: 100%;
   min-height: 100vh;
-  /* Fondo consistente */
+  
   background: linear-gradient(135deg, #0f172a 0%, #1f2937 50%, #18181b 100%);
 }
 
-/* Optimizaciones globales para transiciones suaves */
+
 * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ============================================================================ */
-/* CURSOR PERSONALIZADO - DESHABILITAR CURSOR GLOBAL */
-/* ============================================================================ */
+
+
+
 *, 
 *::before, 
 *::after, 
@@ -58,7 +58,7 @@ h1, h2, h3, h4, h5, h6,
   cursor: none !important;
 }
 
-/* Para asegurar que funcione en toda la aplicación */
+
 .zoom-container *,
 .portfolio-content *,
 app-header *,

@@ -16,7 +16,6 @@ export class ThreejsService {
   private clock = new THREE.Clock();
   private animationId!: number;
 
-  // Signals para estado reactivo
   private readonly isInitialized = signal(false);
   private readonly performanceStats = signal<PerformanceStats>({
     fps: 0,
@@ -113,7 +112,6 @@ export class ThreejsService {
   private createProjectHologram(project: Project, index: number, performanceMode: boolean, isMobile: boolean): HologramObject {
     const group = new THREE.Group();
 
-    // Posicionamiento
     const angle = (index / this.projectsService.getProjects().length) * Math.PI * 2;
     const radius = isMobile ? 12 : 10;
     const x = Math.cos(angle) * radius;
@@ -122,7 +120,6 @@ export class ThreejsService {
 
     group.position.set(x, y, z);
 
-    // Geometría principal
     const sides = performanceMode ? 6 : 8;
     const shape = new THREE.Shape();
     const size = isMobile ? 3 : 3.5;
@@ -164,7 +161,6 @@ export class ThreejsService {
     mainMesh.receiveShadow = !performanceMode;
     group.add(mainMesh);
 
-    // Wireframe (solo si no es modo performance)
     if (!performanceMode) {
       const wireframeMaterial = new THREE.MeshBasicMaterial({
         color,
@@ -178,7 +174,6 @@ export class ThreejsService {
       group.add(wireframeMesh);
     }
 
-    // Icono central
     const iconGeometry = new THREE.PlaneGeometry(2.2, 2.2);
     const iconMaterial = new THREE.MeshBasicMaterial({
       color: 0xffffff,
@@ -190,7 +185,6 @@ export class ThreejsService {
     iconMesh.position.z = 0.3;
     group.add(iconMesh);
 
-    // Anillos orbitales
     const ringCount = performanceMode ? 2 : 3;
     for (let i = 0; i < ringCount; i++) {
       const ringGeometry = new THREE.RingGeometry(3 + i * 0.8, 3.2 + i * 0.8, 16);
@@ -234,7 +228,6 @@ export class ThreejsService {
     
     this.renderer.render(this.scene, this.camera);
     
-    // Actualizar estadísticas
     const fps = Math.round(1 / deltaTime);
     this.performanceStats.update(stats => ({
       ...stats,
@@ -251,7 +244,6 @@ export class ThreejsService {
       const floatOffset = Math.sin(elapsedTime * 2 + index) * 0.5;
       hologram.mesh.position.y = hologram.originalPosition.y + floatOffset;
 
-      // Escala y emisión basada en estado
       if (hologram.isHovered || hologram.isSelected) {
         const scale = hologram.isSelected ? 1.3 : 1.1;
         hologram.mesh.scale.lerp(new THREE.Vector3(scale, scale, scale), 0.1);
@@ -301,7 +293,6 @@ export class ThreejsService {
   checkIntersections(mouse: THREE.Vector2): HologramObject | null {
     this.raycaster.setFromCamera(mouse, this.camera);
     
-    // Reset hover states
     this.hologramObjects.forEach(h => h.isHovered = false);
     
     const meshes = this.hologramObjects.map(h => h.mesh);

@@ -189,7 +189,6 @@ export class TacticalElementsService {
     
     if (clickableRoles.includes(element.getAttribute('role') || '')) return true;
     
-    // Check computed cursor style
     if (getComputedStyle(element).cursor === 'pointer') return true;
 
     return false;

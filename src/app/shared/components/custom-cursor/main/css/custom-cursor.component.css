@@ -1,6 +1,4 @@
-/* CURSOR OPTIMIZADO CON MEJORES PRÁCTICAS CSS */
-
-/* FORZAR CURSOR NONE GLOBALMENTE */
+/* OPTIMIZACIÓN GLOBAL: Deshabilitar cursor por defecto */
 *,
 *::before,
 *::after,
@@ -14,75 +12,73 @@ select {
   cursor: none !important;
 }
 
-/* VARIABLES CSS PARA MANTENIMIENTO */
+/* VARIABLES CSS OPTIMIZADAS */
 :root {
   --cursor-primary-color: #64b5f6;
   --cursor-secondary-color: #2196f3;
   --cursor-accent-color: #1976d2;
   --cursor-active-color: #0d47a1;
-  --cursor-primary-alpha: rgba(100, 181, 246, 0.5);
-  --cursor-secondary-alpha: rgba(33, 150, 243, 0.3);
-  --cursor-accent-alpha: rgba(25, 118, 210, 0.6);
-  --cursor-shadow-light: rgba(100, 181, 246, 0.2);
-  --cursor-shadow-medium: rgba(100, 181, 246, 0.3);
-  --cursor-shadow-strong: rgba(100, 181, 246, 0.5);
-  --cursor-animation-fast: 0.4s;
-  --cursor-animation-medium: 1s;
-  --cursor-animation-slow: 2.5s;
-  --cursor-animation-very-slow: 4s;
+  --cursor-primary-alpha: rgba(100, 181, 246, 0.4); /* Reducida de 0.5 */
+  --cursor-secondary-alpha: rgba(33, 150, 243, 0.2); /* Reducida de 0.3 */
+  --cursor-accent-alpha: rgba(25, 118, 210, 0.4); /* Reducida de 0.6 */
+  --cursor-shadow-light: rgba(100, 181, 246, 0.15); /* Reducida */
+  --cursor-shadow-medium: rgba(100, 181, 246, 0.2); /* Reducida */
+  --cursor-shadow-strong: rgba(100, 181, 246, 0.3); /* Reducida */
+  --cursor-animation-fast: 0.2s; /* Reducida de 0.4s */
+  --cursor-animation-medium: 0.6s; /* Reducida de 1s */
+  --cursor-animation-slow: 1.5s; /* Reducida de 2.5s */
+  --cursor-animation-very-slow: 2s; /* Reducida de 4s */
 }
 
-/* MIRA TÁCTICA CENTRAL - OPTIMIZADA */
+/* RETICLE OPTIMIZADO */
 .tactical-reticle {
-  /* Layout y posicionamiento */
   position: fixed !important;
   top: 0;
   left: 0;
-  width: 18px;
-  height: 18px;
+  width: 16px; /* Reducido de 18px */
+  height: 16px; /* Reducido de 18px */
   z-index: 999999 !important;
   
-  /* Comportamiento */
   pointer-events: none !important;
   transform: translate(-50%, -50%);
-  opacity: 1 !important;
+  opacity: 0.9 !important; /* Reducida para mejor performance */
   visibility: visible !important;
   
-  /* Optimización de rendimiento */
+  /* OPTIMIZACIONES DE RENDERING */
   will-change: transform;
   backface-visibility: hidden;
   contain: layout style paint;
   isolation: isolate;
+  transform: translate3d(-50%, -50%, 0); /* Usar transform3d */
   
-  /* Apariencia */
   background: transparent;
   border: 2px solid var(--cursor-primary-color);
   border-radius: 50%;
   
-  /* Efectos */
+  /* SHADOWS OPTIMIZADOS */
   box-shadow: 
-    0 0 8px var(--cursor-primary-alpha),
-    0 0 16px var(--cursor-shadow-light);
+    0 0 6px var(--cursor-primary-alpha), /* Reducido de 8px */
+    0 0 12px var(--cursor-shadow-light); /* Reducido de 16px */
     
-  /* Animación optimizada */
-  animation: reticlePulse 3s ease-in-out infinite;
+  /* ANIMACIÓN OPTIMIZADA */
+  animation: reticlePulse 2s ease-in-out infinite; /* Reducida de 3s */
 }
 
-/* Líneas de mira optimizadas con pseudo-elementos */
+/* PSEUDO-ELEMENTOS DEL RETICLE OPTIMIZADOS */
 .tactical-reticle::before {
   content: '';
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 32px;
+  width: 28px; /* Reducido de 32px */
   height: 1px;
   background: linear-gradient(to right, 
     transparent 0%, 
-    var(--cursor-primary-color) 30%, 
-    var(--cursor-primary-color) 70%, 
+    var(--cursor-primary-color) 35%, /* Ajustado */
+    var(--cursor-primary-color) 65%, /* Ajustado */
     transparent 100%);
   transform: translate(-50%, -50%);
-  box-shadow: 0 0 4px var(--cursor-shadow-medium);
+  box-shadow: 0 0 3px var(--cursor-shadow-medium); /* Reducido de 4px */
 }
 
 .tactical-reticle::after {
@@ -91,33 +87,30 @@ select {
   top: 50%;
   left: 50%;
   width: 1px;
-  height: 32px;
+  height: 28px; /* Reducido de 32px */
   background: linear-gradient(to bottom, 
     transparent 0%, 
-    var(--cursor-primary-color) 30%, 
-    var(--cursor-primary-color) 70%, 
+    var(--cursor-primary-color) 35%, /* Ajustado */
+    var(--cursor-primary-color) 65%, /* Ajustado */
     transparent 100%);
   transform: translate(-50%, -50%);
-  box-shadow: 0 0 4px var(--cursor-shadow-medium);
+  box-shadow: 0 0 3px var(--cursor-shadow-medium); /* Reducido de 4px */
 }
 
-/* Animaciones con mejor rendimiento */
+/* ANIMACIONES OPTIMIZADAS */
 @keyframes reticlePulse {
   0%, 100% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 0.9;
+    transform: translate3d(-50%, -50%, 0) scale(1);
+    opacity: 0.8; /* Reducida de 0.9 */
   }
   50% {
-    transform: translate(-50%, -50%) scale(1.05);
-    opacity: 1;
+    transform: translate3d(-50%, -50%, 0) scale(1.03); /* Reducida de 1.05 */
+    opacity: 0.9; /* Reducida de 1 */
   }
 }
-
-
 
 /* PARTÍCULAS OPTIMIZADAS */
 .interference-particle {
-  /* Layout */
   position: fixed !important;
   top: 0;
   left: 0;
@@ -125,82 +118,102 @@ select {
   height: 2px;
   z-index: 999995 !important;
   
-  /* Comportamiento */
   pointer-events: none !important;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  opacity: 0.5 !important;
+  opacity: 0.4 !important; /* Reducida de 0.5 */
   
-  /* Optimización crítica */
+  /* OPTIMIZACIONES DE RENDERING */
   will-change: transform, opacity;
   backface-visibility: hidden;
   contain: layout style paint;
+  transform: translate3d(-50%, -50%, 0); /* Usar transform3d */
   
-  /* Apariencia simple */
   background: var(--cursor-primary-color);
-  box-shadow: 0 0 3px var(--cursor-shadow-medium);
+  box-shadow: 0 0 2px var(--cursor-shadow-medium); /* Reducido de 3px */
   
-  /* Animación eficiente */
-  animation: particleFade 1.5s ease-out forwards;
+  /* ANIMACIÓN MÁS RÁPIDA */
+  animation: particleFade 1s ease-out forwards; /* Reducida de 1.5s */
 }
 
 @keyframes particleFade {
   0% {
-    opacity: 0.5;
-    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.4; /* Reducida de 0.5 */
+    transform: translate3d(-50%, -50%, 0) scale(1);
   }
   100% {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.5);
+    transform: translate3d(-50%, -50%, 0) scale(0.3); /* Reducida de 0.5 */
   }
 }
 
-/* ESTADOS INTERACTIVOS */
-
-/* Estado Hover */
+/* ESTADOS HOVER OPTIMIZADOS */
 .tactical-reticle.hover {
-  width: 24px !important;
-  height: 24px !important;
-  border: 3px solid var(--cursor-accent-color);
+  width: 20px !important; /* Reducido de 24px */
+  height: 20px !important; /* Reducido de 24px */
+  border: 2px solid var(--cursor-accent-color); /* Reducido de 3px */
   box-shadow: 
-    0 0 12px var(--cursor-accent-alpha),
-    0 0 24px var(--cursor-secondary-alpha);
+    0 0 8px var(--cursor-accent-alpha), /* Reducido de 12px */
+    0 0 16px var(--cursor-secondary-alpha); /* Reducido de 24px */
   animation: targetFocus var(--cursor-animation-medium) ease-in-out infinite;
 }
 
 @keyframes targetFocus {
   0%, 100% {
-    transform: translate(-50%, -50%) scale(1);
+    transform: translate3d(-50%, -50%, 0) scale(1);
   }
   50% {
-    transform: translate(-50%, -50%) scale(1.1);
+    transform: translate3d(-50%, -50%, 0) scale(1.05); /* Reducida de 1.1 */
   }
 }
 
-/* Estado Click */
+/* ESTADO CLICK OPTIMIZADO */
 .tactical-reticle.clicked {
-  width: 28px !important;
-  height: 28px !important;
-  border: 4px solid var(--cursor-active-color);
+  width: 24px !important; /* Reducido de 28px */
+  height: 24px !important; /* Reducido de 28px */
+  border: 3px solid var(--cursor-active-color); /* Reducido de 4px */
   animation: fireBlast var(--cursor-animation-fast) ease-out;
   box-shadow: 
-    0 0 20px rgba(13, 71, 161, 0.8),
-    0 0 40px rgba(13, 71, 161, 0.4);
+    0 0 12px rgba(13, 71, 161, 0.6), /* Reducida de 0.8 */
+    0 0 24px rgba(13, 71, 161, 0.3); /* Reducida de 0.4 */
 }
 
 @keyframes fireBlast {
   0% {
-    transform: translate(-50%, -50%) scale(1);
+    transform: translate3d(-50%, -50%, 0) scale(1);
   }
   50% {
-    transform: translate(-50%, -50%) scale(1.5);
+    transform: translate3d(-50%, -50%, 0) scale(1.3); /* Reducida de 1.5 */
   }
   100% {
-    transform: translate(-50%, -50%) scale(1.2);
+    transform: translate3d(-50%, -50%, 0) scale(1.1); /* Reducida de 1.2 */
   }
 }
 
-/* RESPONSIVE - DESHABILITAR EN MÓVIL */
+/* OPTIMIZACIONES ESPECÍFICAS PARA HEADER */
+.cursor-over-header .tactical-reticle {
+  width: 14px !important; /* Más pequeño sobre header */
+  height: 14px !important;
+  opacity: 0.7 !important; /* Menos visible sobre header */
+  animation-duration: 3s; /* Más lento sobre header */
+}
+
+.cursor-over-header .interference-particle {
+  opacity: 0.2 !important; /* Muy reducida sobre header */
+  animation-duration: 0.8s; /* Más rápida para que desaparezca pronto */
+}
+
+/* OPTIMIZACIONES DURANTE SCROLL */
+.cursor-scrolling .tactical-reticle {
+  opacity: 0.5 !important;
+  animation: none; /* Sin animación durante scroll */
+}
+
+.cursor-scrolling .interference-particle {
+  display: none; /* Sin partículas durante scroll */
+}
+
+/* RESPONSIVE OPTIMIZADO */
 @media (max-width: 768px) {
   .tactical-reticle,
   .interference-particle {
@@ -216,24 +229,39 @@ select {
   }
 }
 
-/* OPTIMIZACIONES GLOBALES ADICIONALES */
+/* OPTIMIZACIONES PARA DISPOSITIVOS DE BAJA POTENCIA */
+@media (max-width: 1024px) and (max-height: 768px) {
+  .tactical-reticle {
+    width: 12px !important;
+    height: 12px !important;
+    animation: none; /* Sin animación en dispositivos lentos */
+  }
+  
+  .interference-particle {
+    width: 1px !important;
+    height: 1px !important;
+    box-shadow: none; /* Sin shadows en dispositivos lentos */
+  }
+}
+
+/* OPTIMIZACIONES GLOBALES DE RENDERING */
 .tactical-reticle,
 .interference-particle {
-  /* Aceleración por GPU mejorada */
+  /* GPU Acceleration */
   transform: translate3d(-50%, -50%, 0);
   
-  /* Reducir repaints y reflows */
+  /* Containment para mejor performance */
   contain: layout style paint;
   
-  /* Optimizar compositing */
+  /* Aislamiento para evitar repaints */
   isolation: isolate;
   
-  /* Mejorar antialiasing */
+  /* Optimización de fuentes */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* PREVENIR SELECCIÓN Y MEJORAR UX */
+/* SELECCIÓN OPTIMIZADA */
 ::selection {
   background: var(--cursor-shadow-light);
   color: #ffffff;
@@ -244,21 +272,60 @@ select {
   color: #ffffff;
 }
 
-/* MODO REDUCIDO PARA DISPOSITIVOS DE BAJO RENDIMIENTO */
+/* MODO REDUCIDO DE MOVIMIENTO */
 @media (prefers-reduced-motion: reduce) {
   .tactical-reticle,
   .interference-particle {
     animation: none !important;
     transition: none !important;
   }
+  
+  .tactical-reticle {
+    opacity: 0.6 !important;
+  }
 }
 
-/* MODO ALTO CONTRASTE */
+/* ALTO CONTRASTE */
 @media (prefers-contrast: high) {
   :root {
     --cursor-primary-color: #ffffff;
     --cursor-secondary-color: #ffffff;
     --cursor-accent-color: #ffffff;
     --cursor-active-color: #ffffff;
+  }
+  
+  .tactical-reticle {
+    border-width: 3px;
+    opacity: 1 !important;
+  }
+}
+
+/* OPTIMIZACIONES ESPECÍFICAS PARA SAFARI */
+@supports (-webkit-appearance: none) {
+  .tactical-reticle,
+  .interference-particle {
+    -webkit-transform: translate3d(-50%, -50%, 0);
+    -webkit-backface-visibility: hidden;
+    /* Agregar propiedades estándar también */
+    transform: translate3d(-50%, -50%, 0);
+    backface-visibility: hidden;
+  }
+}
+
+/* MODO BATERÍA BAJA */
+@media (prefers-reduced-data: reduce) {
+  .tactical-reticle {
+    animation: none !important;
+    box-shadow: none !important;
+    opacity: 0.5 !important;
+  }
+  
+  .interference-particle {
+    display: none !important;
+  }
+  
+  .tactical-reticle::before,
+  .tactical-reticle::after {
+    display: none !important;
   }
 }

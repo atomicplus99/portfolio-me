@@ -9,10 +9,12 @@ import { StatsPanelComponent } from '../components/proyect-stats-panel/proyect-s
 import { ProjectPanelComponent } from '../components/proyect-panel/proyect-panel.component';
 import { MatrixRainComponent } from '../components/proyect-matrix-rain/proyect-matrix-rain.component';
 import { ThreejsCanvasComponent } from '../components/proyect-three-canvas/proyect-three-canvas.component';
+
 import { ProjectsService } from '../services/proyect.service';
 import { MobileDetectionService } from '../services/mobile-detection.service';
 import { ThreejsService } from '../services/three.service';
 import { Project } from '../interfaces/proyect.interface';
+import { ProjectDetailsModalComponent } from '../components/proyect-modal-details/proyect-modal-details.component';
 
 @Component({
   selector: 'app-projects',
@@ -27,7 +29,8 @@ import { Project } from '../interfaces/proyect.interface';
     StatsPanelComponent,
     ProjectPanelComponent,
     MatrixRainComponent,
-    ThreejsCanvasComponent
+    ThreejsCanvasComponent,
+    ProjectDetailsModalComponent
   ],
   templateUrl: './proyects.component.html',
   styleUrls: ['./proyects.component.css']
@@ -36,28 +39,29 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   
   @ViewChild('threejsCanvas') threejsCanvasRef!: ThreejsCanvasComponent;
 
-  // Signals para estado reactivo
+  // Loading and UI State
   public readonly isLoading = signal(true);
-  public readonly selectedProject = signal<Project | null>(null);
   public readonly showStats = signal(false);
   public readonly performanceMode = signal(false);
   public readonly showInstructions = signal(true);
   public readonly showMobileHint = signal(false);
   public readonly hasInteracted = signal(false);
 
-  // Signals que se inicializarán después de la inyección de dependencias
+  // Project State
+  public readonly selectedProject = signal<Project | null>(null);
+  public readonly showDetailModal = signal(false);
+  public readonly modalProject = signal<Project | null>(null);
+
+  // Device and Display
   protected readonly isMobile = signal(false);
   protected readonly projects = signal<Project[]>([]);
   
-  // Computed signals
   protected readonly projectStats = computed(() => {
-    // Verificar que el servicio esté disponible
     if (!this.projectsService) return { totalProjects: 0, onlineProjects: 0, technologiesUsed: 0 };
     return this.projectsService.getProjectStats();
   });
 
   protected readonly performanceStats = computed(() => {
-    // Verificar que el servicio esté disponible
     if (!this.threejsService) return { fps: 0, objectCount: 0, particleCount: 0, renderTime: 0 };
     return this.threejsService.getPerformanceStats();
   });
@@ -68,29 +72,39 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     return this.projects().findIndex(p => p.id === project.id) + 1;
   });
 
+  protected readonly currentModalProjectIndex = computed(() => {
+    const project = this.modalProject();
+    if (!project) return 0;
+    return this.projects().findIndex(p => p.id === project.id) + 1;
+  });
+
+  // UI State Computed
+  protected readonly showPanel = computed(() => {
+    return !!this.selectedProject() && !this.showDetailModal();
+  });
+
+  protected readonly anyProjectSelected = computed(() => {
+    return !!this.selectedProject() || !!this.modalProject();
+  });
+
   constructor(
     private projectsService: ProjectsService,
     private mobileService: MobileDetectionService,
     private threejsService: ThreejsService
   ) {
-    // Inicializar signals después de la inyección de dependencias
     this.initializeSignals();
     this.setupEffects();
   }
 
   private initializeSignals(): void {
-    // Inicializar signals con valores de los servicios
     this.isMobile.set(this.mobileService.getIsMobile());
     this.projects.set(this.projectsService.getProjects());
   }
 
   private setupEffects(): void {
-    // Effect para optimizaciones móviles
+    // Mobile hint effect
     effect(() => {
       if (this.isMobile()) {
-        // this.performanceMode.set(true);
-        
-        // Mostrar hint móvil después de 3 segundos
         setTimeout(() => {
           if (!this.hasInteracted()) {
             this.showMobileHint.set(true);
@@ -99,42 +113,47 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       }
     });
 
-    // Effect para reaccionar a cambios en el modo performance
+    // Performance mode effect
     effect(() => {
       if (this.performanceMode()) {
-        // Lógica adicional para modo performance
-   
+        // Apply performance optimizations
+      }
+    });
+
+    // Modal and panel coordination
+    effect(() => {
+      if (this.showDetailModal()) {
+        // Hide instructions when modal is open
+        this.showInstructions.set(false);
       }
     });
   }
 
   ngOnInit(): void {
-    // Simular carga inicial
     setTimeout(() => {
       this.isLoading.set(false);
     }, 2000);
 
-    // Configurar controles de desarrollo
     this.setupDevelopmentControls();
   }
 
   ngOnDestroy(): void {
-    // Cleanup se maneja automáticamente por los componentes hijos
+    // Cleanup if needed
   }
 
-  // Event handlers
+  // Project Selection - Panel Flow
   onProjectSelected(projectId: number): void {
     const project = this.projectsService.getProjectById(projectId);
     if (project) {
       this.selectedProject.set(project);
       
-      // Vibración para móvil
       if (this.isMobile() && this.mobileService.getVibrationSupported()) {
         this.mobileService.vibrate([30, 50, 30]);
       }
     }
   }
 
+  // First Interaction
   onFirstInteraction(): void {
     if (!this.hasInteracted()) {
       this.hasInteracted.set(true);
@@ -143,22 +162,23 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Cursor Changes
   onCursorChanged(cursor: string): void {
-    // Aplicar cursor al canvas si es necesario
     if (!this.isMobile()) {
       document.body.style.cursor = cursor;
     }
   }
 
+  // Mobile Hint
   onHintDismissed(): void {
     this.showMobileHint.set(false);
   }
 
+  // Panel Actions
   onActionClicked(action: 'demo' | 'code'): void {
     const project = this.selectedProject();
     if (!project) return;
 
-    // Vibración para móvil
     if (this.isMobile() && this.mobileService.getVibrationSupported()) {
       this.mobileService.vibrate([50, 100, 50]);
     }
@@ -170,6 +190,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Panel Navigation
   onNavigate(direction: 'next' | 'previous'): void {
     const projects = this.projects();
     const currentProject = this.selectedProject();
@@ -190,12 +211,12 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     
     this.selectedProject.set(projects[newIndex]);
     
-    // Actualizar canvas
     if (this.threejsCanvasRef) {
       this.threejsCanvasRef.selectProject(projects[newIndex].id);
     }
   }
 
+  // Panel Close
   onCloseProject(): void {
     this.selectedProject.set(null);
     
@@ -208,6 +229,76 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Modal Actions
+  onOpenDetailModal(): void {
+    const project = this.selectedProject();
+    if (project) {
+      this.modalProject.set(project);
+      this.showDetailModal.set(true);
+      // Keep the panel project but hide panel
+    }
+  }
+
+  onModalClosed(): void {
+    this.showDetailModal.set(false);
+    this.modalProject.set(null);
+    // Panel project remains selected
+    
+    if (this.isMobile() && this.mobileService.getVibrationSupported()) {
+      this.mobileService.vibrate(20);
+    }
+  }
+
+  onModalProjectChanged(project: Project): void {
+    this.modalProject.set(project);
+    // Sync with panel project
+    this.selectedProject.set(project);
+    
+    if (this.threejsCanvasRef) {
+      this.threejsCanvasRef.selectProject(project.id);
+    }
+  }
+
+  onModalActionClicked(event: { action: 'demo' | 'code', project: Project }): void {
+    const { action, project } = event;
+    
+    if (this.isMobile() && this.mobileService.getVibrationSupported()) {
+      this.mobileService.vibrate([50, 100, 50]);
+    }
+    
+    if (action === 'demo' && project.demoUrl) {
+      window.open(project.demoUrl, '_blank');
+    } else if (action === 'code' && project.codeUrl) {
+      window.open(project.codeUrl, '_blank');
+    }
+  }
+
+  // Modal Navigation (independent from panel)
+  onModalNavigate(direction: 'next' | 'previous'): void {
+    const projects = this.projects();
+    const currentProject = this.modalProject();
+    
+    if (!currentProject) return;
+
+    const currentIndex = projects.findIndex(p => p.id === currentProject.id);
+    let newIndex: number;
+    
+    if (direction === 'next') {
+      newIndex = (currentIndex + 1) % projects.length;
+    } else {
+      newIndex = currentIndex === 0 ? projects.length - 1 : currentIndex - 1;
+    }
+    
+    const newProject = projects[newIndex];
+    this.modalProject.set(newProject);
+    this.selectedProject.set(newProject); // Sync with panel
+    
+    if (this.threejsCanvasRef) {
+      this.threejsCanvasRef.selectProject(newProject.id);
+    }
+  }
+
+  // Mobile Controls
   onResetView(): void {
     if (this.threejsCanvasRef) {
       this.threejsCanvasRef.resetView();
@@ -222,43 +313,63 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Development controls
+  // Development Controls
   private setupDevelopmentControls(): void {
-    // Atajos de teclado para desarrollo
     if (typeof window !== 'undefined') {
       window.addEventListener('keydown', (e) => {
+        // Stats toggle
         if (e.key === 'F1') {
           e.preventDefault();
           this.showStats.update(show => !show);
         }
         
+        // Performance mode toggle
         if (e.key === 'F2') {
           e.preventDefault();
           this.onTogglePerformanceMode();
         }
         
+        // Modal control
+        if (e.key === 'Enter' && this.selectedProject() && !this.showDetailModal()) {
+          e.preventDefault();
+          this.onOpenDetailModal();
+        }
+        
+        // Close actions
         if (e.key === 'Escape') {
-          this.onCloseProject();
+          if (this.showDetailModal()) {
+            this.onModalClosed();
+          } else if (this.selectedProject()) {
+            this.onCloseProject();
+          }
         }
         
-        if (e.key === 'ArrowLeft') {
-          e.preventDefault();
-          this.onNavigate('previous');
+        // Navigation - Panel mode
+        if (!this.showDetailModal()) {
+          if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            this.onNavigate('previous');
+          }
+          
+          if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            this.onNavigate('next');
+          }
         }
         
-        if (e.key === 'ArrowRight') {
-          e.preventDefault();
-          this.onNavigate('next');
-        }
+        // Navigation - Modal mode (handled by modal component)
       });
     }
   }
 
-  // Getters públicos para template (opcionales, ya que los signals son directamente accesibles)
+  // Helper Methods
   protected getIsLoading = () => this.isLoading();
   protected getSelectedProject = () => this.selectedProject();
+  protected getModalProject = () => this.modalProject();
   protected getShowStats = () => this.showStats();
   protected getPerformanceMode = () => this.performanceMode();
   protected getShowInstructions = () => this.showInstructions();
   protected getShowMobileHint = () => this.showMobileHint();
+  protected getShowDetailModal = () => this.showDetailModal();
+  protected getShowPanel = () => this.showPanel();
 }

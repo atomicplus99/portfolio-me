@@ -1,6 +1,4 @@
 
-// ==================== MAIN LOADER COMPONENT ====================
-// shared/components/loader/loader.component.ts
 import { Component, input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoadingParticlesComponent } from './components/loading-particles/loading-particles.component';
@@ -24,8 +22,7 @@ import { LoaderService } from './services/loader.service';
 })
 export class LoaderComponent {
   readonly loaderService = inject(LoaderService);
-  
   readonly logoText = input<string>('DUQUE');
   readonly subtitle = input<string>('Full Stack Developer');
-  readonly particleCount = input<number>(25);
+  readonly particleCount = input<number>(10);
 }

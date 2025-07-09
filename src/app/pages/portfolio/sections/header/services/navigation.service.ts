@@ -1,4 +1,3 @@
-// src/app/shared/services/navigation.service.ts
 import { Injectable } from '@angular/core';
 import { SectionMapping } from '../interfaces/header.interfaces';
 

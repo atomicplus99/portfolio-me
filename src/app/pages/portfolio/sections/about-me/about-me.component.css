@@ -1,4 +1,4 @@
-/* About Me Section - Mobile First Design */
+
 .about-me-section {
   opacity: 0;
   transform: translateY(50px);
@@ -10,7 +10,7 @@
   transform: translateY(0);
 }
 
-/* Profile Frame - Mobile First */
+
 .profile-frame {
   background: transparent !important;
   border: 2px solid rgba(34, 211, 238, 0.4) !important;
@@ -23,7 +23,7 @@
   border-color: rgba(34, 211, 238, 0.7) !important;
 }
 
-/* Profile Image Styling */
+
 .profile-frame img {
   transition: all 0.3s ease;
   filter: brightness(1.05) contrast(1.02);
@@ -34,12 +34,12 @@
   transform: scale(1.03);
 }
 
-/* Fallback avatar styling */
+
 .fallback-avatar {
   border-radius: 50%;
 }
 
-/* Story Card - Mobile Optimized */
+
 .story-card {
   position: relative;
   overflow: hidden;
@@ -64,7 +64,7 @@
   box-shadow: 0 20px 40px rgba(34, 211, 238, 0.15);
 }
 
-/* Stat Cards - Mobile Optimized */
+
 .stat-card {
   transition: all 0.3s ease;
 }
@@ -75,7 +75,7 @@
   border-color: rgba(148, 163, 184, 0.3);
 }
 
-/* Glassmorphism Effects */
+
 .bg-slate-800\/30, .bg-slate-800\/20 {
   backdrop-filter: blur(20px);
   box-shadow: 
@@ -83,7 +83,7 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
-/* Pulse Animations */
+
 .animate-pulse {
   animation: softPulse 3s ease-in-out infinite;
 }
@@ -99,12 +99,12 @@
   }
 }
 
-/* Text Glow Effects */
+
 .text-cyan-400, .text-blue-400, .text-blue-300, .text-green-400 {
   text-shadow: 0 0 8px currentColor;
 }
 
-/* Scroll Indicator */
+
 .scroll-indicator-about {
   transition: opacity 0.5s ease-in-out;
 }
@@ -114,9 +114,9 @@
   box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
 }
 
-/* Mobile First Responsive Design */
 
-/* Extra Small Mobile (320px - 480px) */
+
+
 @media (max-width: 480px) {
   .about-me-section {
     padding: 2rem 1rem;
@@ -127,7 +127,7 @@
     padding: 0 0.5rem;
   }
   
-  /* Header */
+  
   .about-me-section h2 {
     font-size: 2.5rem !important;
     line-height: 1.1;
@@ -140,7 +140,7 @@
     padding: 0 0.5rem;
   }
   
-  /* Profile - Rediseñado para mejor proporción */
+  
   .profile-frame {
     width: 15rem !important;
     height: 18rem !important;
@@ -169,7 +169,7 @@
     font-size: 0.75rem !important;
   }
   
-  /* Stats */
+  
   .stat-card {
     padding: 0.75rem !important;
   }
@@ -182,7 +182,7 @@
     font-size: 0.7rem !important;
   }
   
-  /* Story */
+  
   .story-card {
     padding: 1rem !important;
     margin: 0 0.5rem;
@@ -202,13 +202,13 @@
     margin-bottom: 0.75rem !important;
   }
   
-  /* Scroll indicator más separado en móvil */
+  
   .scroll-indicator-about {
     bottom: 3rem !important;
   }
 }
 
-/* Small Mobile (481px - 640px) */
+
 @media (min-width: 481px) and (max-width: 640px) {
   .about-me-section {
     padding: 3rem 1rem;
@@ -237,7 +237,7 @@
   }
 }
 
-/* Medium Mobile/Small Tablet (641px - 768px) */
+
 @media (min-width: 641px) and (max-width: 768px) {
   .about-me-section {
     padding: 4rem 1.5rem;
@@ -266,7 +266,7 @@
   }
 }
 
-/* Tablet (769px - 1024px) */
+
 @media (min-width: 769px) and (max-width: 1024px) {
   .about-me-section {
     padding: 5rem 2rem;
@@ -295,7 +295,7 @@
   }
 }
 
-/* Desktop (1025px+) */
+
 @media (min-width: 1025px) {
   .about-me-section {
     padding: 5rem 2rem;
@@ -316,7 +316,7 @@
   }
 }
 
-/* Accessibility */
+
 @media (prefers-reduced-motion: reduce) {
   .about-me-section,
   .about-me-section *,
@@ -328,14 +328,14 @@
   }
 }
 
-/* Focus States */
+
 .story-card:focus,
 .stat-card:focus {
   outline: 2px solid rgba(34, 211, 238, 0.5);
   outline-offset: 2px;
 }
 
-/* High Contrast Mode */
+
 @media (prefers-contrast: high) {
   .profile-frame,
   .story-card,
@@ -344,7 +344,7 @@
   }
 }
 
-/* Print Styles */
+
 @media print {
   .about-me-section {
     background: white !important;

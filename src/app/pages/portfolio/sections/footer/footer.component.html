@@ -1,28 +1,28 @@
 <footer class="footer-section" [class.visible]="isVisible">
       <div class="footer-content">
         
-        <!-- Información principal -->
+        
         <div class="main-info">
           
-          <!-- Marca/Logo -->
+          
           <app-footer-brand
             [name]="config.brand.name"
             [title]="config.brand.title">
           </app-footer-brand>
 
-          <!-- Sección central -->
+          
           <app-footer-center
             [techIcon]="config.tech.icon"
             [techBadge]="config.tech.badge"
             [location]="config.brand.location">
           </app-footer-center>
 
-          <!-- Botón scroll to top -->
+          
           <app-scroll-to-top (scrollClick)="scrollToTop()"></app-scroll-to-top>
           
         </div>
 
-        <!-- Copyright y detalles finales -->
+        
         <app-footer-bottom
           [brandName]="config.brand.name"
           [version]="config.version"

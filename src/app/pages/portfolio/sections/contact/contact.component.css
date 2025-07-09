@@ -1,12 +1,12 @@
-/* MODERN PROFESSIONAL CONTACT SECTION */
+
 
 .contact-section {
   position: relative;
-  /* REMOVIDO: background personalizado - usar fondo global */
+  
   overflow: hidden;
 }
 
-/* SUBTLE TECH BACKGROUND */
+
 .tech-background {
   position: absolute;
   top: 0;
@@ -16,7 +16,7 @@
   pointer-events: none;
 }
 
-/* FLOATING TECH PARTICLES */
+
 .tech-particles {
   position: absolute;
   width: 100%;
@@ -49,7 +49,7 @@
   }
 }
 
-/* PROFESSIONAL HEADER */
+
 .tech-title {
   position: relative;
   margin-bottom: 2rem;
@@ -82,7 +82,7 @@
   }
 }
 
-/* MODERN FORM CONTAINER */
+
 .form-container {
   position: relative;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -99,7 +99,7 @@
   font-weight: 700;
 }
 
-/* ELEGANT FORM STYLING */
+
 .form-group {
   position: relative;
 }
@@ -151,7 +151,7 @@
   box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
 }
 
-/* ERROR STYLING */
+
 .error-message {
   font-size: 0.875rem;
   font-weight: 500;
@@ -162,7 +162,7 @@
   background: rgba(248, 113, 113, 0.05);
 }
 
-/* ELEGANT SUBMIT BUTTON */
+
 .submit-btn {
   position: relative;
   font-weight: 600;
@@ -197,7 +197,7 @@
   left: 100%;
 }
 
-/* SUCCESS MESSAGE */
+
 .success-message {
   animation: successSlideIn 0.5s ease-out;
   border-radius: 0.75rem;
@@ -215,7 +215,7 @@
   }
 }
 
-/* CONTACT METHODS SECTION */
+
 .contact-header h2 {
   color: #ffffff;
   font-weight: 700;
@@ -282,7 +282,7 @@
   left: 100%;
 }
 
-/* RESPONSIVE DESIGN */
+
 @media (max-width: 1024px) {
   .gradient-text {
     font-size: 3.5rem !important;
@@ -351,7 +351,7 @@
   }
 }
 
-/* ACCESSIBILITY IMPROVEMENTS */
+
 .form-input:focus-visible {
   outline: 2px solid #3b82f6;
   outline-offset: 2px;
@@ -367,7 +367,7 @@
   outline-offset: 2px;
 }
 
-/* LOADING STATE */
+
 .submit-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;

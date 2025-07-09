@@ -1,12 +1,13 @@
+/* VOLVER A LA CONFIGURACIÓN ORIGINAL */
 :host {
   display: block;
-  position: fixed;
+  position: fixed; /* VOLVER a fixed */
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100vh; /* VOLVER a 100vh */
   pointer-events: none;
-  z-index: 50;
+  z-index: 1;
   overflow: hidden;
 }
 

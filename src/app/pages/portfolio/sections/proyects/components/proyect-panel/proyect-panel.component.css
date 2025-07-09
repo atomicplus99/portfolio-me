@@ -126,7 +126,7 @@
       font-size: 0.875rem;
     }
 
-    /* Tech Section */
+    
     .tech-section {
       margin-bottom: 24px;
     }
@@ -204,7 +204,7 @@
       background: rgba(107, 114, 128, 0.2);
     }
 
-    /* Action Buttons */
+    
     .action-section {
       margin-bottom: 24px;
     }
@@ -289,7 +289,7 @@
       transform: scale(1.1);
     }
 
-    /* Mobile Navigation */
+    
     .mobile-navigation {
       display: flex;
       justify-content: space-between;
@@ -339,7 +339,7 @@
       font-weight: 500;
     }
 
-    /* Close Button */
+    
     .close-btn {
       position: absolute;
       top: 16px;
@@ -371,7 +371,7 @@
       background: rgba(75, 85, 99, 0.8);
     }
 
-    /* Responsive */
+    
     @media (max-width: 1200px) {
       .project-info-panel {
         max-width: 350px;
@@ -407,14 +407,14 @@
       }
     }
 
-    /* Touch feedback */
+    
     @media (max-width: 768px) {
       .action-btn:active {
         transform: scale(0.95);
       }
     }
 
-    /* Accessibility */
+    
     .action-btn:focus,
     .close-btn:focus,
     .nav-btn:focus {
@@ -429,7 +429,7 @@
       outline-offset: 2px;
     }
 
-    /* Reduced motion */
+    
     @media (prefers-reduced-motion: reduce) {
       .status-indicator,
       .project-info-panel,
@@ -442,7 +442,7 @@
       }
     }
 
-    /* High contrast */
+    
     @media (prefers-contrast: high) {
       .info-content {
         border: 2px solid rgba(255, 255, 255, 0.5);

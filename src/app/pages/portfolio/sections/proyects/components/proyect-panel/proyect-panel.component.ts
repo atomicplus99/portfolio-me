@@ -17,10 +17,11 @@ export class ProjectPanelComponent {
   @Input() isMobile = false;
   @Input() currentIndex = 0;
   @Input() totalProjects = 0;
-  
+
   @Output() actionClicked = new EventEmitter<'demo' | 'code'>();
   @Output() navigate = new EventEmitter<'next' | 'previous'>();
   @Output() close = new EventEmitter<void>();
+  @Output() detailsRequested = new EventEmitter<void>();
 
   onActionClick(action: 'demo' | 'code') {
     this.actionClicked.emit(action);
@@ -32,6 +33,9 @@ export class ProjectPanelComponent {
 
   onClose() {
     this.close.emit();
+  }
+  onDetailsRequest() {
+    this.detailsRequested.emit();
   }
 
   getStatusClass(status: string): string {

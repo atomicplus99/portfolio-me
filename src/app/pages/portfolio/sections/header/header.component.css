@@ -1,7 +1,12 @@
+/* OPTIMIZACIONES GLOBALES */
 header {   
   max-width: 100vw;   
   overflow-x: hidden;   
-  box-sizing: border-box; 
+  box-sizing: border-box;
+  /* NUEVO: Optimizaciones de rendering */
+  will-change: transform;
+  contain: layout style;
+  transform: translateZ(0);
 }  
 
 .logo-container {   
@@ -9,18 +14,25 @@ header {
   left: 50%;   
   transform: translateX(-50%);   
   white-space: nowrap;   
-  z-index: 51; 
+  z-index: 51;
+  /* NUEVO: Optimización */
+  will-change: transform;
+  contain: layout style;
 }  
 
 .navigation-links {   
   flex: 1;
   display: flex !important;
+  /* NUEVO: Optimización */
+  contain: layout style;
 }
 
 .nav-right {   
   flex: 1;
   display: flex !important;
   justify-content: flex-end;
+  /* NUEVO: Optimización */
+  contain: layout style;
 }
 
 .navigation-links a, .nav-right a {   
@@ -28,31 +40,48 @@ header {
 }  
 
 button {   
-  flex-shrink: 0; 
+  flex-shrink: 0;
+  /* NUEVO: Optimización para botones */
+  will-change: transform;
+  contain: layout style;
 }  
 
 .mobile-menu {   
   max-width: 100vw;   
-  overflow-x: hidden; 
+  overflow-x: hidden;
+  /* NUEVO: Optimización crítica - remover backdrop-blur costoso */
+  background: rgba(15, 23, 42, 0.95) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  /* NUEVO: Optimizar transición */
+  transition: height 0.3s ease-out !important;
+  contain: layout style;
 }  
 
 * {   
   box-sizing: border-box; 
 }  
 
-.translate-y-0 { transform: translateY(0); } 
-.translate-y-6 { transform: translateY(1.5rem); } 
-.translate-x-0 { transform: translateX(0); } 
-.translate-x-6 { transform: translateX(1.5rem); } 
+/* OPTIMIZACIONES DE TRANSFORMS */
+.translate-y-0 { transform: translateY(0) translateZ(0); } 
+.translate-y-6 { transform: translateY(1.5rem) translateZ(0); } 
+.translate-x-0 { transform: translateX(0) translateZ(0); } 
+.translate-x-6 { transform: translateX(1.5rem) translateZ(0); } 
 .opacity-0 { opacity: 0; } 
 .opacity-100 { opacity: 1; } 
-.scale-90 { transform: scale(0.9); } 
-.scale-100 { transform: scale(1); } 
-.rotate-0 { transform: rotate(0deg); } 
-.rotate-3 { transform: rotate(3deg); }  
+.scale-90 { transform: scale(0.9) translateZ(0); } 
+.scale-100 { transform: scale(1) translateZ(0); } 
+.rotate-0 { transform: rotate(0deg) translateZ(0); } 
+.rotate-3 { transform: rotate(3deg) translateZ(0); }  
+
+/* OPTIMIZAR MOBILE TOGGLE */
+.mobile-toggle {
+  will-change: transform;
+  contain: layout style;
+}
 
 .mobile-toggle.active span:nth-child(1) {   
-  transform: rotate(45deg) translateY(0.5rem); 
+  transform: rotate(45deg) translateY(0.5rem) translateZ(0); 
 }  
 
 .mobile-toggle.active span:nth-child(2) {   
@@ -60,7 +89,7 @@ button {
 }  
 
 .mobile-toggle.active span:nth-child(3) {   
-  transform: rotate(-45deg) translateY(-0.5rem); 
+  transform: rotate(-45deg) translateY(-0.5rem) translateZ(0); 
 }  
 
 .mobile-menu.open {   
@@ -84,8 +113,10 @@ button {
   } 
 }  
 
+/* OPTIMIZAR TRANSICIONES GLOBALES */
 a, button {   
-  transition: all 0.3s ease; 
+  transition: transform 0.2s ease, opacity 0.2s ease, color 0.2s ease;
+  will-change: transform;
 }  
 
 a:focus-visible, button:focus-visible {   
@@ -98,4 +129,57 @@ a:focus-visible, button:focus-visible {
   -webkit-user-select: none;   
   -moz-user-select: none;   
   -ms-user-select: none; 
+}
+
+/* NUEVAS OPTIMIZACIONES ESPECÍFICAS */
+
+/* Optimizar hover effects */
+a:hover, button:hover {
+  transform: translateZ(0) scale(1.05);
+}
+
+/* Optimizar elementos con animaciones */
+.group {
+  contain: layout style;
+}
+
+/* Optimizar shadows - usar versiones más ligeras */
+.hover\:shadow-lg:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.hover\:shadow-blue-500\/20:hover {
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1) !important;
+}
+
+/* Optimizar gradientes */
+.bg-gradient-to-r {
+  contain: layout style;
+}
+
+/* OPTIMIZACIONES PARA PERFORMANCE */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Optimizar para dispositivos de baja potencia */
+@media (max-width: 768px) {
+  .mobile-menu {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(15, 23, 42, 0.98) !important;
+  }
+  
+  /* Simplificar animaciones en móviles */
+  a, button {
+    transition: opacity 0.15s ease, color 0.15s ease;
+  }
+  
+  a:hover, button:hover {
+    transform: none;
+  }
 }

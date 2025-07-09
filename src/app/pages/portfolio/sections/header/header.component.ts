@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, HostListener, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, inject, OnDestroy, OnInit, signal, NgZone } from '@angular/core';
 import { HeaderLogoComponent } from './components/header-logo/header-logo.component';
 import { HeaderDesktopNavComponent } from './components/header-desktop-nav/header-desktop-nav.component';
 import { HeaderRightNavComponent } from './components/header-right-nav/header-right-nav.component';
@@ -18,11 +18,14 @@ import { NavigationService } from './services/navigation.service';
 export class HeaderComponent implements OnInit, OnDestroy {
 
   private readonly navigationService = inject(NavigationService);
+  private readonly ngZone = inject(NgZone);
   private readonly destroy$ = new Subject<void>();
+  private resizeTimeout: number | null = null;
 
   readonly isVisible = signal(false);
   readonly mobileMenuOpen = signal(false);
 
+  // OPTIMIZACIÓN: Marcar como readonly para evitar re-referencias
   readonly navigationItems: NavigationItem[] = [
     { id: 'proyectos', label: 'PROYECTOS', delay: '0.1s' },
     { id: 'experiencia', label: 'EXPERIENCIA', delay: '0.2s' },
@@ -30,12 +33,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ];
 
   ngOnInit(): void {
-    setTimeout(() => this.isVisible.set(true), 100);
+    // OPTIMIZACIÓN: Reducir delay inicial
+    setTimeout(() => this.isVisible.set(true), 50);
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    
+    // OPTIMIZACIÓN: Limpiar timeout si existe
+    if (this.resizeTimeout) {
+      window.clearTimeout(this.resizeTimeout);
+    }
   }
 
   navigateToSection(sectionId: string): void {
@@ -56,12 +65,26 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.mobileMenuOpen.set(false);
   }
 
+  // OPTIMIZACIÓN: Throttling del resize event
   @HostListener('window:resize', ['$event'])
   onResize(event: Event): void {
-    const target = event.target as Window;
-    if (target.innerWidth >= 1024 && this.mobileMenuOpen()) {
-      this.closeMobileMenu();
-    }
+    // Ejecutar fuera de Angular zone para mejor performance
+    this.ngZone.runOutsideAngular(() => {
+      // Limpiar timeout anterior
+      if (this.resizeTimeout) {
+        window.clearTimeout(this.resizeTimeout);
+      }
+      
+      // Throttling de 150ms
+      this.resizeTimeout = window.setTimeout(() => {
+        this.ngZone.run(() => {
+          const target = event.target as Window;
+          if (target.innerWidth >= 1024 && this.mobileMenuOpen()) {
+            this.closeMobileMenu();
+          }
+        });
+      }, 150);
+    });
   }
 
   @HostListener('document:keydown.escape')
@@ -70,5 +93,4 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.closeMobileMenu();
     }
   }
-
 }

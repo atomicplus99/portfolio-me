@@ -1,0 +1,509 @@
+import { CommonModule } from '@angular/common';
+import { Component, Input, Output, EventEmitter, signal, computed, effect, HostListener } from '@angular/core';
+import { TechClassPipe } from '../../pipes/tech-class.pipe';
+import { ModalResponsivePipe } from '../../pipes/modal.pipe';
+import { FormatFileSizePipe } from '../../pipes/format-file.pipe';
+import { FormatDurationPipe } from '../../pipes/format-duration.pipe';
+import { TechIconPipe } from '../../pipes/tech-icon.pipe';
+import { Project } from '../../interfaces/proyect.interface';
+import { ProjectDetailService } from '../../services/proyect-details.service';
+import { ProjectGalleryItem } from '../../interfaces/proyect-details.interface';
+
+type TabType = 'overview' | 'tech' | 'gallery' | 'performance';
+type ViewportSize = 'mobile' | 'tablet' | 'desktop';
+
+@Component({
+  selector: 'app-project-details-modal',
+  standalone: true,
+  imports: [
+    CommonModule,
+    TechClassPipe,
+    ModalResponsivePipe,
+    FormatFileSizePipe,
+    FormatDurationPipe,
+    TechIconPipe
+  ],
+  templateUrl: './proyect-modal-details.component.html',
+  styleUrls: ['./proyect-modal-details.component.css']
+})
+export class ProjectDetailsModalComponent {
+
+  // Private State Signals
+  private readonly modalVisible = signal(false);
+  private readonly selectedProject = signal<Project | null>(null);
+  private readonly projectsList = signal<Project[]>([]);
+  private readonly mobileDevice = signal(false);
+
+  // UI State Signals
+  private readonly activeTabState = signal<TabType>('overview');
+  private readonly galleryIndex = signal(0);
+  private readonly lightboxVisible = signal(false);
+  private readonly videoPlaying = signal(false);
+  private readonly loadingState = signal(false);
+  private readonly screenSize = signal<ViewportSize>('desktop');
+  private readonly touchX = signal(0);
+  private readonly touchY = signal(0);
+
+  // Computed Signals
+  protected readonly isModalVisible = computed(() => this.modalVisible());
+  protected readonly currentProject = computed(() => this.selectedProject());
+  protected readonly allProjects = computed(() => this.projectsList());
+  protected readonly isMobileDevice = computed(() => this.mobileDevice());
+  protected readonly activeTab = computed(() => this.activeTabState());
+  protected readonly currentGalleryIndex = computed(() => this.galleryIndex());
+  protected readonly showLightbox = computed(() => this.lightboxVisible());
+  protected readonly isVideoPlaying = computed(() => this.videoPlaying());
+  protected readonly isLoading = computed(() => this.loadingState());
+  protected readonly viewportSize = computed(() => this.screenSize());
+
+  // ✅ Computed seguro sin side effects
+  protected readonly currentProjectDetails = computed(() => {
+    const project = this.currentProject();
+    if (!project) return null;
+    return this.projectDetailService.getProjectDetail(project);
+  });
+
+  protected readonly currentGalleryItem = computed(() => {
+    const details = this.currentProjectDetails();
+    const index = this.currentGalleryIndex();
+    return details?.gallery[index] || null;
+  });
+
+  protected readonly hasNextProject = computed(() => {
+    const projects = this.allProjects();
+    const current = this.currentProject();
+    if (!current || projects.length === 0) return false;
+    const currentIndex = projects.findIndex(p => p.id === current.id);
+    return currentIndex < projects.length - 1;
+  });
+
+  protected readonly hasPreviousProject = computed(() => {
+    const projects = this.allProjects();
+    const current = this.currentProject();
+    if (!current || projects.length === 0) return false;
+    const currentIndex = projects.findIndex(p => p.id === current.id);
+    return currentIndex > 0;
+  });
+
+  protected readonly currentProjectIndex = computed(() => {
+    const projects = this.allProjects();
+    const current = this.currentProject();
+    if (!current) return 0;
+    return projects.findIndex(p => p.id === current.id) + 1;
+  });
+
+  protected readonly totalProjects = computed(() => this.allProjects().length);
+
+  protected readonly hasGalleryNext = computed(() => {
+    const details = this.currentProjectDetails();
+    const index = this.currentGalleryIndex();
+    return details && index < details.gallery.length - 1;
+  });
+
+  protected readonly hasGalleryPrevious = computed(() => {
+    return this.currentGalleryIndex() > 0;
+  });
+
+  protected readonly modalClasses = computed(() => {
+    return {
+      'modal-visible': this.isModalVisible(),
+      'modal-mobile': this.isMobileDevice(),
+      'modal-tablet': this.viewportSize() === 'tablet',
+      'modal-desktop': this.viewportSize() === 'desktop'
+    };
+  });
+
+  // Outputs
+  @Output() closed = new EventEmitter<void>();
+  @Output() projectChanged = new EventEmitter<Project>();
+  @Output() actionClicked = new EventEmitter<{ action: 'demo' | 'code', project: Project }>();
+
+  // Input Setters
+  @Input() set isVisible(value: boolean) {
+    this.modalVisible.set(value);
+  }
+
+  @Input() set project(value: Project | null) {
+    this.selectedProject.set(value);
+    if (value) {
+      this.resetModalState();
+    }
+  }
+
+  @Input() set projects(value: Project[]) {
+    this.projectsList.set(value);
+  }
+
+  @Input() set isMobile(value: boolean) {
+    this.mobileDevice.set(value);
+    this.updateViewportSize();
+  }
+
+  constructor(private projectDetailService: ProjectDetailService) {
+    this.setupEffects();
+    this.updateViewportSize();
+
+
+  }
+
+  // ✅ Método helper para resetear estado del modal
+  private resetModalState(): void {
+    this.activeTabState.set('overview');
+    this.galleryIndex.set(0);
+    this.lightboxVisible.set(false);
+    this.videoPlaying.set(false);
+  }
+
+  // Effects Setup
+  private setupEffects(): void {
+    // Effect para manejar el scroll del body cuando el modal está abierto
+    effect(() => {
+      if (this.isModalVisible()) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = '';
+      }
+    });
+
+    // Effect para resetear video cuando cambia el tab
+    effect(() => {
+      const tab = this.activeTab();
+      if (tab !== 'gallery') {
+        this.videoPlaying.set(false);
+      }
+    });
+
+    // Effect para actualizar viewport en cambios de tamaño
+    effect(() => {
+      if (this.isMobileDevice()) {
+        this.screenSize.set('mobile');
+      }
+    });
+
+    // ✅ Effect para debugging (remover en producción)
+    effect(() => {
+      const project = this.currentProject();
+      const visible = this.isModalVisible();
+      if (project && visible) {
+      }
+    });
+  }
+
+  // Responsive Methods
+  @HostListener('window:resize', ['$event'])
+  onWindowResize(): void {
+    this.updateViewportSize();
+  }
+
+  private updateViewportSize(): void {
+    if (typeof window !== 'undefined') {
+      const width = window.innerWidth;
+      if (width <= 768) {
+        this.screenSize.set('mobile');
+      } else if (width <= 1024) {
+        this.screenSize.set('tablet');
+      } else {
+        this.screenSize.set('desktop');
+      }
+    }
+  }
+
+  // Keyboard Navigation
+  @HostListener('document:keydown', ['$event'])
+  onKeyDown(event: KeyboardEvent): void {
+    if (!this.isModalVisible()) return;
+
+    switch (event.key) {
+      case 'Escape':
+        event.preventDefault();
+        this.onClose();
+        break;
+      case 'ArrowLeft':
+        event.preventDefault();
+        if (this.activeTab() === 'gallery') {
+          this.onGalleryPrevious();
+        } else {
+          this.onPreviousProject();
+        }
+        break;
+      case 'ArrowRight':
+        event.preventDefault();
+        if (this.activeTab() === 'gallery') {
+          this.onGalleryNext();
+        } else {
+          this.onNextProject();
+        }
+        break;
+      case 'Tab':
+        event.preventDefault();
+        this.onTabCycle(event.shiftKey);
+        break;
+    }
+  }
+
+  // Touch Gestures for Mobile
+  @HostListener('touchstart', ['$event'])
+  onTouchStart(event: TouchEvent): void {
+    if (!this.isMobileDevice()) return;
+
+    const touch = event.touches[0];
+    this.touchX.set(touch.clientX);
+    this.touchY.set(touch.clientY);
+  }
+
+  @HostListener('touchend', ['$event'])
+  onTouchEnd(event: TouchEvent): void {
+    if (!this.isMobileDevice()) return;
+
+    const touch = event.changedTouches[0];
+    const deltaX = touch.clientX - this.touchX();
+    const deltaY = touch.clientY - this.touchY();
+
+    // Swipe horizontal para navegación de proyectos
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+      if (deltaX > 0) {
+        this.onPreviousProject();
+      } else {
+        this.onNextProject();
+      }
+    }
+
+    // Swipe vertical para navegación de galería (solo en tab gallery)
+    if (this.activeTab() === 'gallery' && Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 50) {
+      if (deltaY > 0) {
+        this.onGalleryPrevious();
+      } else {
+        this.onGalleryNext();
+      }
+    }
+  }
+
+  // Navigation Methods
+  onClose(): void {
+    this.modalVisible.set(false);
+    this.closed.emit();
+  }
+
+  onNextProject(): void {
+    const projects = this.allProjects();
+    const current = this.currentProject();
+    if (!current || !this.hasNextProject()) return;
+
+    const currentIndex = projects.findIndex(p => p.id === current.id);
+    const nextProject = projects[currentIndex + 1];
+
+    this.selectedProject.set(nextProject);
+    this.projectChanged.emit(nextProject);
+  }
+
+  onPreviousProject(): void {
+    const projects = this.allProjects();
+    const current = this.currentProject();
+    if (!current || !this.hasPreviousProject()) return;
+
+    const currentIndex = projects.findIndex(p => p.id === current.id);
+    const previousProject = projects[currentIndex - 1];
+
+    this.selectedProject.set(previousProject);
+    this.projectChanged.emit(previousProject);
+  }
+
+  // Tab Methods
+  onTabChange(tab: TabType): void {
+    this.activeTabState.set(tab);
+  }
+
+  private onTabCycle(reverse: boolean = false): void {
+    const tabs: TabType[] = ['overview', 'tech', 'gallery', 'performance'];
+    const currentIndex = tabs.indexOf(this.activeTab());
+
+    let nextIndex: number;
+    if (reverse) {
+      nextIndex = currentIndex === 0 ? tabs.length - 1 : currentIndex - 1;
+    } else {
+      nextIndex = (currentIndex + 1) % tabs.length;
+    }
+
+    this.activeTabState.set(tabs[nextIndex]);
+  }
+
+  // Gallery Methods
+  onGalleryNext(): void {
+    if (!this.hasGalleryNext()) return;
+    this.galleryIndex.update(index => index + 1);
+  }
+
+  onGalleryPrevious(): void {
+    if (!this.hasGalleryPrevious()) return;
+    this.galleryIndex.update(index => index - 1);
+  }
+
+  onGalleryItemClick(index: number): void {
+    this.galleryIndex.set(index);
+    const item = this.currentGalleryItem();
+    if (item?.type === 'image' || item?.type === 'gif') {
+      this.lightboxVisible.set(true);
+    }
+  }
+
+  onCloseLightbox(): void {
+    this.lightboxVisible.set(false);
+  }
+
+  onVideoPlay(): void {
+    this.videoPlaying.set(true);
+  }
+
+  onVideoPause(): void {
+    this.videoPlaying.set(false);
+  }
+
+  // Public method for lightbox access from template
+  showLightboxModal(): void {
+    this.lightboxVisible.set(true);
+  }
+
+  // Action Methods
+  onActionClick(action: 'demo' | 'code'): void {
+    const project = this.currentProject();
+    if (!project) return;
+
+    this.actionClicked.emit({ action, project });
+  }
+
+  // Utility Methods
+  getStatusClass(status: string): string {
+    switch (status) {
+      case 'online': return 'status-online';
+      case 'development': return 'status-development';
+      case 'maintenance': return 'status-maintenance';
+      default: return 'status-default';
+    }
+  }
+
+  getTabIcon(tab: TabType): string {
+    const icons = {
+      overview: '📋',
+      tech: '⚙️',
+      gallery: '🖼️',
+      performance: '📊'
+    };
+    return icons[tab] || '📋';
+  }
+
+  getTabLabel(tab: TabType): string {
+    const labels = {
+      overview: 'Overview',
+      tech: this.viewportSize() === 'mobile' ? 'Tech' : 'Técnico',
+      gallery: this.viewportSize() === 'mobile' ? 'Media' : 'Galería',
+      performance: this.viewportSize() === 'mobile' ? 'Stats' : 'Métricas'
+    };
+    return labels[tab] || 'Overview';
+  }
+
+  // Public getter methods for template access
+  get isVisible(): boolean {
+    return this.isModalVisible();
+  }
+
+  get isMobile(): boolean {
+    return this.isMobileDevice();
+  }
+
+  getTabTypes(): TabType[] {
+    return ['overview', 'tech', 'gallery', 'performance'];
+  }
+
+  // Track by functions for ngFor optimization
+  trackByGalleryItem(index: number, item: ProjectGalleryItem): string {
+    return item.id;
+  }
+
+  trackByTech(index: number, tech: string): string {
+    return tech;
+  }
+
+  trackByFeature(index: number, feature: string): string {
+    return `feature-${index}-${feature.slice(0, 10)}`;
+  }
+
+  trackByObjective(index: number, objective: string): string {
+    return `objective-${index}-${objective.slice(0, 10)}`;
+  }
+
+  trackByLearning(index: number, learning: string): string {
+    return `learning-${index}-${learning.slice(0, 10)}`;
+  }
+
+  trackByChallenge(index: number, challenge: string): string {
+    return `challenge-${index}-${challenge.slice(0, 10)}`;
+  }
+
+  trackByPattern(index: number, pattern: string): string {
+    return pattern;
+  }
+
+  // Performance and Animation Methods
+  getImagePlaceholder(): string {
+    return 'data:image/svg+xml;charset=UTF-8,%3Csvg width="400" height="300" xmlns="http://www.w3.org/2000/svg"%3E%3Crect width="100%25" height="100%25" fill="%23374151"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%239ca3af"%3ECargando...%3C/text%3E%3C/svg%3E';
+  }
+
+  onImageLoad(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    img.classList.add('loaded');
+  }
+
+  onImageError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    img.src = this.getImagePlaceholder();
+  }
+
+  // Context-aware text formatting
+  getContextualDescription(text: string): string {
+    const viewport = this.viewportSize();
+    if (viewport === 'mobile') {
+      return text.length > 100 ? text.substring(0, 100) + '...' : text;
+    } else if (viewport === 'tablet') {
+      return text.length > 200 ? text.substring(0, 200) + '...' : text;
+    }
+    return text;
+  }
+
+  getResponsiveFeatureCount(): number {
+    const details = this.currentProjectDetails();
+    if (!details) return 0;
+
+    const viewport = this.viewportSize();
+    const totalFeatures = details.keyFeatures.length;
+
+    if (viewport === 'mobile') {
+      return Math.min(totalFeatures, 6);
+    } else if (viewport === 'tablet') {
+      return Math.min(totalFeatures, 8);
+    }
+
+    return totalFeatures;
+  }
+
+  // Accessibility helpers
+  getAriaLabel(context: string, data?: any): string {
+    switch (context) {
+      case 'close-modal':
+        return 'Cerrar modal de detalles del proyecto';
+      case 'next-project':
+        return `Siguiente proyecto. ${this.hasNextProject() ? 'Disponible' : 'No disponible'}`;
+      case 'previous-project':
+        return `Proyecto anterior. ${this.hasPreviousProject() ? 'Disponible' : 'No disponible'}`;
+      case 'gallery-next':
+        return `Siguiente imagen. ${this.hasGalleryNext() ? 'Disponible' : 'No disponible'}`;
+      case 'gallery-previous':
+        return `Imagen anterior. ${this.hasGalleryPrevious() ? 'Disponible' : 'No disponible'}`;
+      case 'tab':
+        return `Pestaña ${data}. ${this.activeTab() === data ? 'Activa' : 'Inactiva'}`;
+      default:
+        return '';
+    }
+  }
+
+  
+}

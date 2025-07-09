@@ -1,4 +1,3 @@
-// skills/services/skills.service.ts
 import { Injectable, signal } from '@angular/core';
 import { Skill, SkillCategory, StatsInfo } from '../interfaces/skill.interface';
 
@@ -8,7 +7,6 @@ import { Skill, SkillCategory, StatsInfo } from '../interfaces/skill.interface';
 export class SkillsService {
   
   private readonly skills = signal<Skill[]>([
-    // Frontend Core
     { 
       name: 'Angular', 
       level: 85, 
@@ -34,7 +32,6 @@ export class SkillsService {
       description: 'Hooks, Context API'
     },
     
-    // Backend Core
     { 
       name: 'NestJS', 
       level: 85, 
@@ -52,7 +49,6 @@ export class SkillsService {
       description: 'Server-side JavaScript'
     },
     
-    // Database
     { 
       name: 'MySQL', 
       level: 85, 
@@ -70,7 +66,6 @@ export class SkillsService {
       description: 'NoSQL database'
     },
     
-    // Essential Tools
     { 
       name: 'Git', 
       level: 90, 

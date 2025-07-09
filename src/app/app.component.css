@@ -1,100 +1,463 @@
+/* ===== CONFIGURACIÓN BASE ===== */
 :host {
   display: block;
   width: 100%;
   height: 100%;
   overflow-x: hidden;
-  /* Asegurar que el host también tenga el fondo correcto */
-  background: linear-gradient(135deg, #0f172a 0%, #1f2937 50%, #18181b 100%);
-}
-
-.portfolio-background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -10;
-  overflow: hidden;
-
-  /* Gradiente base del hero */
-  background: transparent;
-
-  /* Transición suave */
-  transition: opacity 2s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-
-/* Pattern overlay metálico global */
-.portfolio-background::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.1;
-  pointer-events: none;
-  background-image: radial-gradient(circle at 30% 30%, rgba(59, 130, 246, 0.1) 1px, transparent 1px);
-  background-size: 100px 100px;
-  z-index: 1;
-}
-
-/* Gradient overlay azul global */
-.portfolio-background::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to top right, rgba(30, 58, 138, 0.2) 0%, transparent 50%, rgba(51, 65, 85, 0.2) 100%);
-  pointer-events: none;
-  z-index: 2;
-}
-
-/* Clase para contenido que va encima del fondo */
-.portfolio-content {
-  position: relative;
-  z-index: 10;
-}
-
-/* =============== NUEVAS TRANSICIONES PARA REVEAL INSTANTÁNEO =============== */
-
-/* Transición suave del contenido principal */
-.flex.flex-col.w-full.min-h-screen {
-  transition: opacity 0.4s ease-out;
-}
-
-/* Transición de las partículas */
-app-particles {
-  transition: opacity 0.4s ease-out;
-}
-
-/* Clase de utilidad para ocultar elementos */
-.opacity-0 {
-  opacity: 0;
-}
-
-/* Asegurar que el zoom-container tenga el fondo correcto */
-.zoom-container {
-  background: linear-gradient(135deg, #0f172a 0%, #1f2937 50%, #18181b 100%);
-  min-height: 100vh;
-}
-
-/* Optimizaciones de rendimiento */
-.portfolio-background * {
+  font-smooth: always;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Asegurar que todos los componentes estén listos para ser revelados */
-app-header,
-app-hero,
-app-about,
-app-about-me,
-app-projects,
-app-skills,
-app-contact,
-app-footer,
-app-avatar {
+/* ===== CONTENEDOR PRINCIPAL ===== */
+.portfolio-container {
+  position: relative;
+  width: 100vw;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1f2937 50%, #18181b 100%);
+  overflow-x: hidden;
+  
+  /* IMPORTANTE: Asegurar altura total para que las partículas cubran todo */
+  min-height: 600vh; /* 6 secciones × 100vh */
+  
+  /* Optimizaciones de rendering */
+  contain: layout style;
+  isolation: isolate;
+}
+
+/* ===== CAPAS DE COMPONENTES OPTIMIZADAS ===== */
+.cursor-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999999;
+  
+  /* Optimizaciones específicas para cursor */
+  transform: translateZ(0);
+  will-change: transform;
+  contain: strict;
+  isolation: isolate;
+}
+
+.loader-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  contain: strict;
+}
+
+/* ===== PARTÍCULAS GLOBALES (ARREGLADO) ===== */
+.particles-layer {
+  position: absolute; /* CAMBIO: de fixed a absolute */
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  transition: opacity 0.4s ease-out;
+  
+  /* Optimizaciones de rendering */
+  transform: translateZ(0);
+  will-change: transform, opacity;
+  contain: strict;
+  isolation: isolate;
+}
+
+/* ===== WRAPPER DE CONTENIDO ===== */
+.content-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  z-index: 10;
+  transition: opacity 0.4s ease-out;
+  contain: layout style;
+}
+
+.content-hidden {
+  opacity: 0;
+}
+
+/* ===== HEADER FIJO OPTIMIZADO ===== */
+.header-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  width: 100%;
+  height: auto;
+  opacity: 1;
+  visibility: visible;
+  display: block;
+  
+  /* Optimizaciones críticas para el header */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  will-change: transform;
+  contain: layout style;
+  isolation: isolate;
+  
+  /* Sin filtros costosos */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Estados específicos para optimización del header */
+:host-context(.header-active) .particles-layer {
+  opacity: 0.3;
+  transition: opacity 0.2s ease-out;
+}
+
+:host-context(.cursor-targeting) .particles-layer {
+  opacity: 0.5;
+  transition: opacity 0.1s ease-out;
+}
+
+/* NECESARIO: Asegurar que el header siempre sea visible */
+.header-fixed,
+.header-fixed * {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+:host-context(.page-hidden) .particles-layer,
+:host-context(.page-hidden) .cursor-layer {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ===== CONTENIDO PRINCIPAL ===== */
+.main-content {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  z-index: 10;
+  contain: layout style;
+}
+
+/* ===== CONTENEDORES DE SECCIÓN OPTIMIZADOS ===== */
+.section-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
   transition: opacity 0.3s ease-out;
+  
+  /* Optimizaciones de rendering por sección */
+  contain: layout style paint;
+  isolation: isolate;
+}
+
+/* NECESARIO: Solo aplicar background transparent a secciones específicas */
+.section-container app-about,
+.section-container app-about-me,
+.section-container app-projects,
+.section-container app-skills {
+  background: transparent !important;
+  contain: layout style;
+}
+
+/* NECESARIO: Ocultar específicamente solo el tech-background del contacto */
+app-contact .tech-background,
+app-contact .tech-particles {
+  display: none !important;
+}
+
+/* ===== PLACEHOLDER OPTIMIZADO ===== */
+.section-container:empty::before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100vh;
+  background: transparent;
+  contain: size;
+}
+
+/* ===== SMOOTH SCROLL OPTIMIZADO ===== */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Reducir scroll suave en dispositivos lentos */
+@media (max-width: 768px) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ===== SECCIÓN HERO OPTIMIZADA ===== */
+.hero-section {
+  position: relative;
+  overflow: hidden;
+  background: transparent;
+  contain: layout style paint;
+}
+
+.hero-background {
+  display: none;
+}
+
+.hero-overlay {
+  display: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  contain: layout style;
+}
+
+/* ===== AVATAR FIJO OPTIMIZADO ===== */
+.avatar-fixed {
+  position: fixed;
+  z-index: 90;
+  transition: opacity 0.3s ease-out;
+  
+  /* Optimización para avatar */
+  transform: translateZ(0);
+  will-change: transform;
+  contain: layout style paint;
+}
+
+/* ===== FOOTER OPTIMIZADO ===== */
+.footer-section {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  transition: opacity 0.3s ease-out;
+  contain: layout style;
+}
+
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(59, 130, 246, 0.3),
+    transparent
+  );
+  margin: 2rem 0;
+  contain: layout style;
+}
+
+/* ===== OPTIMIZACIONES DE PERFORMANCE GLOBALES ===== */
+.portfolio-container *,
+.portfolio-container *::before,
+.portfolio-container *::after {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Optimizaciones específicas para elementos animados */
+.particles-layer,
+.cursor-layer,
+.hero-background,
+.hero-overlay,
+.avatar-fixed {
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+  perspective: 1000px;
+  /* Vendor prefixes para mejor compatibilidad */
+  -webkit-transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+}
+
+/* Header separado para evitar conflictos */
+.header-fixed {
+  /* Ya tiene sus propias optimizaciones arriba */
+}
+
+/* Optimizaciones durante scroll */
+:host-context(.scrolling) .cursor-layer {
+  opacity: 0.3;
+  transition: opacity 0.1s ease-out;
+}
+
+:host-context(.scrolling) .particles-layer {
+  opacity: 0.2;
+  transition: opacity 0.1s ease-out;
+}
+
+/* ===== FORMULARIO DE CONTACTO ===== */
+/* NECESARIOS: Forzar ancho específico del formulario */
+#contact app-contact .container.mx-auto.max-w-6xl {
+  max-width: 95vw !important;
+  width: 95vw !important;
+  contain: layout style;
+}
+
+#contact app-contact .grid.lg\:grid-cols-2 {
+  grid-template-columns: 1fr 1fr !important;
+  gap: 4rem !important;
+  max-width: none !important;
+  width: 100% !important;
+}
+
+#contact app-contact .form-container {
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 500px !important;
+  contain: layout style;
+}
+
+/* ===== RESPONSIVE OPTIMIZADO ===== */
+@media (max-width: 768px) {
+  .portfolio-container {
+    contain: layout style; /* Reducir containment en móviles */
+  }
+  
+  .section-container {
+    min-height: 100vh;
+    padding: 1rem;
+    contain: layout style;
+  }
+  
+  .particles-layer {
+    opacity: 0.4;
+  }
+  
+  .cursor-layer {
+    opacity: 0.7;
+  }
+  
+  /* Optimizaciones específicas para móviles */
+  .hero-background {
+    display: none;
+  }
+  
+  .hero-overlay {
+    display: none;
+  }
+  
+  /* NECESARIOS: Optimizar formulario de contacto en móviles */
+  #contact app-contact .container.mx-auto.max-w-6xl {
+    max-width: 95vw !important;
+    padding: 0 1rem !important;
+  }
+  
+  #contact app-contact .grid.lg\:grid-cols-2 {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+  
+  #contact app-contact .form-container {
+    min-width: auto !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .particles-layer {
+    opacity: 0.3;
+  }
+  
+  .cursor-layer {
+    opacity: 0.5;
+  }
+  
+  /* Deshabilitar cursor custom en pantallas muy pequeñas */
+  .cursor-layer {
+    display: none;
+  }
+}
+
+/* ===== MODO REDUCIDO DE MOVIMIENTO ===== */
+@media (prefers-reduced-motion: reduce) {
+  .content-wrapper,
+  .particles-layer,
+  .section-container,
+  .hero-background,
+  .hero-overlay,
+  .cursor-layer {
+    transition: none !important;
+    animation: none !important;
+  }
+  
+  .particles-layer,
+  .cursor-layer {
+    display: none;
+  }
+}
+
+/* ===== OPTIMIZACIONES PARA DISPOSITIVOS DE BAJA POTENCIA ===== */
+@media (max-width: 768px) and (max-height: 1024px) {
+  .hero-background {
+    display: none;
+  }
+  
+  .hero-overlay {
+    opacity: 0.3;
+  }
+  
+  /* Reducir efectos en dispositivos de baja potencia */
+  .particles-layer {
+    opacity: 0.2;
+  }
+  
+  .cursor-layer {
+    display: none; /* Deshabilitar cursor custom */
+  }
+}
+
+/* ===== MEJORAS DE ACCESIBILIDAD ===== */
+@media (prefers-contrast: high) {
+  .hero-overlay {
+    opacity: 0.8;
+  }
+  
+  .section-divider {
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(59, 130, 246, 0.6),
+      transparent
+    );
+  }
+  
+  .particles-layer {
+    opacity: 0.1;
+  }
+}
+
+/* Optimización para dispositivos con batería baja */
+@media (prefers-reduced-data: reduce) {
+  .particles-layer,
+  .cursor-layer {
+    display: none;
+  }
+  
+  .hero-background,
+  .hero-overlay {
+    display: none;
+  }
+}
+
+/* Optimizaciones específicas para Safari y navegadores WebKit */
+@supports (-webkit-appearance: none) {
+  .cursor-layer,
+  .particles-layer {
+    -webkit-transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+}
+
+/* Optimización para dispositivos con GPU limitada */
+@media (max-device-width: 768px) and (-webkit-min-device-pixel-ratio: 2) {
+  .particles-layer {
+    opacity: 0.2;
+    transform: scale(0.8);
+  }
+  
+  .cursor-layer {
+    opacity: 0.5;
+  }
 }

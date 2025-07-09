@@ -1,11 +1,11 @@
-/* About Section Simple */
+
 .about-section {
   transition: opacity 2s cubic-bezier(0.165, 0.84, 0.44, 1);
   min-height: 100vh;
   user-select: none;
 }
 
-/* Three.js Canvas Styling */
+
 #three-canvas {
   position: absolute;
   top: 0;
@@ -16,7 +16,7 @@
   z-index: 2;
 }
 
-/* Animated Gradient Text */
+
 .animate-gradient {
   background-size: 200% 200%;
   animation: gradientShift 4s ease-in-out infinite;
@@ -31,7 +31,7 @@
   }
 }
 
-/* Quote Container Animation */
+
 .quote-container {
   animation: floatIn 2s ease-out;
 }
@@ -47,7 +47,7 @@
   }
 }
 
-/* Interactive CTA Button */
+
 .cta-button {
   position: relative;
   background-size: 200% 200%;
@@ -63,7 +63,7 @@
   }
 }
 
-/* Mobile Optimizations */
+
 @media (max-width: 1024px) {
   .quote-container .text-6xl {
     font-size: 3rem;
@@ -73,7 +73,7 @@
     font-size: 4rem;
   }
   
-  /* Reducir intensidad de Three.js en mobile */
+  
   #three-canvas {
     opacity: 0.7;
   }
@@ -98,13 +98,13 @@
     font-size: 1rem;
   }
   
-  /* Ocultar Three.js en mobile para performance */
+  
   #three-canvas {
     display: none;
   }
 }
 
-/* Accessibility */
+
 @media (prefers-reduced-motion: reduce) {
   .animate-gradient,
   .cta-button,
@@ -116,19 +116,19 @@
     transition: opacity 0.3s ease;
   }
   
-  /* Desactivar Three.js si prefieren movimiento reducido */
+  
   #three-canvas {
     display: none;
   }
 }
 
-/* Focus States for Accessibility */
+
 .cta-button:focus {
   outline: 2px solid #3b82f6;
   outline-offset: 2px;
 }
 
-/* High Contrast Mode */
+
 @media (prefers-contrast: high) {
   .cta-button {
     border: 2px solid currentColor;

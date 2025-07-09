@@ -9,13 +9,11 @@ export class EmailService {
   
   async sendEmail(formData: ContactFormData, recipientEmail: string): Promise<boolean> {
     try {
-      // Crear mensaje profesional para email
       const emailSubject = `[Portfolio Web] ${formData.subject}`;
       const emailBody = this.createEmailBody(formData);
       
       const mailtoLink = `mailto:${recipientEmail}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
       
-      // Abrir cliente de email
       window.open(mailtoLink);
       
       return true;
@@ -64,7 +62,6 @@ ${formData.name}
     `;
   }
 
-  // Método para validar email
   validateEmail(email: string): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);

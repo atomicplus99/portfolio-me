@@ -29,7 +29,7 @@
       }
     }
 
-    /* Responsive adjustments */
+    
     @media (max-width: 768px) {
       .dot:nth-child(n+11) {
         display: none;

@@ -1,18 +1,14 @@
-<div class="loader-container" [class.fade-out]="!loaderService.state().isLoading">
-      <!-- Partículas de fondo -->
+ <div class="loader-container" [class.fade-out]="!loaderService.state().isLoading">
       <app-loading-particles [count]="particleCount()"></app-loading-particles>
-
-      <!-- Contenido principal -->
+      
       <div class="loader-content">
-        <!-- Logo animado -->
-        <app-animated-logo 
+        <app-animated-logo
           [text]="logoText()"
           [subtitle]="subtitle()"
           [isVisible]="loaderService.state().showLogo">
         </app-animated-logo>
-
-        <!-- Barra de progreso -->
-        <app-progress-bar 
+        
+        <app-progress-bar
           [progress]="loaderService.state().progress"
           [message]="loaderService.state().message"
           [isVisible]="loaderService.state().showProgress">

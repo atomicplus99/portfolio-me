@@ -124,7 +124,6 @@ export class AnimationService {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
         
-        // Easing function (ease-out)
         const easeProgress = 1 - Math.pow(1 - progress, 3);
         
         const interpolatedPosition: CursorPosition = {

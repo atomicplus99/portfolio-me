@@ -1,84 +1,62 @@
-<div class="zoom-container overflow-hidden w-screen min-h-screen relative">
-  <!-- Cursor táctil configurado -->
-  <app-custom-cursor [config]="cursorConfig" [disabled]="loaderService.state().isLoading" (statusChange)="onCursorStatusChange($event)"
-    (targetingChange)="onTargetingChange($event)" class="fixed inset-0 pointer-events-none z-[999999]">
+<div class="portfolio-container">
+  <app-custom-cursor
+    [config]="cursorConfig"
+    [disabled]="loaderService.state().isLoading"
+    (statusChange)="onCursorStatusChange($event)"
+    (targetingChange)="onTargetingChange($event)"
+    class="cursor-layer">
   </app-custom-cursor>
 
-  <!-- El loader tiene z-index más alto, pero el contenido YA está renderizado debajo -->
-  <app-loader 
+  <app-loader
     *ngIf="loaderService.state().isLoading"
     logoText="DUQUE"
     subtitle="Full Stack Developer"
     [particleCount]="30"
-    class="fixed inset-0 z-[10000]">
+    class="loader-layer">
   </app-loader>
 
-
-  <app-particles [customConfig]="{
-    count: 700,
-    size: 1.2,
-    colors: {
-      hue: 0.3,
-      saturation: 0.9,
-      lightness: 0.6,
-      variance: 0.2
-    }
-  }">
+  <!-- VOLVER A: Una sola instancia de partículas como antes -->
+  <app-particles 
+    [customConfig]="particleConfig" 
+    class="particles-layer">
   </app-particles>
 
-  <div class="flex flex-col w-full min-h-screen" [class.opacity-0]="loaderService.state().isLoading">
-    <app-header class="fixed top-0 left-0 right-0 z-[100] w-full"></app-header>
+  <div class="content-wrapper" [class.content-hidden]="loaderService.state().isLoading">
+    <app-header class="header-fixed"></app-header>
 
-    <main class="flex-1 w-full relative z-10">
-      <!-- SECCIÓN PRINCIPAL CON TODAS LAS PÁGINAS -->
-      <section class="hero-section w-full relative overflow-hidden flex flex-col
-                      bg-gradient-to-br from-slate-900 via-gray-800 to-zinc-900">
-
-        <div class="absolute inset-0 pointer-events-none opacity-10 z-0" 
-             style="background-image: radial-gradient(circle at 30% 30%, rgba(59, 130, 246, 0.1) 1px, transparent 1px);
-                    background-size: 100px 100px;">
-        </div>
-
-        <div class="absolute inset-0 bg-gradient-to-tr from-blue-900/20 via-transparent to-slate-700/20"
-             style="z-index: 1;"></div>
-
-        <!-- 1. Hero -->
-        <div id="hero" class="relative z-10 h-screen flex items-center justify-center">
-          <app-hero class="w-full block"></app-hero>
-        </div>
-
-        <!-- 2. About -->
-        <div id="about" class="relative z-10 h-screen flex items-center justify-center">
-          <app-about class="w-full block"></app-about>
-        </div>
-
-        <!-- 3. About Me -->
-        <div id="about-me" class="relative z-10 min-h-screen flex items-center justify-center">
-          <app-about-me class="w-full block"></app-about-me>
-        </div>
-
-        <!-- 4. Projects -->
-        <div id="projects" class="relative z-10 min-h-screen flex items-center justify-center">
-          <app-projects class="w-full block"></app-projects>
-        </div>
-
-        <!-- 5. Skills -->
-        <div id="skills" class="relative z-10 min-h-screen flex items-center justify-center">
-          <app-skills class="w-full block"></app-skills>
-        </div>
-
-        <!-- 6. Contact -->
-        <div id="contact" class="relative z-10 min-h-screen flex items-center justify-center">
-          <app-contact class="w-full block"></app-contact>
-        </div>
-
-        <div class="w-full h-px bg-gradient-to-r from-transparent via-blue-400/30 to-transparent my-8"></div>
-
-        <app-footer class="relative z-10 w-full"></app-footer>
-
+    <main class="main-content">
+      <section id="hero" class="section-container hero-section">
+        <app-hero></app-hero>
       </section>
+
+      <section id="about" class="section-container" *ngIf="loadedSections.about">
+        <app-about></app-about>
+      </section>
+
+      <section id="about-me" class="section-container" *ngIf="loadedSections.aboutMe">
+        <app-about-me></app-about-me>
+      </section>
+
+      <section id="projects" class="section-container" *ngIf="loadedSections.projects">
+        <app-projects></app-projects>
+      </section>
+
+      <section id="skills" class="section-container" *ngIf="loadedSections.skills">
+        <app-skills></app-skills>
+      </section>
+
+      <section id="contact" class="section-container" *ngIf="loadedSections.contact">
+        <app-contact></app-contact>
+      </section>
+
+      <div class="section-divider" *ngIf="loadedSections.footer"></div>
+
+      <app-footer
+        *ngIf="loadedSections.footer"
+        class="footer-section">
+      </app-footer>
     </main>
 
-    <app-avatar class="fixed z-[90]"></app-avatar>
+    <app-avatar class="avatar-fixed"></app-avatar>
   </div>
 </div>

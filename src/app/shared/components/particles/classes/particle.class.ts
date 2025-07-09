@@ -23,11 +23,13 @@ export class ParticleSystem {
   }
 
   private initializeCamera(): void {
-    const containerRect = this.container.getBoundingClientRect();
+    // VOLVER A LA CONFIGURACIÓN ORIGINAL
+    const width = window.innerWidth;
+    const height = window.innerHeight;
     
     this.camera = new THREE.PerspectiveCamera(
       75,
-      containerRect.width / containerRect.height,
+      width / height,
       0.1,
       1000
     );
@@ -41,8 +43,11 @@ export class ParticleSystem {
       alpha: true
     });
     
-    const containerRect = this.container.getBoundingClientRect();
-    this.renderer.setSize(containerRect.width, containerRect.height);
+    // VOLVER A LA CONFIGURACIÓN ORIGINAL
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    
+    this.renderer.setSize(width, height);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   }
 
@@ -52,12 +57,10 @@ export class ParticleSystem {
     const colors = new Float32Array(this.config.count * 3);
 
     for (let i = 0; i < this.config.count * 3; i += 3) {
-      // Posiciones
       positions[i] = (Math.random() - 0.5) * 200;
       positions[i + 1] = (Math.random() - 0.5) * 200;
       positions[i + 2] = (Math.random() - 0.5) * 200;
 
-      // Colores
       const color = new THREE.Color();
       color.setHSL(
         this.config.colors.hue + Math.random() * this.config.colors.variance,
@@ -113,11 +116,12 @@ export class ParticleSystem {
   public handleResize(): void {
     if (!this.camera || !this.renderer) return;
 
-    const containerRect = this.container.getBoundingClientRect();
+    const width = window.innerWidth;
+    const height = window.innerHeight;
     
-    this.camera.aspect = containerRect.width / containerRect.height;
+    this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
-    this.renderer.setSize(containerRect.width, containerRect.height);
+    this.renderer.setSize(width, height);
   }
 
   public updateConfig(newConfig: Partial<ParticleConfig>): void {

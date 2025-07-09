@@ -13,7 +13,6 @@ export class FloatingParticlesComponent implements OnInit {
   
   @Input() isMobile = false;
 
-  // Signal para las partículas - NOMBRE CORRECTO
   private readonly _particles = signal<ParticleData[]>([]);
 
   ngOnInit() {
@@ -44,7 +43,6 @@ export class FloatingParticlesComponent implements OnInit {
     return particle.id;
   }
 
-  // Getter público para acceder al signal desde el template
   get particles() {
     return this._particles;
   }

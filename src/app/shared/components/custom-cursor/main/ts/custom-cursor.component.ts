@@ -13,12 +13,18 @@ import {
 import { CursorConfigService } from '../../services/cursor-config.service'; 
 import { DeviceDetectionService } from '../../services/device-detection.service'; 
 import { ParticlePoolService } from '../../services/particle-pool.service'; 
-
 import { AnimationService } from '../../services/animation.service';
-
-import { CursorConfig, TacticalStatus, CursorPosition } from '../../interfaces/cursor.interfaces';
 import { TacticalElementsService } from '../../services/tacticals-elements.service';
 
+// NUEVOS SERVICIOS MODULARIZADOS
+
+import { CursorEventHandlerService } from '../../services/cursor-event-handler.service';
+
+import { CursorStatusService } from '../../services/cursor-status.service';
+
+import { CursorConfig, TacticalStatus } from '../../interfaces/cursor.interfaces';
+import { CursorPerformanceService } from '../../services/cursor-perfomance.service';
+import { CursorLifecycleService } from '../../services/cursor-life-cycle.service';
 
 @Component({
   selector: 'app-custom-cursor',
@@ -29,31 +35,51 @@ import { TacticalElementsService } from '../../services/tacticals-elements.servi
   providers: [
     ParticlePoolService,
     TacticalElementsService,
-    AnimationService
+    AnimationService,
+    CursorPerformanceService,
+    CursorEventHandlerService,
+    CursorLifecycleService,
+    CursorStatusService
   ]
 })
 export class CustomCursorComponent implements OnInit, OnDestroy {
   
-  
+  // INPUTS
   readonly config = input<Partial<CursorConfig>>();
   readonly disabled = input<boolean>(false);
   readonly optimizedMode = input<boolean>(false);
+  
+  // OUTPUTS
   readonly statusChange = output<TacticalStatus>();
   readonly targetingChange = output<boolean>();
   readonly firingChange = output<boolean>();
-
-  private globalStyleElement?: HTMLStyleElement;
-  private initialized = false;
 
   constructor(
     private renderer: Renderer2,
     private configService: CursorConfigService,
     private deviceDetectionService: DeviceDetectionService,
-    private particlePoolService: ParticlePoolService,
-    private tacticalElementsService: TacticalElementsService,
-    private animationService: AnimationService
+    // Servicios modularizados
+    private performanceService: CursorPerformanceService,
+    private eventHandlerService: CursorEventHandlerService,
+    private lifecycleService: CursorLifecycleService,
+    private statusService: CursorStatusService
   ) {
-    
+    this.setupEffects();
+  }
+
+  ngOnInit(): void {
+    if (this.lifecycleService.shouldInitialize(this.disabled())) {
+      this.lifecycleService.initialize();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.lifecycleService.destroy();
+  }
+
+  // CONFIGURACIÓN DE EFFECTS
+  private setupEffects(): void {
+    // Effect para configuración
     effect(() => {
       const inputConfig = this.config();
       if (inputConfig) {
@@ -61,250 +87,123 @@ export class CustomCursorComponent implements OnInit, OnDestroy {
       }
     });
 
-    
+    // Effect para modo optimizado
     effect(() => {
       const optimized = this.optimizedMode();
-      if (optimized) {
-        this.configService.enableOptimizedMode();
-      } else {
-        this.configService.disableOptimizedMode();
-      }
+      this.statusService.setOptimizedMode(optimized);
     });
 
-    
+    // Effect para móviles
     effect(() => {
       const isMobile = this.deviceDetectionService.isMobile();
-      if (isMobile && this.initialized) {
-        this.destroy();
-      } else if (!isMobile && !this.initialized && !this.disabled()) {
-        this.initialize();
+      if (isMobile && this.lifecycleService.isInitialized) {
+        this.lifecycleService.destroy();
+      } else if (!isMobile && !this.lifecycleService.isInitialized && !this.disabled()) {
+        this.lifecycleService.initialize();
       }
     });
 
-    
+    // Effect para disabled
     effect(() => {
       const isDisabled = this.disabled();
-      if (isDisabled && this.initialized) {
-        this.destroy();
-      } else if (!isDisabled && !this.initialized && this.deviceDetectionService.shouldShowCursor()) {
-        this.initialize();
+      if (isDisabled && this.lifecycleService.isInitialized) {
+        this.lifecycleService.destroy();
+      } else if (!isDisabled && !this.lifecycleService.isInitialized && this.deviceDetectionService.shouldShowCursor()) {
+        this.lifecycleService.initialize();
       }
     });
   }
 
-  ngOnInit(): void {
-    if (this.shouldInitialize()) {
-      this.initialize();
-    }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy();
-  }
-
-  private shouldInitialize(): boolean {
-    return !this.disabled() && this.deviceDetectionService.shouldShowCursor();
-  }
-
-  private initialize(): void {
-    if (this.initialized) return;
-
-    this.injectGlobalStyles();
-    this.particlePoolService.initializePool();
-    this.tacticalElementsService.createElement();
-    this.animationService.startAnimation();
-    
-    this.initialized = true;
+  // EVENT LISTENERS (simplificados)
+  @HostListener('document:mousemove', ['$event'])
+  onMouseMove(event: MouseEvent): void {
+    if (!this.lifecycleService.isInitialized) return;
+    this.eventHandlerService.handleMouseMove(event);
     this.emitStatusChange();
   }
 
-  private destroy(): void {
-    if (!this.initialized) return;
-
-    this.animationService.stopAnimation();
-    this.tacticalElementsService.destroyElements();
-    this.particlePoolService.destroyPool();
-    this.removeGlobalStyles();
-    
-    this.initialized = false;
-  }
-
-  private injectGlobalStyles(): void {
-    this.globalStyleElement = this.renderer.createElement('style');
-    this.renderer.setAttribute(this.globalStyleElement, 'type', 'text/css');
-    
-    const globalCSS = this.getGlobalCSS();
-    const textNode = this.renderer.createText(globalCSS);
-    this.renderer.appendChild(this.globalStyleElement, textNode);
-    this.renderer.appendChild(document.head, this.globalStyleElement);
-  }
-
-  private getGlobalCSS(): string {
-    const mediaQuery = this.deviceDetectionService.getMediaQuery();
-    
-    return `
-      @media ${mediaQuery} {
-        .tactical-reticle, .interference-particle { display: none !important; }
-        *, *::before, *::after, html, body { cursor: auto !important; }
-      }
-    `;
-  }
-
-  private removeGlobalStyles(): void {
-    if (this.globalStyleElement?.parentNode) {
-      this.renderer.removeChild(document.head, this.globalStyleElement);
-      this.globalStyleElement = undefined;
-    }
-  }
-
-  @HostListener('document:mousemove', ['$event'])
-  onMouseMove(event: MouseEvent): void {
-    if (!this.initialized) return;
-
-    const position: CursorPosition = {
-      x: event.clientX,
-      y: event.clientY
-    };
-
-    this.animationService.updateCursorPosition(position);
-    this.particlePoolService.activateParticle(position);
+  @HostListener('window:scroll', ['$event'])
+  onScroll(): void {
+    if (!this.lifecycleService.isInitialized) return;
+    this.eventHandlerService.handleScroll();
   }
 
   @HostListener('document:mousedown', ['$event'])
   onMouseDown(event: MouseEvent): void {
-    if (!this.initialized) return;
-
-    this.animationService.updateFiringState(true);
-    this.tacticalElementsService.setClickState(true);
-    
-    const position: CursorPosition = {
-      x: event.clientX,
-      y: event.clientY
-    };
-
-    this.particlePoolService.createBurst(position);
+    if (!this.lifecycleService.isInitialized) return;
+    this.eventHandlerService.handleMouseDown(event);
     this.firingChange.emit(true);
     this.emitStatusChange();
   }
 
   @HostListener('document:mouseup', [])
   onMouseUp(): void {
-    if (!this.initialized) return;
-
-    this.animationService.updateFiringState(false);
-    this.tacticalElementsService.setClickState(false);
+    if (!this.lifecycleService.isInitialized) return;
+    this.eventHandlerService.handleMouseUp();
     this.firingChange.emit(false);
     this.emitStatusChange();
   }
 
   @HostListener('document:mouseover', ['$event'])
   onMouseOver(event: MouseEvent): void {
-    if (!this.initialized) return;
-
-    const target = event.target as HTMLElement;
-    if (target && this.tacticalElementsService.isClickableElement(target)) {
-      this.handleTargetingStart();
-    }
-  }
-
-  @HostListener('document:mouseout', ['$event'])
-  onMouseOut(event: MouseEvent): void {
-    if (!this.initialized) return;
-
-    const target = event.target as HTMLElement;
-    if (target && this.tacticalElementsService.isClickableElement(target)) {
-      this.handleTargetingEnd();
-    }
-  }
-
-  @HostListener('document:contextmenu', ['$event'])
-  onContextMenu(event: MouseEvent): void {
-    if (!this.initialized) return;
-    
-    event.preventDefault();
-    
-    const position: CursorPosition = {
-      x: event.clientX,
-      y: event.clientY
-    };
-
-    this.particlePoolService.createDefensivePattern(position);
-  }
-
-  private handleTargetingStart(): void {
-    this.animationService.updateTargetingState(true);
-    this.tacticalElementsService.setHoverState(true);
-    
-    
-    this.animationService.updateParticleDelay(120);
-    this.animationService.updateCornerOffset(30);
-    
+    if (!this.lifecycleService.isInitialized) return;
+    this.eventHandlerService.handleMouseOver(event);
     this.targetingChange.emit(true);
     this.emitStatusChange();
   }
 
-  private handleTargetingEnd(): void {
-    this.animationService.updateTargetingState(false);
-    this.tacticalElementsService.setHoverState(false);
-    
-    
-    this.animationService.updateParticleDelay(200);
-    
+  @HostListener('document:mouseout', ['$event'])
+  onMouseOut(event: MouseEvent): void {
+    if (!this.lifecycleService.isInitialized) return;
+    this.eventHandlerService.handleMouseOut(event);
     this.targetingChange.emit(false);
     this.emitStatusChange();
   }
 
+  @HostListener('document:contextmenu', ['$event'])
+  onContextMenu(event: MouseEvent): void {
+    if (!this.lifecycleService.isInitialized) return;
+    this.eventHandlerService.handleContextMenu(event);
+  }
+
+  // EMISIÓN DE EVENTOS
   private emitStatusChange(): void {
-    const status = this.getTacticalStatus();
+    this.statusService.updateStatus();
+    const status = this.statusService.currentStatus;
     this.statusChange.emit(status);
   }
 
-  
+  // API PÚBLICA (simplificada)
   public getTacticalStatus(): TacticalStatus {
-    const animationState = this.animationService.animationState();
-    const particleStatus = this.particlePoolService.getPoolStatus();
-
-    return {
-      reticlePosition: animationState.cursorPosition,
-      isTargeting: animationState.isTargeting,
-      isFiring: animationState.isFiring,
-      activeParticles: particleStatus.activeParticles,
-      systemStatus: this.initialized ? 'operational' : 'inactive'
-    };
+    return this.statusService.currentStatus;
   }
 
   public setOptimizedMode(enabled: boolean): void {
-    this.configService.updateConfig({ optimizedMode: enabled });
-    if (enabled) {
-      this.animationService.optimizeForPerformance();
-    } else {
-      this.animationService.resetPerformanceSettings();
-    }
+    this.statusService.setOptimizedMode(enabled);
   }
 
   public updateConfiguration(config: Partial<CursorConfig>): void {
-    this.configService.updateConfig(config);
+    this.statusService.updateConfiguration(config);
   }
 
   public resetConfiguration(): void {
-    this.configService.resetToDefaults();
+    this.statusService.resetConfiguration();
   }
 
   public getPerformanceMetrics() {
-    return {
-      isRunning: this.animationService.isRunning(),
-      particlePool: this.particlePoolService.getPoolStatus(),
-      config: this.configService.config()
-    };
+    return this.statusService.getPerformanceMetrics();
   }
 
   public enable(): void {
-    if (this.deviceDetectionService.shouldShowCursor()) {
-      this.initialize();
-    }
+    this.lifecycleService.enable();
   }
 
   public disable(): void {
-    this.destroy();
+    this.lifecycleService.disable();
+  }
+
+  // DEBUGGING
+  public logStatus(): void {
+    this.statusService.logCurrentStatus();
   }
 }

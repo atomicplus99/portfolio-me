@@ -1,4 +1,3 @@
-// projects/components/hero-header/hero-header.component.ts
 import { Component, Input, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProjectStats } from '../../interfaces/proyect.interface';

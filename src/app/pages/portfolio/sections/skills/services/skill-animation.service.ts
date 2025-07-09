@@ -9,7 +9,6 @@ export class AnimationService {
   private readonly animationDelay = 200; // ms between animations
 
   initializeStaggeredAnimation(itemCount: number, initialDelay: number = 800): void {
-    // Reset array
     this.visibleItems.set(new Array(itemCount).fill(false));
 
     setTimeout(() => {

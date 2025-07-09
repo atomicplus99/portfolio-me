@@ -1,6 +1,6 @@
-/* avatar.component.css */
 
-/* Container animations */
+
+
 .avatar-container {
   opacity: 0;
   transform: translateY(20px);
@@ -13,13 +13,13 @@
   transform: translateY(0);
 }
 
-/* Glow effects */
+
 .glow-active {
   box-shadow: 0 0 40px rgba(59, 130, 246, 0.4);
   animation: pulseGlow 2s ease-in-out infinite;
 }
 
-/* Tooltip animations */
+
 .tooltip-visible {
   opacity: 1;
   transform: translateX(-50%) translateY(0) scale(1);
@@ -30,7 +30,7 @@
   transform: translateX(-50%) translateY(10px) scale(0.95);
 }
 
-/* Custom animations */
+
 @keyframes pulseGlow {
   0%, 100% {
     box-shadow: 0 0 40px rgba(59, 130, 246, 0.4);
@@ -96,12 +96,12 @@
   animation: ping-slow 2s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
-/* Hover effects */
+
 .avatar-container:hover img {
   filter: brightness(110%) drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5));
 }
 
-/* Performance optimizations */
+
 .avatar-container,
 .avatar-container * {
   -webkit-transform: translateZ(0);
@@ -110,7 +110,7 @@
   backface-visibility: hidden;
 }
 
-/* Responsive adjustments */
+
 @media (max-width: 768px) {
   .avatar-container {
     transform: scale(0.9);
@@ -131,7 +131,7 @@
   }
 }
 
-/* Accessibility */
+
 @media (prefers-reduced-motion: reduce) {
   .avatar-container,
   .animate-spin-slow,
@@ -148,7 +148,7 @@
   outline-offset: 4px;
 }
 
-/* High contrast support */
+
 @media (prefers-contrast: high) {
   .bg-slate-800\/40 {
     background: rgba(0, 0, 0, 0.9);

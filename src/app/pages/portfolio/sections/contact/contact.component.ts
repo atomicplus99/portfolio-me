@@ -20,7 +20,6 @@ import { ContactMethodsComponent } from './components/contact-methods/contact-me
     ContactHeaderComponent,
     ContactFormComponent,
     ContactMethodsComponent,
-    TechBackgroundComponent
   ],
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.css']
@@ -69,24 +68,20 @@ export class ContactComponent implements OnInit, OnDestroy {
     this.isSubmitting = true;
     
     try {
-      // Simular delay de envío
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // Enviar email
       const success = await this.emailService.sendEmail(formData, this.config.email.recipient);
       
       if (success) {
         this.showSuccess = true;
         this.contactFormComponent.resetForm();
         
-        // Ocultar mensaje de éxito después de 5 segundos
         setTimeout(() => {
           this.showSuccess = false;
         }, 5000);
       }
     } catch (error) {
       console.error('Error sending message:', error);
-      // Aquí podrías mostrar un mensaje de error
     } finally {
       this.isSubmitting = false;
     }
@@ -102,21 +97,17 @@ export class ContactComponent implements OnInit, OnDestroy {
 
   private createContactEffect(): void {
     
-    // Aquí podrías agregar efectos visuales adicionales
   }
 
   onInputFocus(fieldName: string): void {
-    // Efecto sutil de focus
    
   }
 
   onInputBlur(fieldName: string): void {
-    // Validation feedback
   
   }
 
   onCardHover(methodName: string): void {
-    // Hover effect
   
   }
 }

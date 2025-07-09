@@ -1,4 +1,3 @@
-// skills/interfaces/skill.interface.ts
 export interface Skill {
   name: string;
   level: number;
@@ -14,7 +13,6 @@ export interface SkillCategory {
   skills?: Skill[];
 }
 
-// skills/interfaces/stats.interface.ts
 export interface LanguageInfo {
   name: string;
   level: string;

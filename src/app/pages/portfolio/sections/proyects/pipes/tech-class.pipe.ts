@@ -1,5 +1,4 @@
 
-// projects/pipes/tech-class.pipe.ts
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({

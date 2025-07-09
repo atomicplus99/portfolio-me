@@ -31,7 +31,6 @@ export class VisualEffectsService {
     this.effectsInterval = window.setInterval(() => {
       const currentParticles = this.particlesSubject.value;
       
-      // Actualizar algunas partículas suavemente
       for (let i = 0; i < 2; i++) {
         const randomIndex = Math.floor(Math.random() * currentParticles.length);
         currentParticles[randomIndex].x = Math.random() * 100;

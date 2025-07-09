@@ -1,11 +1,9 @@
-<a (click)="linkClick.emit()"
-       [ngClass]="isVisible() ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'"
-       [class]="linkClasses()"
-       [style.transition-delay]="delay()">
-      {{ label() }}
-      <span class="absolute -bottom-1.5 left-0 w-0 h-0.5 
-                   bg-gradient-to-r from-blue-400 to-cyan-300
-                   transition-all duration-400 
-                   group-hover:w-full">
-      </span>
-    </a>
+<a (click)="linkClick.emit()" [ngClass]="isVisible() ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'"
+  [class]="linkClasses()" [style.transition-delay]="delay()">
+  {{ label() }}
+  <span class="absolute -bottom-1.5 left-0 w-0 h-0.5 
+               bg-gradient-to-r from-blue-400 to-cyan-300
+               transition-all duration-200 
+               group-hover:w-full">
+  </span>
+</a>

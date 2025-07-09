@@ -32,7 +32,6 @@ export class ThreejsCanvasComponent implements AfterViewInit, OnDestroy {
   @Output() firstInteraction = new EventEmitter<void>();
   @Output() cursorChanged = new EventEmitter<string>();
 
-  // Mouse Controls
   private isMouseDown = false;
   private mouseX = 0;
   private mouseY = 0;
@@ -41,7 +40,6 @@ export class ThreejsCanvasComponent implements AfterViewInit, OnDestroy {
   private currentRotationX = 0;
   private currentRotationY = 0;
 
-  // Touch Controls
   private touches: Map<number, TouchInfo> = new Map();
   private lastTouchDistance = 0;
   private touchStartTime = 0;
@@ -113,7 +111,6 @@ export class ThreejsCanvasComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  // Mouse Events
   onMouseDown(event: MouseEvent): void {
     if (this.isMobile) return;
 
@@ -154,7 +151,7 @@ export class ThreejsCanvasComponent implements AfterViewInit, OnDestroy {
 
   onMouseUp(): void {
     if (this.isMobile) return;
-    this.isMouseDown = false;
+        this.isMouseDown = false;
   }
 
   onWheel(event: WheelEvent): void {
@@ -167,7 +164,6 @@ export class ThreejsCanvasComponent implements AfterViewInit, OnDestroy {
       const minDistance = 12;
       const maxDistance = 40;
 
-      // Implementar zoom con el servicio
       const currentDistance = 20; // Obtener distancia actual del servicio
       const newDistance = Math.max(minDistance, Math.min(maxDistance,
         currentDistance + event.deltaY * zoomSpeed * 0.01));
@@ -176,7 +172,6 @@ export class ThreejsCanvasComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  // Touch Events
   private onTouchStart(event: TouchEvent): void {
     this.firstInteraction.emit();
     this.touchStartTime = Date.now();
@@ -311,7 +306,6 @@ export class ThreejsCanvasComponent implements AfterViewInit, OnDestroy {
   private setupMouseEventListeners(): void {
     const canvas = this.canvasRef.nativeElement;
 
-    // ✅ ESTO ES LO QUE FALTA - Mouse click para desktop
     canvas.addEventListener('click', (event) => {
       if (!this.isMobile) {
         this.handleMouseClick(event);
@@ -334,7 +328,6 @@ export class ThreejsCanvasComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  // Public methods for parent component
   selectProject(projectId: number): void {
     this.threejsService.selectProject(projectId);
   }

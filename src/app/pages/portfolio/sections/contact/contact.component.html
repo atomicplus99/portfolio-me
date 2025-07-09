@@ -1,43 +1,41 @@
- <section class="contact-section w-full min-h-screen relative flex items-center justify-center py-16 px-4 overflow-hidden">
-
-      <!-- SUBTLE TECH BACKGROUND -->
-      <app-tech-background [particles]="techParticles"></app-tech-background>
-
-      <div class="container mx-auto max-w-6xl relative z-10">
-
-        <!-- PROFESSIONAL HEADER -->
-        <app-contact-header
-          [title]="config.header.title"
-          [subtitle]="config.header.subtitle"
-          [status]="config.header.status">
-        </app-contact-header>
-
-        <div class="grid lg:grid-cols-2 gap-12 items-start">
-
-          <!-- CONTACT FORM -->
-          <div class="order-2 lg:order-1">
-            <app-contact-form
-              #contactForm
-              [formTitle]="config.form.title"
-              [formSubtitle]="config.form.subtitle"
-              [submitText]="config.form.submitText"
-              [successMessage]="config.form.successMessage"
-              [isSubmitting]="isSubmitting"
-              [showSuccess]="showSuccess"
-              (formSubmit)="onFormSubmit($event)"
-              (inputFocus)="onInputFocus($event)"
-              (inputBlur)="onInputBlur($event)">
-            </app-contact-form>
-          </div>
-
-          <!-- CONTACT METHODS -->
-          <div class="order-1 lg:order-2">
-            <app-contact-methods
-              [methods]="config.methods"
-              (methodClick)="openContactMethod($event)"
-              (methodHover)="onCardHover($event)">
-            </app-contact-methods>
-          </div>
-        </div>
+<section class="contact-section w-full min-h-screen relative flex items-center justify-center py-16 px-4 overflow-hidden">
+  <!-- Tech background comentado para eliminarlo -->
+  <!-- <app-tech-background [particles]="techParticles"></app-tech-background> -->
+  
+  <div class="container mx-auto max-w-7xl relative z-10 px-8">
+    
+    <app-contact-header
+      [title]="config.header.title"
+      [subtitle]="config.header.subtitle"
+      [status]="config.header.status">
+    </app-contact-header>
+    
+    <div class="grid lg:grid-cols-2 gap-16 items-start max-w-none">
+      
+      <!-- Formulario - Más ancho -->
+      <div class="order-2 lg:order-1 w-full min-w-[600px] max-w-[800px]">
+        <app-contact-form
+          #contactForm
+          [formTitle]="config.form.title"
+          [formSubtitle]="config.form.subtitle"
+          [submitText]="config.form.submitText"
+          [successMessage]="config.form.successMessage"
+          [isSubmitting]="isSubmitting"
+          [showSuccess]="showSuccess"
+          (formSubmit)="onFormSubmit($event)"
+          (inputFocus)="onInputFocus($event)"
+          (inputBlur)="onInputBlur($event)">
+        </app-contact-form>
       </div>
-    </section>
+      
+      <!-- Métodos de contacto -->
+      <div class="order-1 lg:order-2 w-full">
+        <app-contact-methods
+          [methods]="config.methods"
+          (methodClick)="openContactMethod($event)"
+          (methodHover)="onCardHover($event)">
+        </app-contact-methods>
+      </div>
+    </div>
+  </div>
+</section>

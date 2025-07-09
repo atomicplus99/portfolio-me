@@ -13,10 +13,10 @@ export class HeaderNavLinkComponent {
   isVisible = input(false);
   delay = input('0s');
   linkClasses = input(`group relative cursor-pointer
-     text-white text-sm font-semibold tracking-[0.3em]
-     uppercase hover:text-blue-300 transition-all
-     duration-800 ease-out`);
-  
+   text-white text-sm font-semibold tracking-[0.3em]
+   uppercase hover:text-blue-300 transition-all
+   duration-200 ease-out`);
+
   linkClick = output<void>();
 
- }
+}

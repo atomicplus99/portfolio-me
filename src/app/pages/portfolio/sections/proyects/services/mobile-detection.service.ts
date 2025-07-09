@@ -1,4 +1,3 @@
-// projects/services/mobile-detection.service.ts
 import { Injectable, signal } from '@angular/core';
 
 @Injectable({

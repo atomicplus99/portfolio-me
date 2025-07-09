@@ -1,0 +1,471 @@
+
+<div class="modal-overlay" 
+     [ngClass]="modalClasses()" 
+     (click)="onClose()" 
+     *ngIf="isModalVisible() && currentProject()" 
+     role="dialog"
+     [attr.aria-label]="'Detalles del proyecto ' + currentProject()!.name" 
+     aria-modal="true">
+
+  
+  <div class="modal-content" 
+       [class.mobile]="isMobile" 
+       [class.tablet]="viewportSize() === 'tablet'"
+       (click)="$event.stopPropagation()">
+
+    
+    <header class="modal-header">
+      <div class="project-info">
+        <div class="project-meta">
+          <div class="status-indicator" 
+               [class]="getStatusClass(currentProject()!.status)"
+               [attr.aria-label]="'Estado: ' + currentProject()!.status"></div>
+          <span class="status-text">{{ currentProject()!.status | titlecase }}</span>
+        </div>
+        <h1 class="project-title">{{ currentProject()!.name }}</h1>
+        <p class="project-type">{{ currentProject()!.type | titlecase }}</p>
+      </div>
+
+      
+      <nav class="modal-navigation" [class.mobile]="isMobile">
+        <button class="nav-btn" 
+                [disabled]="!hasPreviousProject()" 
+                (click)="onPreviousProject()"
+                [attr.aria-label]="getAriaLabel('previous-project')" 
+                type="button">
+          <span class="nav-icon" aria-hidden="true">‹</span>
+        </button>
+
+        <span class="project-counter"
+              [attr.aria-label]="'Proyecto ' + currentProjectIndex() + ' de ' + totalProjects()">
+          {{ currentProjectIndex() }} / {{ totalProjects() }}
+        </span>
+
+        <button class="nav-btn" 
+                [disabled]="!hasNextProject()" 
+                (click)="onNextProject()"
+                [attr.aria-label]="getAriaLabel('next-project')" 
+                type="button">
+          <span class="nav-icon" aria-hidden="true">›</span>
+        </button>
+      </nav>
+
+      
+      <button class="close-btn" 
+              (click)="onClose()" 
+              [attr.aria-label]="getAriaLabel('close-modal')" 
+              type="button">
+        <span aria-hidden="true">×</span>
+      </button>
+    </header>
+
+    
+    <nav class="tabs-nav" role="tablist">
+      <button *ngFor="let tab of getTabTypes(); trackBy: trackByFeature" 
+              class="tab-btn"
+              [class.active]="activeTab() === tab" 
+              (click)="onTabChange(tab)"
+              [attr.aria-label]="getAriaLabel('tab', tab)" 
+              [attr.aria-selected]="activeTab() === tab" 
+              role="tab"
+              type="button">
+        <span class="tab-icon" aria-hidden="true">{{ getTabIcon(tab) }}</span>
+        <span class="tab-text">{{ getTabLabel(tab) }}</span>
+      </button>
+    </nav>
+
+    
+    <main class="modal-body" *ngIf="currentProjectDetails()">
+
+      
+      <section class="tab-content" 
+               [class.active]="activeTab() === 'overview'"
+               role="tabpanel" 
+               [attr.aria-labelledby]="'tab-overview'">
+
+        <article class="overview-section">
+          <h2 class="section-title">Descripción Detallada</h2>
+          <p class="extended-description">
+            {{ getContextualDescription(currentProjectDetails()!.extendedDescription) }}
+          </p>
+        </article>
+
+        <section class="objectives-section">
+          <h3 class="section-title">Objetivos del Proyecto</h3>
+          <ul class="objectives-list" role="list">
+            <li *ngFor="let objective of currentProjectDetails()!.objectives; trackBy: trackByObjective"
+                class="objective-item" 
+                role="listitem">
+              <span class="objective-icon" aria-hidden="true">🎯</span>
+              {{ objective }}
+            </li>
+          </ul>
+        </section>
+
+        <section class="features-section">
+          <h3 class="section-title">Características Principales</h3>
+          <div class="features-grid">
+            <div *ngFor="let feature of currentProjectDetails()!.keyFeatures.slice(0, getResponsiveFeatureCount()); trackBy: trackByFeature"
+                 class="feature-card">
+              <span class="feature-icon" aria-hidden="true">✨</span>
+              <span class="feature-text">{{ feature }}</span>
+            </div>
+          </div>
+
+          
+          <button *ngIf="viewportSize() === 'mobile' && currentProjectDetails()!.keyFeatures.length > 6"
+                  class="show-more-btn" 
+                  (click)="onTabChange('tech')" 
+                  type="button">
+            Ver más características →
+          </button>
+        </section>
+
+        <section class="process-section" *ngIf="viewportSize() !== 'mobile'">
+          <h3 class="section-title">Proceso de Desarrollo</h3>
+          <div class="process-info">
+            <div class="process-item">
+              <span class="process-label">Metodología:</span>
+              <span class="process-value">{{ currentProjectDetails()!.developmentProcess.methodology }}</span>
+            </div>
+            <div class="process-item">
+              <span class="process-label">Duración:</span>
+              <span class="process-value">{{ currentProjectDetails()!.developmentProcess.duration | formatDuration }}</span>
+            </div>
+            <div class="process-item">
+              <span class="process-label">Equipo:</span>
+              <span class="process-value">{{ currentProjectDetails()!.developmentProcess.teamSize }} desarrolladores</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="learnings-section" *ngIf="viewportSize() === 'desktop'">
+          <h3 class="section-title">Aprendizajes Clave</h3>
+          <ul class="learnings-list" role="list">
+            <li *ngFor="let learning of currentProjectDetails()!.learnings.slice(0, 3); trackBy: trackByLearning"
+                class="learning-item" 
+                role="listitem">
+              <span class="learning-icon" aria-hidden="true">💡</span>
+              {{ learning }}
+            </li>
+          </ul>
+        </section>
+      </section>
+
+      
+      <section class="tab-content" 
+               [class.active]="activeTab() === 'tech'"
+               role="tabpanel" 
+               [attr.aria-labelledby]="'tab-tech'">
+
+        <div class="tech-stack-section">
+          <h3 class="section-title">Stack Tecnológico</h3>
+          <div class="tech-stack-grid">
+            <div *ngFor="let tech of currentProject()!.techStack; trackBy: trackByTech" 
+                 class="tech-item"
+                 [class]="tech | techClass">
+              <span class="tech-icon" aria-hidden="true">{{ tech | techIcon }}</span>
+              <span class="tech-name">{{ tech }}</span>
+            </div>
+          </div>
+        </div>
+
+        <section class="architecture-section">
+          <h3 class="section-title">Arquitectura</h3>
+          <p class="architecture-description">
+            {{ currentProjectDetails()!.architecture | modalResponsive:viewportSize() }}
+          </p>
+        </section>
+
+        <section class="patterns-section" *ngIf="viewportSize() !== 'mobile'">
+          <h3 class="section-title">Patrones de Diseño</h3>
+          <div class="patterns-grid">
+            <div *ngFor="let pattern of currentProjectDetails()!.designPatterns; trackBy: trackByPattern"
+                 class="pattern-item">
+              <span class="pattern-icon" aria-hidden="true">🏗️</span>
+              <span class="pattern-name">{{ pattern }}</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="challenges-section">
+          <h3 class="section-title">Desafíos Técnicos</h3>
+          <ul class="challenges-list" role="list">
+            <li *ngFor="let challenge of currentProjectDetails()!.technicalChallenges; trackBy: trackByChallenge"
+                class="challenge-item" 
+                role="listitem">
+              <span class="challenge-icon" aria-hidden="true">⚡</span>
+              {{ challenge | modalResponsive:viewportSize() }}
+            </li>
+          </ul>
+        </section>
+
+        
+        <section class="learnings-section" *ngIf="viewportSize() === 'mobile'">
+          <h3 class="section-title">Aprendizajes Clave</h3>
+          <ul class="learnings-list" role="list">
+            <li *ngFor="let learning of currentProjectDetails()!.learnings; trackBy: trackByLearning"
+                class="learning-item" 
+                role="listitem">
+              <span class="learning-icon" aria-hidden="true">💡</span>
+              {{ learning | modalResponsive:viewportSize() }}
+            </li>
+          </ul>
+        </section>
+      </section>
+
+      
+      <section class="tab-content" 
+               [class.active]="activeTab() === 'gallery'"
+               role="tabpanel" 
+               [attr.aria-labelledby]="'tab-gallery'">
+
+        
+        <div class="gallery-viewer">
+          <div class="gallery-main" *ngIf="currentGalleryItem()">
+
+            
+            <div class="media-container"
+                 *ngIf="currentGalleryItem()!.type === 'image' || currentGalleryItem()!.type === 'gif'">
+              <img [src]="currentGalleryItem()!.url" 
+                   [alt]="currentGalleryItem()!.title"
+                   class="gallery-image" 
+                   (load)="onImageLoad($event)" 
+                   (error)="onImageError($event)"
+                   (click)="showLightboxModal()" 
+                   loading="lazy">
+
+              <button class="zoom-btn" 
+                      (click)="showLightboxModal()"
+                      [attr.aria-label]="'Ampliar imagen: ' + currentGalleryItem()!.title" 
+                      type="button">
+                <span aria-hidden="true">🔍</span>
+              </button>
+            </div>
+
+            
+            <div class="media-container" *ngIf="currentGalleryItem()!.type === 'video'">
+              <video class="gallery-video" 
+                     [src]="currentGalleryItem()!.url" 
+                     controls 
+                     preload="metadata"
+                     (play)="onVideoPlay()" 
+                     (pause)="onVideoPause()"
+                     [attr.aria-label]="'Video: ' + currentGalleryItem()!.title">
+                Tu navegador no soporta video HTML5.
+              </video>
+            </div>
+
+            
+            <button class="gallery-nav prev" 
+                    (click)="onGalleryPrevious()"
+                    [disabled]="!hasGalleryPrevious()" 
+                    [attr.aria-label]="getAriaLabel('gallery-previous')"
+                    type="button">
+              <span aria-hidden="true">‹</span>
+            </button>
+
+            <button class="gallery-nav next" 
+                    (click)="onGalleryNext()" 
+                    [disabled]="!hasGalleryNext()"
+                    [attr.aria-label]="getAriaLabel('gallery-next')" 
+                    type="button">
+              <span aria-hidden="true">›</span>
+            </button>
+          </div>
+
+          
+          <div class="gallery-info" *ngIf="currentGalleryItem()">
+            <h4 class="gallery-title">{{ currentGalleryItem()!.title }}</h4>
+            <p class="gallery-description" *ngIf="currentGalleryItem()!.description">
+              {{ currentGalleryItem()!.description! | modalResponsive:viewportSize() }}
+            </p>
+
+            
+            <div class="gallery-counter" *ngIf="isMobile">
+              <span>{{ currentGalleryIndex() + 1 }} / {{ currentProjectDetails()!.gallery.length }}</span>
+            </div>
+          </div>
+        </div>
+
+        
+        <section class="gallery-thumbnails" *ngIf="!isMobile">
+          <div class="thumbnails-grid">
+            <button *ngFor="let item of currentProjectDetails()!.gallery; trackBy: trackByGalleryItem; let i = index"
+                    class="thumbnail-btn" 
+                    [class.active]="i === currentGalleryIndex()"
+                    (click)="onGalleryItemClick(i)" 
+                    [attr.aria-label]="'Ver ' + item.title" 
+                    type="button">
+
+              <img *ngIf="item.type === 'image' || item.type === 'gif'" 
+                   [src]="item.thumbnail || item.url"
+                   [alt]="item.title" 
+                   class="thumbnail-img" 
+                   loading="lazy">
+
+              <div *ngIf="item.type === 'video'" class="thumbnail-video">
+                <span class="video-icon" aria-hidden="true">▶</span>
+              </div>
+
+              <div class="thumbnail-overlay">
+                <span class="thumbnail-type">{{ item.type }}</span>
+              </div>
+            </button>
+          </div>
+        </section>
+      </section>
+
+      
+      <section class="tab-content" 
+               [class.active]="activeTab() === 'performance'"
+               role="tabpanel" 
+               [attr.aria-labelledby]="'tab-performance'">
+
+        <div class="metrics-section">
+          <h3 class="section-title">Métricas de Performance</h3>
+
+          <div class="metrics-grid" [class.mobile]="isMobile">
+            <div class="metric-card lighthouse">
+              <div class="metric-icon" aria-hidden="true">🚀</div>
+              <div class="metric-info">
+                <span class="metric-label">Lighthouse Score</span>
+                <span class="metric-value">{{ currentProjectDetails()!.performanceMetrics.lightHouseScore }}/100</span>
+              </div>
+            </div>
+
+            <div class="metric-card load-time">
+              <div class="metric-icon" aria-hidden="true">⚡</div>
+              <div class="metric-info">
+                <span class="metric-label">Tiempo de Carga</span>
+                <span class="metric-value">{{ currentProjectDetails()!.performanceMetrics.loadTime }}</span>
+              </div>
+            </div>
+
+            <div class="metric-card bundle-size" *ngIf="viewportSize() !== 'mobile'">
+              <div class="metric-icon" aria-hidden="true">📦</div>
+              <div class="metric-info">
+                <span class="metric-label">Tamaño Bundle</span>
+                <span class="metric-value">{{ currentProjectDetails()!.performanceMetrics.bundleSize | formatFileSize }}</span>
+              </div>
+            </div>
+
+            <div class="metric-card core-vitals">
+              <div class="metric-icon" aria-hidden="true">❤️</div>
+              <div class="metric-info">
+                <span class="metric-label">Core Web Vitals</span>
+                <span class="metric-value">{{ currentProjectDetails()!.performanceMetrics.coreWebVitals }}</span>
+              </div>
+            </div>
+          </div>
+
+          
+          <div class="detailed-metrics" *ngIf="viewportSize() === 'desktop'">
+            <h4 class="subsection-title">Métricas Detalladas</h4>
+            <div class="detailed-metrics-grid">
+              <div class="detailed-metric">
+                <span class="detailed-label">First Contentful Paint:</span>
+                <span class="detailed-value">{{ currentProjectDetails()!.performanceMetrics.firstContentfulPaint }}</span>
+              </div>
+              <div class="detailed-metric">
+                <span class="detailed-label">Largest Contentful Paint:</span>
+                <span class="detailed-value">{{ currentProjectDetails()!.performanceMetrics.largestContentfulPaint }}</span>
+              </div>
+              <div class="detailed-metric">
+                <span class="detailed-label">Cumulative Layout Shift:</span>
+                <span class="detailed-value">{{ currentProjectDetails()!.performanceMetrics.cumulativeLayoutShift }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    
+    <footer class="modal-footer" [class.mobile]="isMobile">
+      <button class="action-btn secondary" 
+              (click)="onActionClick('code')" 
+              *ngIf="currentProject()!.codeUrl"
+              type="button" 
+              [attr.aria-label]="'Ver código de ' + currentProject()!.name">
+        <span class="btn-icon" aria-hidden="true">💻</span>
+        <span class="btn-text">{{ viewportSize() === 'mobile' ? 'Código' : 'Ver Código' }}</span>
+      </button>
+
+      <button class="action-btn primary" 
+              (click)="onActionClick('demo')" 
+              *ngIf="currentProject()!.demoUrl"
+              type="button" 
+              [attr.aria-label]="'Ver demo de ' + currentProject()!.name">
+        <span class="btn-icon" aria-hidden="true">🌐</span>
+        <span class="btn-text">{{ viewportSize() === 'mobile' ? 'Demo' : 'Ver Proyecto' }}</span>
+      </button>
+    </footer>
+  </div>
+</div>
+
+
+<div class="lightbox-overlay" 
+     [class.visible]="showLightbox()" 
+     (click)="onCloseLightbox()"
+     *ngIf="showLightbox() && currentGalleryItem()" 
+     role="dialog" 
+     aria-modal="true"
+     [attr.aria-label]="'Imagen ampliada: ' + currentGalleryItem()!.title">
+
+  <div class="lightbox-content" (click)="$event.stopPropagation()">
+    <img [src]="currentGalleryItem()!.url" 
+         [alt]="currentGalleryItem()!.title" 
+         class="lightbox-image"
+         (load)="onImageLoad($event)" 
+         (error)="onImageError($event)">
+
+    <button class="lightbox-close" 
+            (click)="onCloseLightbox()" 
+            [attr.aria-label]="'Cerrar imagen ampliada'"
+            type="button">
+      <span aria-hidden="true">×</span>
+    </button>
+
+    <div class="lightbox-info" *ngIf="currentGalleryItem()!.description">
+      <h4>{{ currentGalleryItem()!.title }}</h4>
+      <p>{{ currentGalleryItem()!.description }}</p>
+    </div>
+
+    
+    <button class="lightbox-nav prev" 
+            (click)="onGalleryPrevious(); $event.stopPropagation()"
+            [disabled]="!hasGalleryPrevious()" 
+            [attr.aria-label]="'Imagen anterior'" 
+            type="button" 
+            *ngIf="!isMobile">
+      <span aria-hidden="true">‹</span>
+    </button>
+
+    <button class="lightbox-nav next" 
+            (click)="onGalleryNext(); $event.stopPropagation()"
+            [disabled]="!hasGalleryNext()" 
+            [attr.aria-label]="'Siguiente imagen'" 
+            type="button" 
+            *ngIf="!isMobile">
+      <span aria-hidden="true">›</span>
+    </button>
+  </div>
+</div>
+
+
+<div class="modal-loading" 
+     *ngIf="isLoading()" 
+     [attr.aria-label]="'Cargando detalles del proyecto'">
+  <div class="loading-spinner" aria-hidden="true"></div>
+  <span class="loading-text">Cargando detalles...</span>
+</div>
+
+
+<div class="sr-only" aria-live="polite">
+  <span *ngIf="isModalVisible() && currentProject()">
+    Mostrando detalles de {{ currentProject()!.name }}.
+    Pestaña activa: {{ getTabLabel(activeTab()) }}.
+    {{ activeTab() === 'gallery' ? 'Imagen ' + (currentGalleryIndex() + 1) + ' de ' + currentProjectDetails()!.gallery.length : '' }}
+  </span>
+</div>

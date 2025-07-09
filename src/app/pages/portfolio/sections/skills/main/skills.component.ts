@@ -34,7 +34,6 @@ export class SkillsComponent implements OnInit, OnDestroy {
     availability: { status: '', description: '', statusColor: 'green' }
   });
 
-  // Computed signals con verificaciones type-safe
   protected readonly visibleCards = computed(() => {
     try {
       return this.animationService?.getVisibleItems() || [];
@@ -71,12 +70,10 @@ export class SkillsComponent implements OnInit, OnDestroy {
     private skillsService: SkillsService,
     private animationService: AnimationService
   ) {
-    // Inicializar signals después de la inyección
     this.initializeSignals();
   }
 
   private initializeSignals(): void {
-    // Inicializar con datos reales del servicio
     this.skills.set(this.skillsService.getSkills());
     this.categories.set(this.skillsService.getCategories());
     this.statsInfo.set(this.skillsService.getStatsInfo());
@@ -96,12 +93,10 @@ export class SkillsComponent implements OnInit, OnDestroy {
     this.animationService.initializeStaggeredAnimation(skillsCount, 800);
   }
 
-  // Métodos públicos para acceso desde template
   protected getSkillsByCategory(categoryName: string): Skill[] {
     return this.skillsService.getSkillsByCategory(categoryName);
   }
 
-  // Getters para template (opcionales)
   protected getSkills = (): Skill[] => this.skills();
   protected getCategories = (): SkillCategory[] => this.categories();
   protected getStatsInfo = (): StatsInfo => this.statsInfo();
