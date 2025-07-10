@@ -80,7 +80,7 @@ export class ContactComponent implements OnInit, OnDestroy {
         }, 5000);
       }
     } catch (error) {
-      console.error('Error sending message:', error);
+
     } finally {
       this.isSubmitting = false;
     }

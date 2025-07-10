@@ -47,7 +47,7 @@ export class AppLifecycleManagerService {
 
       this.lifecycleState.set('ready');
     } catch (error) {
-      console.error('App initialization failed:', error);
+
       this.lifecycleState.set('error');
       throw error;
     }
@@ -91,8 +91,7 @@ export class AppLifecycleManagerService {
       
       this.lifecycleState.set('ready');
     } catch (error) {
-      console.error('Performance optimization failed:', error);
-      this.lifecycleState.set('ready'); // Continuar funcionando
+      this.lifecycleState.set('ready'); 
     }
   }
 

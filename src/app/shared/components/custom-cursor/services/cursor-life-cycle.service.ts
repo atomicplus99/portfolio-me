@@ -39,7 +39,7 @@ export class CursorLifecycleService {
       
       this.initialized = true;
     } catch (error) {
-      console.error('Error initializing cursor:', error);
+
       this.destroy(); // Cleanup en caso de error
     }
   }
@@ -55,7 +55,7 @@ export class CursorLifecycleService {
       
       this.initialized = false;
     } catch (error) {
-      console.error('Error destroying cursor:', error);
+
     }
   }
 

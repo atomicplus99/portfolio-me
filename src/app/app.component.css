@@ -1,17 +1,12 @@
-/* ACTUALIZACIÓN PARA TU app.component.css */
-
-/* CORREGIDO: Particles layer para que funcione en viewport fijo */
 .particles-layer {
-  position: fixed;    /* Mantener fixed */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;      /* Solo viewport - mejor performance */
-  z-index: 15;
+  height: 100vh;
+  z-index: 5; /* CAMBIAR DE 15 A 5 */
   pointer-events: none;
   transition: opacity 0.4s ease-out;
-  
-  /* OPTIMIZACIONES DE RENDERING */
   transform: translateZ(0);
   will-change: transform, opacity;
   contain: layout style paint;
@@ -117,4 +112,9 @@
   .cursor-layer {
     display: none !important;
   }
+}
+
+.header-fixed {
+  position: relative;
+  z-index: 50;
 }

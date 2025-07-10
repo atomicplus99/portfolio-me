@@ -13,7 +13,6 @@ body {
   padding: 0;
   overflow-x: hidden;
   width: 100%;
-  
   background: linear-gradient(135deg, #0f172a 0%, #1f2937 50%, #18181b 100%);
   min-height: 100vh;
 }
@@ -22,7 +21,6 @@ body {
   transform-origin: 0 0;
   width: 100%;
   min-height: 100vh;
-  
   background: linear-gradient(135deg, #0f172a 0%, #1f2937 50%, #18181b 100%);
 }
 
@@ -31,35 +29,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-*,
-*::before,
-*::after,
-html,
-body,
-div,
-span,
-p,
-a,
-button,
-input,
-textarea,
-select,
-h1, h2, h3, h4, h5, h6,
-.clickable,
-.btn,
-.control-button,
-[role="button"],
-[tabindex] {
-  cursor: none !important;
-}
-
-.zoom-container *,
-.portfolio-content *,
-app-header *,
+.zoom-container *:not(.mobile-menu):not(.mobile-menu *),
+.portfolio-content *:not(.mobile-menu):not(.mobile-menu *),
+app-header *:not(.mobile-menu):not(.mobile-menu *),
 app-hero *,
 app-about *,
 app-projects *,
 app-skills *,
 app-contact * {
-  cursor: none !important;
+  cursor: none;
 }

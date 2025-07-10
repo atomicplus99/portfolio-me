@@ -8,10 +8,11 @@ import { Subject } from 'rxjs';
 import { NavigationItem } from './interfaces/header.interfaces';
 import { NavigationService } from './services/navigation.service';
 
+
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, HeaderLogoComponent, HeaderDesktopNavComponent, HeaderRightNavComponent, MobileMenuComponent ],
+  imports: [CommonModule, HeaderLogoComponent, HeaderDesktopNavComponent, HeaderRightNavComponent, MobileMenuComponent,],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
@@ -55,7 +56,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   toggleMobileMenu(): void {
-     console.log('Toggle clicked!');
     this.mobileMenuOpen.update(current => !current);
   }
 
