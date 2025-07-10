@@ -18,6 +18,7 @@ import { CustomCursorComponent } from './shared/components/custom-cursor/main/ts
 import { HeroComponent } from './pages/portfolio/sections/hero/main/hero.component';
 
 import { LoaderService } from './shared/components/loader/services/loader.service';
+
 import { AvatarComponent } from './shared/components/avatar/main/avatar.component';
 import { AboutComponent } from './pages/portfolio/sections/about/about.component';
 import { AboutMeComponent } from './pages/portfolio/sections/about-me/about-me.component';
@@ -28,10 +29,11 @@ import { FooterComponent } from './pages/portfolio/sections/footer/footer.compon
 import { AppLifecycleManagerService } from './core/global/config/app-life-cycle.service';
 import { AppConfigurationService } from './core/global/config/app-configuration.service';
 import { ElegantLoaderComponent } from './shared/components/loader/loader.component';
+import { LenisScrollService } from './core/global/services/portfolio-scroll.service';
 
 @Component({
   selector: 'app-root',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -59,6 +61,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // DEPENDENCIAS BÁSICAS
   readonly loaderService = inject(LoaderService);
+  private readonly lenisService = inject(LenisScrollService);
   private readonly renderer = inject(Renderer2);
   private readonly cdr = inject(ChangeDetectorRef);
 
@@ -88,10 +91,40 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     setTimeout(() => {
       this.ensureAllSectionsLoaded();
     }, 1000);
+
+    // INICIALIZAR LENIS DESPUÉS DEL LOADER
+    this.initLenisWhenReady();
   }
 
   ngOnDestroy(): void {
     this.lifecycleManager.destroyApp(this.renderer);
+    this.lenisService.destroy();
+  }
+
+  // INICIALIZAR LENIS CUANDO ESTÉ LISTO
+  private async initLenisWhenReady(): Promise<void> {
+    const checkLoader = async () => {
+      if (!this.loaderService.state().isLoading) {
+        // Activar Lenis
+        setTimeout(async () => {
+          await this.lenisService.initLenis();
+          console.log('✨ Lenis activado');
+        }, 1000);
+      } else {
+        setTimeout(checkLoader, 200);
+      }
+    };
+    
+    await checkLoader();
+  }
+
+  // MÉTODOS DE SCROLL CON LENIS
+  scrollToSection(sectionId: string): void {
+    this.lenisService.scrollTo(`#${sectionId}`);
+  }
+
+  scrollToTop(): void {
+    this.lenisService.scrollToTop();
   }
 
   // SIMPLIFICADO: Carga directa de todas las secciones

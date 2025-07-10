@@ -20,6 +20,8 @@ export class ParticleSystem {
     this.initializeCamera();
     this.initializeRenderer();
     this.createParticles();
+    console.log('🔍 Config recibida:', config);
+    console.log('🔍 Size en material:', this.config.size);
   }
 
   private initializeCamera(): void {
@@ -52,10 +54,12 @@ export class ParticleSystem {
     const positions = new Float32Array(this.config.count * 3);
     const colors = new Float32Array(this.config.count * 3);
 
+
     // GALÁCTICO: Distribución simple en todo el espacio
     const spread = 150; // Área amplia
     const height = 300; // Altura para múltiples secciones
     const depth = 80;   // Profundidad moderada
+
 
     for (let i = 0; i < this.config.count * 3; i += 3) {
       // SIMPLE: Distribución uniforme
@@ -66,16 +70,17 @@ export class ParticleSystem {
       // GALÁCTICO: Colores azules/morados simples
       const color = new THREE.Color();
       const intensity = 0.3 + Math.random() * 0.7; // Variación de brillo
-      
+
       color.setHSL(
         0.55 + Math.random() * 0.2, // Azul a morado
         0.6 + Math.random() * 0.3,  // Saturación moderada
         intensity                    // Brillo variable
       );
-      
+
       colors[i] = color.r;
       colors[i + 1] = color.g;
       colors[i + 2] = color.b;
+
     }
 
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
@@ -94,7 +99,10 @@ export class ParticleSystem {
       alphaTest: 0.1,
       // ✅ ARREGLAR EL ERROR WEBGL:
       premultipliedAlpha: false
+
     });
+    console.log('🔍 Material size:', material.size);
+    console.log('🔍 Particle count:', this.config.count);
 
     this.particles = new THREE.Points(geometry, material);
     this.scene.add(this.particles);
@@ -105,19 +113,19 @@ export class ParticleSystem {
     const canvas = document.createElement('canvas');
     canvas.width = 32; // REDUCIDO: menos resolución = mejor performance
     canvas.height = 32;
-    
+
     const ctx = canvas.getContext('2d')!;
-    
+
     // Gradiente radial simple pero efectivo
     const gradient = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
     gradient.addColorStop(0, 'rgba(255, 255, 255, 1.0)');   // Centro sólido
     gradient.addColorStop(0.4, 'rgba(255, 255, 255, 0.7)'); // Medio
     gradient.addColorStop(0.8, 'rgba(255, 255, 255, 0.2)'); // Borde suave
     gradient.addColorStop(1, 'rgba(255, 255, 255, 0.0)');   // Transparente
-    
+
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, 32, 32);
-    
+
     const texture = new THREE.CanvasTexture(canvas);
     // ✅ ARREGLAR EL ERROR WEBGL:
     texture.premultiplyAlpha = false;
@@ -147,7 +155,7 @@ export class ParticleSystem {
 
     // SUTIL: Movimiento muy ligero solo en algunas partículas
     const positions = this.particles.geometry.attributes['position'].array as Float32Array;
-    
+
     // Solo actualizar cada 3 frames para performance
     if (Math.floor(elapsedTime * 60) % 3 === 0) {
       for (let i = 0; i < positions.length; i += 9) { // Solo cada 3ra partícula

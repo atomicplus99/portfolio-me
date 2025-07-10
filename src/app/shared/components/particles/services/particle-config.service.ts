@@ -14,7 +14,7 @@ export class ParticleConfigService {
 
   private readonly defaultConfig: ParticleConfig = {
     count: 1800,       // Densidad galáctica completa
-    size: 1.0,        // Puntos visibles
+    size: 0.8,        // Puntos visibles
     opacity: 0.7,     // Presencia moderada
     speed: 0.03,      // Movimiento galáctico lento
     colors: {
@@ -51,16 +51,10 @@ export class ParticleConfigService {
     }
   };
 
-  // UNIFICADO: Usa detección de AppPerformanceService
+
   getConfig(isMobile?: boolean): ParticleConfig {
-    const deviceInfo = this.performanceService.deviceInfo();
-    const mobile = isMobile ?? deviceInfo.isMobile;
-    
-    if (deviceInfo.isLowEnd) {
-      return this.lowEndConfig;
-    }
-    
-    return mobile ? this.mobileConfig : this.defaultConfig;
+
+     return this.defaultConfig; 
   }
 
   createCustomConfig(overrides: Partial<ParticleConfig>): ParticleConfig {
