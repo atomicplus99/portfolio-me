@@ -3,14 +3,12 @@ import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { ContactHeaderComponent } from './components/contact-header/contact-header.component';
 import { ContactFormComponent } from './components/contact-form/contact-form.component';
-
 import { TechBackgroundComponent } from './components/contact-background/contact-background.component';
 import { ContactConfig, ContactFormData, ContactMethod, TechParticle } from './interfaces/contact-interface';
 import { ContactConfigService } from './services/contact-config.service';
 import { EmailService } from './services/email.service';
 import { VisualEffectsService } from './services/visual-effects.service';
 import { ContactMethodsComponent } from './components/contact-methods/contact-methods.component';
-
 
 @Component({
   selector: 'app-contact',
@@ -20,6 +18,7 @@ import { ContactMethodsComponent } from './components/contact-methods/contact-me
     ContactHeaderComponent,
     ContactFormComponent,
     ContactMethodsComponent,
+    TechBackgroundComponent
   ],
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.css']
@@ -96,18 +95,18 @@ export class ContactComponent implements OnInit, OnDestroy {
   }
 
   private createContactEffect(): void {
-    
+    // Effect implementation
   }
 
   onInputFocus(fieldName: string): void {
-   
+    // Focus implementation
   }
 
   onInputBlur(fieldName: string): void {
-  
+    // Blur implementation
   }
 
   onCardHover(methodName: string): void {
-  
+    // Hover implementation
   }
 }

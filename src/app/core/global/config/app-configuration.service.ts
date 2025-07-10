@@ -14,14 +14,12 @@ export class AppConfigurationService {
     private sectionLoadingService: SectionLoadingService
   ) {}
 
-  // CONFIGURACIONES COMPUTADAS
   readonly cursorConfig = computed(() => {
     const baseConfig = this.performanceService.getCursorConfig();
     const overrides = this.configOverrides();
     return { ...baseConfig, ...overrides.cursor };
   });
 
-  // ELIMINADO: particleConfig - ahora ParticleConfigService es la única fuente
 
   readonly loadedSections = computed(() => {
     return this.sectionLoadingService.loadedSections();
@@ -35,7 +33,6 @@ export class AppConfigurationService {
     return this.performanceService.isScrolling();
   });
 
-  // CONFIGURACIÓN DINÁMICA
   updateCursorConfig(config: any): void {
     this.configOverrides.update(current => ({
       ...current,
@@ -43,9 +40,7 @@ export class AppConfigurationService {
     }));
   }
 
-  // ELIMINADO: updateParticleConfig - ya no maneja partículas
 
-  // CONFIGURACIONES PREDEFINIDAS (solo cursor)
   setPerformanceMode(mode: 'high' | 'medium' | 'low'): void {
     const configs = {
       high: {
@@ -82,12 +77,10 @@ export class AppConfigurationService {
     });
   }
 
-  // RESET
   resetToDefaults(): void {
     this.configOverrides.set({});
   }
 
-  // CONFIGURACIÓN AUTOMÁTICA
   applyAutoConfiguration(): void {
     const device = this.deviceInfo();
     
@@ -100,14 +93,12 @@ export class AppConfigurationService {
     }
   }
 
-  // MÉTRICAS DE CONFIGURACIÓN (sin particleConfig)
   getConfigurationStatus() {
     return {
       cursorConfig: this.cursorConfig(),
       deviceInfo: this.deviceInfo(),
       overrides: this.configOverrides(),
       loadedSections: this.loadedSections()
-      // particleConfig eliminado - usar ParticleConfigService directamente
     };
   }
 }

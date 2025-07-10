@@ -20,7 +20,6 @@ export class CursorPerformanceService {
     private deviceDetectionService: DeviceDetectionService
   ) {}
 
-  // GETTERS
   get isOverHeader(): boolean {
     return this.isOverHeaderSignal();
   }
@@ -29,14 +28,12 @@ export class CursorPerformanceService {
     return this.isScrollingSignal();
   }
 
-  // INICIALIZACIÓN
   initializeHeaderCache(): void {
     this.headerElementsCache = Array.from(
       document.querySelectorAll('header, .header-fixed, [class*="header"]')
     );
   }
 
-  // DETECCIÓN DE HEADER
   isMouseOverHeader(target: Element): boolean {
     if (this.headerElementsCache.length === 0) {
       this.initializeHeaderCache();
@@ -53,7 +50,6 @@ export class CursorPerformanceService {
     return false;
   }
 
-  // GESTIÓN DE ESTADOS
   updateHeaderState(isOver: boolean): void {
     if (this.isOverHeaderSignal() === isOver) return;
     
@@ -82,7 +78,6 @@ export class CursorPerformanceService {
     this.updateAdaptiveConfig();
   }
 
-  // THROTTLING
   shouldThrottleMouseMove(): boolean {
     const currentTime = performance.now();
     if (currentTime - this.lastMouseMoveTime < this.mouseMoveThrottleDelay) {
@@ -92,7 +87,6 @@ export class CursorPerformanceService {
     return false;
   }
 
-  // SCROLL MANAGEMENT
   handleScrollStart(): void {
     this.updateScrollState(true);
     
@@ -105,7 +99,6 @@ export class CursorPerformanceService {
     }, 150);
   }
 
-  // CONFIGURACIÓN ADAPTATIVA
   private updateAdaptiveConfig(): void {
     const deviceInfo = {
       isMobile: this.deviceDetectionService.isMobile(),
@@ -122,7 +115,6 @@ export class CursorPerformanceService {
            (navigator as any).deviceMemory < 4;
   }
 
-  // EJECUCIÓN OPTIMIZADA
   runOutsideAngular<T>(callback: () => T): T {
     return this.ngZone.runOutsideAngular(callback);
   }
@@ -131,7 +123,6 @@ export class CursorPerformanceService {
     return this.ngZone.run(callback);
   }
 
-  // LIMPIEZA
   cleanup(): void {
     if (this.scrollTimeout) {
       window.clearTimeout(this.scrollTimeout);
@@ -142,7 +133,6 @@ export class CursorPerformanceService {
     this.isScrollingSignal.set(false);
   }
 
-  // MÉTRICAS DE PERFORMANCE
   getPerformanceMetrics() {
     return {
       isOverHeader: this.isOverHeaderSignal(),

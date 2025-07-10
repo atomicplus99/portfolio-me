@@ -1,4 +1,3 @@
-// loader.service.ts
 import { Injectable, signal } from '@angular/core';
 
 export interface LoaderState {
@@ -24,7 +23,6 @@ export class LoaderService {
 
   readonly state = this.loaderState.asReadonly();
 
-  // ELEGANT LOADING PHASES
   private loadingPhases = [
     { progress: 12, message: 'Configurando entorno...', duration: 500 },
     { progress: 25, message: 'Cargando dependencias...', duration: 600 },
@@ -40,14 +38,12 @@ export class LoaderService {
   private loadingTimeout?: number;
   private isLoadingActive = false;
 
-  // ELEGANT STARTUP
   startLoading(): void {
     if (this.isLoadingActive) return;
     
     this.isLoadingActive = true;
     this.currentPhaseIndex = 0;
     
-    // Show logo with elegant transition
     this.loaderState.update(state => ({
       ...state,
       isLoading: true,
@@ -56,19 +52,16 @@ export class LoaderService {
       message: 'Inicializando sistema...'
     }));
 
-    // Show progress with elegant delay
     setTimeout(() => {
       this.loaderState.update(state => ({
         ...state,
         showProgress: true
       }));
       
-      // Begin loading sequence
       this.executeLoadingSequence();
     }, 1200);
   }
 
-  // ELEGANT LOADING SEQUENCE
   private executeLoadingSequence(): void {
     if (this.currentPhaseIndex >= this.loadingPhases.length) {
       this.completeLoading();
@@ -77,17 +70,14 @@ export class LoaderService {
 
     const phase = this.loadingPhases[this.currentPhaseIndex];
     
-    // Smooth progress animation
     this.animateProgressTo(phase.progress, phase.message);
 
-    // Schedule next phase
     this.loadingTimeout = window.setTimeout(() => {
       this.currentPhaseIndex++;
       this.executeLoadingSequence();
     }, phase.duration);
   }
 
-  // SMOOTH PROGRESS ANIMATION
   private animateProgressTo(targetProgress: number, message: string): void {
     const currentProgress = this.loaderState().progress;
     const progressDiff = targetProgress - currentProgress;
@@ -95,13 +85,11 @@ export class LoaderService {
     const stepSize = progressDiff / steps;
     const stepDuration = 12; // 12ms per step = 360ms total
 
-    // Update message immediately
     this.loaderState.update(state => ({
       ...state,
       message
     }));
 
-    // Animate progress smoothly
     let currentStep = 0;
     const progressInterval = setInterval(() => {
       currentStep++;
@@ -118,16 +106,13 @@ export class LoaderService {
     }, stepDuration);
   }
 
-  // ELEGANT COMPLETION
   private completeLoading(): void {
-    // Show completion message
     setTimeout(() => {
       this.loaderState.update(state => ({
         ...state,
         message: 'Bienvenido'
       }));
 
-      // Elegant fade out
       setTimeout(() => {
         this.loaderState.update(state => ({
           ...state,
@@ -141,7 +126,6 @@ export class LoaderService {
     }, 600);
   }
 
-  // MANUAL CONTROL
   setProgress(progress: number, message?: string): void {
     if (!this.isLoadingActive) return;
     
@@ -154,7 +138,6 @@ export class LoaderService {
     }));
   }
 
-  // QUICK LOAD FOR DEVELOPMENT
   quickLoad(): void {
     this.startLoading();
     
@@ -176,7 +159,6 @@ export class LoaderService {
     });
   }
 
-  // REALISTIC LOADING SIMULATION
   simulateRealisticLoading(): void {
     this.startLoading();
     
@@ -203,7 +185,6 @@ export class LoaderService {
     });
   }
 
-  // INSTANT COMPLETION
   finishLoading(): void {
     if (this.loadingTimeout) {
       clearTimeout(this.loadingTimeout);
@@ -219,7 +200,6 @@ export class LoaderService {
     this.completeLoading();
   }
 
-  // RESET
   resetLoader(): void {
     if (this.loadingTimeout) {
       clearTimeout(this.loadingTimeout);
@@ -238,7 +218,6 @@ export class LoaderService {
     });
   }
 
-  // GETTERS
   get isLoading(): boolean {
     return this.loaderState().isLoading;
   }
@@ -255,7 +234,6 @@ export class LoaderService {
     return this.loaderState().progress >= 100;
   }
 
-  // METRICS
   getLoadingMetrics() {
     return {
       currentStep: this.currentPhaseIndex,
@@ -265,7 +243,6 @@ export class LoaderService {
     };
   }
 
-  // CLEANUP
   destroy(): void {
     if (this.loadingTimeout) {
       clearTimeout(this.loadingTimeout);

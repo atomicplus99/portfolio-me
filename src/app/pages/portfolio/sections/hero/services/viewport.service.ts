@@ -13,11 +13,9 @@ export class ViewportService {
   readonly isInitialized = this._isInitialized.asReadonly();
 
   constructor() {
-    // ✅ Inicialización inmediata y sincrónica
     this.initializeViewport();
     
     if (typeof window !== 'undefined') {
-      // ✅ Listener optimizado con throttling
       let resizeTimeout: number;
       window.addEventListener('resize', () => {
         clearTimeout(resizeTimeout);
@@ -34,7 +32,6 @@ export class ViewportService {
     if (typeof window !== 'undefined') {
       const isMobile = window.innerWidth < 1024;
       
-      // ✅ Configuración inmediata sin delays
       this._isMobile.set(isMobile);
       this._showDesktopElements.set(!isMobile);
       this._isInitialized.set(true);

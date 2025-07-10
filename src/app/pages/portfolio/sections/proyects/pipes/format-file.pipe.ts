@@ -9,7 +9,6 @@ export class FormatFileSizePipe implements PipeTransform {
   transform(value: string): string {
     if (!value) return '';
     
-    // Convertir valores como "245KB" a formato más legible
     const match = value.match(/^(\d+(?:\.\d+)?)(KB|MB|GB)$/i);
     if (!match) return value;
     

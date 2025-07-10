@@ -1,4 +1,3 @@
-// loader.component.ts
 import { Component, input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoadingParticlesComponent } from './components/loading-particles/loading-particles.component';

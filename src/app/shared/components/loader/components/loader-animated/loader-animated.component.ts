@@ -1,4 +1,3 @@
-// loader-animated.component.ts
 import { CommonModule } from "@angular/common";
 import { Component, input, OnInit, signal } from "@angular/core";
 

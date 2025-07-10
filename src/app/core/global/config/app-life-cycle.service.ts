@@ -24,7 +24,6 @@ export class AppLifecycleManagerService {
     private sectionLoadingService: SectionLoadingService
   ) {}
 
-  // GETTERS
   get currentState() {
     return this.lifecycleState.asReadonly();
   }
@@ -37,22 +36,16 @@ export class AppLifecycleManagerService {
     return this.lifecycleState() === 'initializing';
   }
 
-  // CICLO DE VIDA PRINCIPAL
   async initializeApp(cdr: ChangeDetectorRef, renderer: Renderer2): Promise<void> {
     try {
       this.initializationStartTime = performance.now();
       this.lifecycleState.set('initializing');
 
-      // Inicialización principal
       this.initializationService.initializeApp(cdr, renderer);
 
-      // Configuración automática
       this.configurationService.applyAutoConfiguration();
 
-      // Marcar como listo
       this.lifecycleState.set('ready');
-
-      console.log(`App initialized in ${performance.now() - this.initializationStartTime}ms`);
     } catch (error) {
       console.error('App initialization failed:', error);
       this.lifecycleState.set('error');
@@ -66,7 +59,6 @@ export class AppLifecycleManagerService {
     }
   }
 
-  // EVENTOS COORDINADOS
   handleCursorStatusChange(status: any, renderer: Renderer2): void {
     if (this.isReady) {
       this.eventCoordinatorService.handleCursorStatusChange(status, renderer);
@@ -85,7 +77,6 @@ export class AppLifecycleManagerService {
     }
   }
 
-  // OPTIMIZACIÓN DINÁMICA
   optimizePerformance(): void {
     this.lifecycleState.set('optimizing');
     
@@ -105,23 +96,18 @@ export class AppLifecycleManagerService {
     }
   }
 
-  // DESTRUCCIÓN
   destroyApp(renderer: Renderer2): void {
     try {
       this.lifecycleState.set('destroyed');
       
-      // Limpieza coordinada
       this.eventCoordinatorService.cleanupAllEvents(renderer);
       this.sectionLoadingService.cleanup();
       this.performanceService.cleanup();
       
-      console.log('App destroyed successfully');
     } catch (error) {
-      console.error('App destruction failed:', error);
     }
   }
 
-  // CONTROL MANUAL DE SECCIONES
   loadAllSections(): void {
     if (this.isReady) {
       this.sectionLoadingService.loadAllSections();
@@ -134,7 +120,6 @@ export class AppLifecycleManagerService {
     }
   }
 
-  // MÉTRICAS Y DEBUGGING
   getAppMetrics() {
     return {
       lifecycle: {
@@ -151,13 +136,8 @@ export class AppLifecycleManagerService {
   }
 
   logAppStatus(): void {
-    console.group('🚀 App Lifecycle Status');
-    console.log('State:', this.lifecycleState());
-    console.log('Metrics:', this.getAppMetrics());
-    console.groupEnd();
   }
 
-  // DIAGNÓSTICOS
   runDiagnostics(): { healthy: boolean; issues: string[] } {
     const issues: string[] = [];
     

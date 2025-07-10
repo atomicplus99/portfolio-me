@@ -7,33 +7,25 @@ import { PerformanceMetrics, ProjectDetailExtended, ProjectGalleryItem } from '.
 })
 export class ProjectDetailService {
 
-    // ✅ Cache simple sin signals para evitar problemas con computed
     private readonly projectDetailsCache = new Map<number, ProjectDetailExtended>();
 
-    // ✅ Método sin side effects - seguro para usar en computed
     getProjectDetail(project: Project): ProjectDetailExtended {
-        console.log('🔧 Getting project detail for:', project.name, project.id);
 
         const existing = this.projectDetailsCache.get(project.id);
         if (existing) {
-            console.log('✅ Found in cache');
             return existing;
         }
 
-        console.log('🏗️ Generating new detail');
         const detail = this.generateProjectDetail(project);
         this.projectDetailsCache.set(project.id, detail);
 
-        console.log('📦 Generated detail:', detail);
         return detail;
     }
 
-    // ✅ Método público para limpiar cache si es necesario
     clearCache(): void {
         this.projectDetailsCache.clear();
     }
 
-    // ✅ Método público para limpiar un proyecto específico del cache
     clearProjectCache(projectId: number): void {
         this.projectDetailsCache.delete(projectId);
     }
@@ -222,7 +214,6 @@ export class ProjectDetailService {
             cumulativeLayoutShift: `0.0${Math.floor(Math.random() * 3 + 1)}`
         };
 
-        // Ajustar métricas según complejidad del proyecto
         const complexProjects = ['NEURAL DASHBOARD', 'E-COMMERCE NEXUS'];
         if (complexProjects.includes(project.name)) {
             baseMetrics.lightHouseScore -= 2;

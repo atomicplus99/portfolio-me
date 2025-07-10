@@ -25,7 +25,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   readonly isVisible = signal(false);
   readonly mobileMenuOpen = signal(false);
 
-  // OPTIMIZACIÓN: Marcar como readonly para evitar re-referencias
   readonly navigationItems: NavigationItem[] = [
     { id: 'proyectos', label: 'PROYECTOS', delay: '0.1s' },
     { id: 'experiencia', label: 'EXPERIENCIA', delay: '0.2s' },
@@ -33,7 +32,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ];
 
   ngOnInit(): void {
-    // OPTIMIZACIÓN: Reducir delay inicial
     setTimeout(() => this.isVisible.set(true), 50);
   }
 
@@ -41,7 +39,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
     
-    // OPTIMIZACIÓN: Limpiar timeout si existe
     if (this.resizeTimeout) {
       window.clearTimeout(this.resizeTimeout);
     }
@@ -58,6 +55,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   toggleMobileMenu(): void {
+     console.log('Toggle clicked!');
     this.mobileMenuOpen.update(current => !current);
   }
 
@@ -65,17 +63,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.mobileMenuOpen.set(false);
   }
 
-  // OPTIMIZACIÓN: Throttling del resize event
   @HostListener('window:resize', ['$event'])
   onResize(event: Event): void {
-    // Ejecutar fuera de Angular zone para mejor performance
     this.ngZone.runOutsideAngular(() => {
-      // Limpiar timeout anterior
       if (this.resizeTimeout) {
         window.clearTimeout(this.resizeTimeout);
       }
       
-      // Throttling de 150ms
       this.resizeTimeout = window.setTimeout(() => {
         this.ngZone.run(() => {
           const target = event.target as Window;

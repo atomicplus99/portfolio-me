@@ -12,7 +12,6 @@ export class AppPerformanceService {
 
   constructor(private ngZone: NgZone) {}
 
-  // GETTERS
   get deviceInfo() {
     return this.deviceInfoSignal.asReadonly();
   }
@@ -21,7 +20,6 @@ export class AppPerformanceService {
     return this.isScrollingSignal.asReadonly();
   }
 
-  // DETECCIÓN DE DISPOSITIVO
   private getDeviceInfo() {
     const isMobile = window.innerWidth < 768;
     const isLowEnd = navigator.hardwareConcurrency < 4 || 
@@ -56,7 +54,6 @@ export class AppPerformanceService {
     return passiveSupported;
   }
 
-  // CONFIGURACIONES OPTIMIZADAS SOLO PARA CURSOR
   getCursorConfig() {
     const device = this.deviceInfoSignal();
     return {
@@ -73,13 +70,10 @@ export class AppPerformanceService {
     };
   }
 
-  // ELIMINADO: getParticleConfig() - ahora solo ParticleConfigService maneja esto
 
-  // GESTIÓN DE SCROLL
   handleScroll(renderer: Renderer2): void {
     this.isScrollingSignal.set(true);
     
-    // Agregar clase CSS para optimizaciones durante scroll
     renderer.addClass(document.body, 'app-scrolling');
     
     if (this.scrollTimeout) {
@@ -92,7 +86,6 @@ export class AppPerformanceService {
     }, 150);
   }
 
-  // GESTIÓN DE RESIZE
   handleResize(): void {
     this.ngZone.runOutsideAngular(() => {
       if (this.resizeTimeout) {
@@ -107,7 +100,6 @@ export class AppPerformanceService {
     });
   }
 
-  // GESTIÓN DE VISIBILIDAD
   handleVisibilityChange(renderer: Renderer2): void {
     if (document.hidden) {
       renderer.addClass(document.body, 'page-hidden');
@@ -116,31 +108,26 @@ export class AppPerformanceService {
     }
   }
 
-  // SETUP DE EVENT LISTENERS
   setupPerformanceOptimizations(renderer: Renderer2): void {
     this.ngZone.runOutsideAngular(() => {
       const scrollOptions = this.deviceInfoSignal().supportsPassiveEvents 
         ? { passive: true } 
         : false;
 
-      // Scroll listener
       window.addEventListener('scroll', () => {
         this.handleScroll(renderer);
       }, scrollOptions);
 
-      // Resize listener
       window.addEventListener('resize', () => {
         this.handleResize();
       }, scrollOptions);
 
-      // Visibility change listener
       document.addEventListener('visibilitychange', () => {
         this.handleVisibilityChange(renderer);
       });
     });
   }
 
-  // LIMPIEZA
   cleanup(): void {
     if (this.scrollTimeout) {
       window.clearTimeout(this.scrollTimeout);
@@ -153,13 +140,11 @@ export class AppPerformanceService {
     }
   }
 
-  // MÉTRICAS (sin particleConfig)
   getPerformanceMetrics() {
     return {
       deviceInfo: this.deviceInfoSignal(),
       isScrolling: this.isScrollingSignal(),
       cursorConfig: this.getCursorConfig()
-      // particleConfig eliminado - ahora usa ParticleConfigService
     };
   }
 }

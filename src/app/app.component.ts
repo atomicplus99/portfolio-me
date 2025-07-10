@@ -11,7 +11,6 @@ import {
 } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
-// Componentes
 import { ParticlesComponent } from './shared/components/particles/main/ts/particles';
 import { HeaderComponent } from './pages/portfolio/sections/header/header.component';
 import { CustomCursorComponent } from './shared/components/custom-cursor/main/ts/custom-cursor.component';
@@ -33,7 +32,6 @@ import { LenisScrollService } from './core/global/services/portfolio-scroll.serv
 
 @Component({
   selector: 'app-root',
-  // changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -55,17 +53,14 @@ import { LenisScrollService } from './core/global/services/portfolio-scroll.serv
 })
 export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  // SERVICIOS PRINCIPALES
   private readonly lifecycleManager = inject(AppLifecycleManagerService);
   private readonly configurationService = inject(AppConfigurationService);
 
-  // DEPENDENCIAS BÁSICAS
   readonly loaderService = inject(LoaderService);
   private readonly lenisService = inject(LenisScrollService);
   private readonly renderer = inject(Renderer2);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  // GETTERS PARA EL TEMPLATE (simplificados)
   get loadedSections() {
     return this.configurationService.loadedSections();
   }
@@ -78,7 +73,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.lifecycleManager.isReady;
   }
 
-  // CICLO DE VIDA SIMPLIFICADO
   async ngOnInit(): Promise<void> {
     await this.lifecycleManager.initializeApp(this.cdr, this.renderer);
     this.forceLoadAllSections();
@@ -87,12 +81,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.lifecycleManager.initializeAfterViewInit();
     
-    // Verificación final de secciones
     setTimeout(() => {
       this.ensureAllSectionsLoaded();
     }, 1000);
 
-    // INICIALIZAR LENIS DESPUÉS DEL LOADER
     this.initLenisWhenReady();
   }
 
@@ -101,14 +93,11 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     this.lenisService.destroy();
   }
 
-  // INICIALIZAR LENIS CUANDO ESTÉ LISTO
   private async initLenisWhenReady(): Promise<void> {
     const checkLoader = async () => {
       if (!this.loaderService.state().isLoading) {
-        // Activar Lenis
         setTimeout(async () => {
           await this.lenisService.initLenis();
-          console.log('✨ Lenis activado');
         }, 1000);
       } else {
         setTimeout(checkLoader, 200);
@@ -118,7 +107,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     await checkLoader();
   }
 
-  // MÉTODOS DE SCROLL CON LENIS
   scrollToSection(sectionId: string): void {
     this.lenisService.scrollTo(`#${sectionId}`);
   }
@@ -127,17 +115,13 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     this.lenisService.scrollToTop();
   }
 
-  // SIMPLIFICADO: Carga directa de todas las secciones
   private forceLoadAllSections(): void {
     setTimeout(() => {
       this.lifecycleManager.loadAllSections();
       this.cdr.detectChanges();
-      
-      console.log('🌌 Secciones cargadas:', this.loadedSections);
     }, 500);
   }
 
-  // Verificación de secciones cargadas
   private ensureAllSectionsLoaded(): void {
     const loaded = this.loadedSections;
     const requiredSections = ['about', 'aboutMe', 'projects', 'skills', 'contact', 'footer'];
@@ -145,15 +129,11 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     const missing = requiredSections.filter(section => !loaded[section as keyof typeof loaded]);
     
     if (missing.length > 0) {
-      console.log(`🔧 Cargando secciones faltantes: ${missing.join(', ')}`);
       this.lifecycleManager.loadAllSections();
       this.cdr.detectChanges();
-    } else {
-      console.log('✅ Todas las secciones cargadas');
-    }
+    } 
   }
 
-  // EVENTOS (delegados)
   onCursorStatusChange(status: any): void {
     this.lifecycleManager.handleCursorStatusChange(status, this.renderer);
   }
@@ -166,7 +146,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     this.lifecycleManager.handleHeaderInteraction(isActive, this.renderer);
   }
 
-  // API PÚBLICA
   optimizePerformance(): void {
     this.lifecycleManager.optimizePerformance();
   }
@@ -180,24 +159,19 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     this.lifecycleManager.resetSections();
   }
 
-  // MÉTRICAS
   getMetrics() {
     return this.lifecycleManager.getAppMetrics();
   }
 
-  // DIAGNÓSTICOS
   runDiagnostics() {
     return this.lifecycleManager.runDiagnostics();
   }
 
-  // CONFIGURACIÓN MANUAL
   setPerformanceMode(mode: 'high' | 'medium' | 'low'): void {
     this.configurationService.setPerformanceMode(mode);
   }
 
-  // MÉTODO DE EMERGENCIA
   emergencyLoadSections(): void {
-    console.log('🚨 Carga de emergencia activada');
     this.lifecycleManager.loadAllSections();
     this.cdr.detectChanges();
   }

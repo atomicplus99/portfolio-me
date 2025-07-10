@@ -13,8 +13,8 @@ export class ParticleConfigService {
 
 
   private readonly defaultConfig: ParticleConfig = {
-    count: 1800,       // Densidad galáctica completa
-    size: 0.8,        // Puntos visibles
+    count: 4000,       // Densidad galáctica completa
+    size: 1.0,        // Puntos visibles
     opacity: 0.7,     // Presencia moderada
     speed: 0.03,      // Movimiento galáctico lento
     colors: {
@@ -62,7 +62,6 @@ export class ParticleConfigService {
     return { ...baseConfig, ...overrides };
   }
 
-  // SIMPLIFICADO: Ya no necesita su propia detección
   private isMobile(): boolean {
     return this.performanceService.deviceInfo().isMobile;
   }
@@ -71,7 +70,6 @@ export class ParticleConfigService {
     return this.performanceService.deviceInfo().isLowEnd;
   }
 
-  // Configuraciones específicas según performance
   getOptimizedConfig(performanceLevel: 'high' | 'medium' | 'low'): ParticleConfig {
     const configs = {
       high: {
@@ -92,7 +90,6 @@ export class ParticleConfigService {
     return configs[performanceLevel];
   }
 
-  // Configuración extrema para pruebas
   getExtremeConfig(): ParticleConfig {
     return {
       count: 1200,      // Máximo para pruebas
@@ -108,7 +105,6 @@ export class ParticleConfigService {
     };
   }
 
-  // DEBUGGING: Ver qué configuración se está usando
   getCurrentConfig(isMobile?: boolean): { config: ParticleConfig; type: string; deviceInfo: any } {
     const deviceInfo = this.performanceService.deviceInfo();
     const mobile = isMobile ?? deviceInfo.isMobile;
@@ -124,14 +120,7 @@ export class ParticleConfigService {
     return { config: this.defaultConfig, type: 'default', deviceInfo };
   }
 
-  // NUEVO: Método para debugging desde consola
   debugConfig(): void {
     const current = this.getCurrentConfig();
-    console.group('🌌 Particle Config Debug');
-    console.log('Type:', current.type);
-    console.log('Config:', current.config);
-    console.log('Device Info:', current.deviceInfo);
-    console.log('Performance Service:', this.performanceService.getPerformanceMetrics());
-    console.groupEnd();
   }
 }

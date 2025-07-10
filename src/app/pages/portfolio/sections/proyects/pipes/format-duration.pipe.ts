@@ -9,7 +9,6 @@ export class FormatDurationPipe implements PipeTransform {
   transform(value: string): string {
     if (!value) return '';
     
-    // Formatear duraciones como "3 meses" a un formato más descriptivo
     const durationMap: Record<string, string> = {
       '1 mes': '4 semanas',
       '2 meses': '8 semanas',

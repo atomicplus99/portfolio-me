@@ -20,12 +20,10 @@ export class CursorLifecycleService {
     private performanceService: CursorPerformanceService
   ) {}
 
-  // GETTERS
   get isInitialized(): boolean {
     return this.initialized;
   }
 
-  // INICIALIZACIÓN
   shouldInitialize(disabled: boolean): boolean {
     return !disabled && this.deviceDetectionService.shouldShowCursor();
   }
@@ -46,7 +44,6 @@ export class CursorLifecycleService {
     }
   }
 
-  // DESTRUCCIÓN
   destroy(): void {
     if (!this.initialized) return;
 
@@ -62,7 +59,6 @@ export class CursorLifecycleService {
     }
   }
 
-  // GESTIÓN DE ESTILOS
   private injectGlobalStyles(): void {
     this.globalStyleElement = this.renderer.createElement('style');
     this.renderer.setAttribute(this.globalStyleElement, 'type', 'text/css');
@@ -95,7 +91,6 @@ export class CursorLifecycleService {
     }
   }
 
-  // HABILITACIÓN/DESHABILITACIÓN
   enable(): void {
     if (this.deviceDetectionService.shouldShowCursor()) {
       this.initialize();
@@ -106,7 +101,6 @@ export class CursorLifecycleService {
     this.destroy();
   }
 
-  // REINICIALIZACIÓN
   reinitialize(): void {
     this.destroy();
     setTimeout(() => {
@@ -116,7 +110,6 @@ export class CursorLifecycleService {
     }, 100);
   }
 
-  // MÉTRICAS
   getStatus() {
     return {
       initialized: this.initialized,

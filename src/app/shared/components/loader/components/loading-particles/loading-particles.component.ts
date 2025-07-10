@@ -1,4 +1,3 @@
-// loading-particles.component.ts
 import { CommonModule } from "@angular/common";
 import { Component, input, OnInit, signal } from "@angular/core";
 
@@ -44,7 +43,6 @@ export class LoadingParticlesComponent implements OnInit {
   readonly particles = signal<MinimalParticle[]>([]);
   readonly shouldRender = signal(false);
 
-  // Portfolio blue colors
   private blueColors = [
     'rgba(59, 130, 246, 0.9)',   // Blue-500
     'rgba(96, 165, 250, 0.8)',   // Blue-400  
@@ -66,7 +64,6 @@ export class LoadingParticlesComponent implements OnInit {
     const newParticles: MinimalParticle[] = [];
     
     for (let i = 0; i < particleCount; i++) {
-      // More scattered positioning
       const x = Math.random() * (window.innerWidth + 200) - 100; // Extend beyond viewport
       const y = Math.random() * (window.innerHeight + 200) - 100;
       

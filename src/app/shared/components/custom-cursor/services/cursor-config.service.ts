@@ -20,7 +20,6 @@ export class CursorConfigService {
     optimizedMode: false
   };
 
-  // CONFIGURACIÓN PARA HEADER (también aumentada)
   private headerOptimizedConfig: Partial<CursorConfig> = {
     maxParticles: 8,         // Aumentado de 2 a 8
     poolSize: 16,            // Aumentado de 4 a 16
@@ -42,7 +41,6 @@ export class CursorConfigService {
     particleLifetime: 1500   // Aumentado de 1000 a 1500
   };
 
-  // CONFIGURACIÓN PARA DISPOSITIVOS DE BAJA POTENCIA (mejorada)
   private lowEndConfig: Partial<CursorConfig> = {
     maxParticles: 6,         // Aumentado de 2 a 6
     poolSize: 12,            // Aumentado de 4 a 12
@@ -70,7 +68,6 @@ export class CursorConfigService {
     }));
   }
 
-  // NUEVO: Modo específico para header
   public enableHeaderMode(): void {
     this.isHeaderMode.set(true);
     this.updateConfig({
@@ -84,7 +81,6 @@ export class CursorConfigService {
     this.resetToDefaults();
   }
 
-  // MODO DURANTE SCROLL (también mejorado)
   public enableScrollMode(): void {
     this.isScrolling.set(true);
     this.updateConfig({
@@ -129,7 +125,6 @@ export class CursorConfigService {
     this.configSignal.set(this.defaultConfig);
   }
 
-  // CONFIGURACIÓN ADAPTATIVA
   public setAdaptiveConfig(deviceInfo: {
     isMobile: boolean;
     isLowEnd: boolean;
@@ -160,7 +155,6 @@ export class CursorConfigService {
     } as const;
   }
 
-  // NUEVO: Configuración extrema para pruebas
   public enableExtremeMode(): void {
     this.updateConfig({
       maxParticles: 25,      // Máximo de partículas

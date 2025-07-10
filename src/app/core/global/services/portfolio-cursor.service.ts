@@ -26,7 +26,6 @@ export class CursorInteractionService {
     }
   }
 
-  // INTERACCIONES CON HEADER
   onHeaderInteraction(isActive: boolean, renderer: Renderer2): void {
     if (isActive) {
       renderer.addClass(document.body, 'header-active');
@@ -37,7 +36,6 @@ export class CursorInteractionService {
     }
   }
 
-  // GESTIÓN DE SCROLL
   updateScrollingState(isScrolling: boolean, renderer: Renderer2): void {
     this.isScrolling = isScrolling;
     
@@ -48,18 +46,15 @@ export class CursorInteractionService {
     }
   }
 
-  // ESTADO ACTUAL DE SCROLL
   get isCurrentlyScrolling(): boolean {
     return this.isScrolling;
   }
 
-  // DETECCIÓN DE DISPOSITIVO DE BAJA POTENCIA
   private isLowEndDevice(): boolean {
     return navigator.hardwareConcurrency < 4 || 
            (navigator as any).deviceMemory < 4;
   }
 
-  // CONFIGURACIÓN ADAPTATIVA DEL CURSOR
   getAdaptiveCursorConfig(deviceInfo: any) {
     return {
       maxParticles: deviceInfo.isMobile ? 2 : (deviceInfo.isLowEnd ? 4 : 6),
@@ -75,7 +70,6 @@ export class CursorInteractionService {
     };
   }
 
-  // LIMPIEZA DE CLASES CSS
   cleanupCursorClasses(renderer: Renderer2): void {
     const classesToRemove = [
       'header-active',
@@ -90,7 +84,6 @@ export class CursorInteractionService {
     });
   }
 
-  // MÉTRICAS DE INTERACCIÓN
   getInteractionMetrics() {
     return {
       isScrolling: this.isScrolling,

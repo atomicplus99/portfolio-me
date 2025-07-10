@@ -39,7 +39,6 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   
   @ViewChild('threejsCanvas') threejsCanvasRef!: ThreejsCanvasComponent;
 
-  // Loading and UI State
   public readonly isLoading = signal(true);
   public readonly showStats = signal(false);
   public readonly performanceMode = signal(false);
@@ -47,12 +46,10 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   public readonly showMobileHint = signal(false);
   public readonly hasInteracted = signal(false);
 
-  // Project State
   public readonly selectedProject = signal<Project | null>(null);
   public readonly showDetailModal = signal(false);
   public readonly modalProject = signal<Project | null>(null);
 
-  // Device and Display
   protected readonly isMobile = signal(false);
   protected readonly projects = signal<Project[]>([]);
   
@@ -78,7 +75,6 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     return this.projects().findIndex(p => p.id === project.id) + 1;
   });
 
-  // UI State Computed
   protected readonly showPanel = computed(() => {
     return !!this.selectedProject() && !this.showDetailModal();
   });
@@ -102,7 +98,6 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   }
 
   private setupEffects(): void {
-    // Mobile hint effect
     effect(() => {
       if (this.isMobile()) {
         setTimeout(() => {
@@ -113,17 +108,13 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       }
     });
 
-    // Performance mode effect
     effect(() => {
       if (this.performanceMode()) {
-        // Apply performance optimizations
       }
     });
 
-    // Modal and panel coordination
     effect(() => {
       if (this.showDetailModal()) {
-        // Hide instructions when modal is open
         this.showInstructions.set(false);
       }
     });
@@ -138,10 +129,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // Cleanup if needed
   }
 
-  // Project Selection - Panel Flow
   onProjectSelected(projectId: number): void {
     const project = this.projectsService.getProjectById(projectId);
     if (project) {
@@ -153,7 +142,6 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     }
   }
 
-  // First Interaction
   onFirstInteraction(): void {
     if (!this.hasInteracted()) {
       this.hasInteracted.set(true);
@@ -162,19 +150,16 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Cursor Changes
   onCursorChanged(cursor: string): void {
     if (!this.isMobile()) {
       document.body.style.cursor = cursor;
     }
   }
 
-  // Mobile Hint
   onHintDismissed(): void {
     this.showMobileHint.set(false);
   }
 
-  // Panel Actions
   onActionClicked(action: 'demo' | 'code'): void {
     const project = this.selectedProject();
     if (!project) return;
@@ -190,7 +175,6 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Panel Navigation
   onNavigate(direction: 'next' | 'previous'): void {
     const projects = this.projects();
     const currentProject = this.selectedProject();
@@ -216,7 +200,6 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Panel Close
   onCloseProject(): void {
     this.selectedProject.set(null);
     
@@ -229,20 +212,17 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Modal Actions
   onOpenDetailModal(): void {
     const project = this.selectedProject();
     if (project) {
       this.modalProject.set(project);
       this.showDetailModal.set(true);
-      // Keep the panel project but hide panel
     }
   }
 
   onModalClosed(): void {
     this.showDetailModal.set(false);
     this.modalProject.set(null);
-    // Panel project remains selected
     
     if (this.isMobile() && this.mobileService.getVibrationSupported()) {
       this.mobileService.vibrate(20);
@@ -251,7 +231,6 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
   onModalProjectChanged(project: Project): void {
     this.modalProject.set(project);
-    // Sync with panel project
     this.selectedProject.set(project);
     
     if (this.threejsCanvasRef) {
@@ -273,7 +252,6 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Modal Navigation (independent from panel)
   onModalNavigate(direction: 'next' | 'previous'): void {
     const projects = this.projects();
     const currentProject = this.modalProject();
@@ -298,7 +276,6 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Mobile Controls
   onResetView(): void {
     if (this.threejsCanvasRef) {
       this.threejsCanvasRef.resetView();
@@ -313,29 +290,24 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Development Controls
   private setupDevelopmentControls(): void {
     if (typeof window !== 'undefined') {
       window.addEventListener('keydown', (e) => {
-        // Stats toggle
         if (e.key === 'F1') {
           e.preventDefault();
           this.showStats.update(show => !show);
         }
         
-        // Performance mode toggle
         if (e.key === 'F2') {
           e.preventDefault();
           this.onTogglePerformanceMode();
         }
         
-        // Modal control
         if (e.key === 'Enter' && this.selectedProject() && !this.showDetailModal()) {
           e.preventDefault();
           this.onOpenDetailModal();
         }
         
-        // Close actions
         if (e.key === 'Escape') {
           if (this.showDetailModal()) {
             this.onModalClosed();
@@ -344,7 +316,6 @@ export class ProjectsComponent implements OnInit, OnDestroy {
           }
         }
         
-        // Navigation - Panel mode
         if (!this.showDetailModal()) {
           if (e.key === 'ArrowLeft') {
             e.preventDefault();
@@ -357,12 +328,10 @@ export class ProjectsComponent implements OnInit, OnDestroy {
           }
         }
         
-        // Navigation - Modal mode (handled by modal component)
       });
     }
   }
 
-  // Helper Methods
   protected getIsLoading = () => this.isLoading();
   protected getSelectedProject = () => this.selectedProject();
   protected getModalProject = () => this.modalProject();

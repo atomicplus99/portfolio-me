@@ -37,12 +37,10 @@ import { AnimationService } from '../../services/animation.service';
 })
 export class CustomCursorComponent implements OnInit, OnDestroy {
   
-  // INPUTS
   readonly config = input<Partial<CursorConfig>>();
   readonly disabled = input<boolean>(false);
   readonly optimizedMode = input<boolean>(false);
   
-  // OUTPUTS
   readonly statusChange = output<TacticalStatus>();
   readonly targetingChange = output<boolean>();
   readonly firingChange = output<boolean>();
@@ -51,7 +49,6 @@ export class CustomCursorComponent implements OnInit, OnDestroy {
     private renderer: Renderer2,
     private configService: CursorConfigService,
     private deviceDetectionService: DeviceDetectionService,
-    // Servicios modularizados
     private performanceService: CursorPerformanceService,
     private eventHandlerService: CursorEventHandlerService,
     private lifecycleService: CursorLifecycleService,
@@ -70,9 +67,7 @@ export class CustomCursorComponent implements OnInit, OnDestroy {
     this.lifecycleService.destroy();
   }
 
-  // CONFIGURACIÓN DE EFFECTS
   private setupEffects(): void {
-    // Effect para configuración
     effect(() => {
       const inputConfig = this.config();
       if (inputConfig) {
@@ -80,13 +75,11 @@ export class CustomCursorComponent implements OnInit, OnDestroy {
       }
     });
 
-    // Effect para modo optimizado
     effect(() => {
       const optimized = this.optimizedMode();
       this.statusService.setOptimizedMode(optimized);
     });
 
-    // Effect para móviles
     effect(() => {
       const isMobile = this.deviceDetectionService.isMobile();
       if (isMobile && this.lifecycleService.isInitialized) {
@@ -96,7 +89,6 @@ export class CustomCursorComponent implements OnInit, OnDestroy {
       }
     });
 
-    // Effect para disabled
     effect(() => {
       const isDisabled = this.disabled();
       if (isDisabled && this.lifecycleService.isInitialized) {
@@ -107,7 +99,6 @@ export class CustomCursorComponent implements OnInit, OnDestroy {
     });
   }
 
-  // EVENT LISTENERS (simplificados)
   @HostListener('document:mousemove', ['$event'])
   onMouseMove(event: MouseEvent): void {
     if (!this.lifecycleService.isInitialized) return;
@@ -159,14 +150,12 @@ export class CustomCursorComponent implements OnInit, OnDestroy {
     this.eventHandlerService.handleContextMenu(event);
   }
 
-  // EMISIÓN DE EVENTOS
   private emitStatusChange(): void {
     this.statusService.updateStatus();
     const status = this.statusService.currentStatus;
     this.statusChange.emit(status);
   }
 
-  // API PÚBLICA (simplificada)
   public getTacticalStatus(): TacticalStatus {
     return this.statusService.currentStatus;
   }
@@ -195,7 +184,6 @@ export class CustomCursorComponent implements OnInit, OnDestroy {
     this.lifecycleService.disable();
   }
 
-  // DEBUGGING
   public logStatus(): void {
     this.statusService.logCurrentStatus();
   }

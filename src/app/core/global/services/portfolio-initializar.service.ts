@@ -14,7 +14,6 @@ export class AppInitializationService {
     private sectionLoadingService: SectionLoadingService
   ) {}
 
-  // INICIALIZACIÓN PRINCIPAL
   initializeApp(cdr: ChangeDetectorRef, renderer: Renderer2): void {
     this.startLoader();
     this.setupSectionLoading(cdr);
@@ -22,20 +21,16 @@ export class AppInitializationService {
     this.setupPerformanceOptimizations(renderer);
   }
 
-  // INICIALIZACIÓN DESPUÉS DE VIEW INIT
   initializeAfterViewInit(): void {
-    // Delay para asegurar que el DOM esté listo
     setTimeout(() => {
       this.setupIntersectionObserver();
     }, 100);
   }
 
-  // LOADER
   private startLoader(): void {
     this.loaderService.startLoading();
   }
 
-  // CARGA DE SECCIONES
   private setupSectionLoading(cdr: ChangeDetectorRef): void {
     this.sectionLoadingService.setCdr(cdr);
   }
@@ -48,12 +43,10 @@ export class AppInitializationService {
     this.sectionLoadingService.setupIntersectionObserver();
   }
 
-  // PERFORMANCE
   private setupPerformanceOptimizations(renderer: Renderer2): void {
     this.performanceService.setupPerformanceOptimizations(renderer);
   }
 
-  // ESTADO DE INICIALIZACIÓN
   isAppReady(): boolean {
     return !this.loaderService.state().isLoading;
   }

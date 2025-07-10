@@ -1,4 +1,3 @@
-// loader-progress-bar.component.ts
 import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 

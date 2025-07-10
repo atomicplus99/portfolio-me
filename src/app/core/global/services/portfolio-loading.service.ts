@@ -19,17 +19,14 @@ export class SectionLoadingService {
   private loadingTimeouts: number[] = [];
   private cdr?: ChangeDetectorRef;
 
-  // GETTER
   get loadedSections() {
     return this.loadedSectionsSignal.asReadonly();
   }
 
-  // CONFIGURACIÓN
   setCdr(cdr: ChangeDetectorRef): void {
     this.cdr = cdr;
   }
 
-  // CARGA PROGRESIVA
   scheduleProgressiveLoading(): void {
     const loadingSchedule: LoadingScheduleItem[] = [
       { section: 'about', delay: 800 },
@@ -48,7 +45,6 @@ export class SectionLoadingService {
     });
   }
 
-  // INTERSECTION OBSERVER
   setupIntersectionObserver(): void {
     const options = {
       root: null,
@@ -65,7 +61,6 @@ export class SectionLoadingService {
       });
     }, options);
 
-    // Observar las secciones
     const sections = ['about', 'about-me', 'projects', 'skills', 'contact'];
     sections.forEach(sectionId => {
       const element = document.getElementById(sectionId);
@@ -75,7 +70,6 @@ export class SectionLoadingService {
     });
   }
 
-  // CARGA DE SECCIONES
   private loadSectionIfNeeded(sectionId: string): void {
     const sectionMap: Record<string, keyof LoadedSections> = {
       'about': 'about',
@@ -99,14 +93,12 @@ export class SectionLoadingService {
         [section]: true
       }));
       
-      // Trigger change detection
       if (this.cdr) {
         this.cdr.markForCheck();
       }
     }
   }
 
-  // CARGA INMEDIATA
   loadAllSections(): void {
     this.loadedSectionsSignal.set({
       about: true,
@@ -122,7 +114,6 @@ export class SectionLoadingService {
     }
   }
 
-  // RESET
   resetSections(): void {
     this.loadedSectionsSignal.set({
       about: false,
@@ -138,7 +129,6 @@ export class SectionLoadingService {
     }
   }
 
-  // ESTADO
   isSectionLoaded(section: keyof LoadedSections): boolean {
     return this.loadedSectionsSignal()[section];
   }
@@ -153,14 +143,12 @@ export class SectionLoadingService {
     return Object.values(sections).every(loaded => loaded);
   }
 
-  // LIMPIEZA
   cleanup(): void {
     this.intersectionObserver?.disconnect();
     this.loadingTimeouts.forEach(timeout => window.clearTimeout(timeout));
     this.loadingTimeouts = [];
   }
 
-  // MÉTRICAS
   getLoadingMetrics() {
     return {
       loadedSections: this.loadedSectionsSignal(),

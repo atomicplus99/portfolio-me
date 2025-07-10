@@ -24,7 +24,6 @@ export class CursorStatusService {
     private lifecycleService: CursorLifecycleService
   ) {}
 
-  // GETTERS
   get status() {
     return this.statusSignal.asReadonly();
   }
@@ -33,7 +32,6 @@ export class CursorStatusService {
     return this.statusSignal();
   }
 
-  // ACTUALIZACIÓN DE STATUS
   updateStatus(): void {
     const animationState = this.animationService.animationState();
 
@@ -48,7 +46,6 @@ export class CursorStatusService {
     this.statusSignal.set(newStatus);
   }
 
-  // MÉTRICAS COMPLETAS
   getPerformanceMetrics() {
     return {
       status: this.currentStatus,
@@ -63,7 +60,6 @@ export class CursorStatusService {
     };
   }
 
-  // CONFIGURACIÓN
   setOptimizedMode(enabled: boolean): void {
     this.configService.updateConfig({ optimizedMode: enabled });
     if (enabled) {
@@ -84,7 +80,6 @@ export class CursorStatusService {
     this.updateStatus();
   }
 
-  // ESTADOS ESPECÍFICOS
   isOverHeader(): boolean {
     return this.performanceService.isOverHeader;
   }
@@ -97,12 +92,7 @@ export class CursorStatusService {
     return this.configService.config().optimizedMode;
   }
 
-  // DEBUGGING
   logCurrentStatus(): void {
-    console.group('Cursor Status');
-    console.log('Tactical Status:', this.currentStatus);
-    console.log('Performance:', this.performanceService.getPerformanceMetrics());
-    console.log('Config:', this.configService.config());
-    console.groupEnd();
+
   }
 }

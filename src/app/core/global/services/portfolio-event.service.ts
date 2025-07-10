@@ -12,19 +12,16 @@ export class AppEventCoordinatorService {
     private cursorInteractionService: CursorInteractionService
   ) {}
 
-  // EVENTOS DEL CURSOR
   handleCursorStatusChange(status: any, renderer: Renderer2): void {
     const isScrolling = this.performanceService.isScrolling();
     this.cursorInteractionService.onCursorStatusChange(status, isScrolling);
     
-    // Coordinar con performance si es necesario
     this.coordinateWithPerformance(status, renderer);
   }
 
   handleTargetingChange(isTargeting: boolean, renderer: Renderer2): void {
     this.cursorInteractionService.onTargetingChange(isTargeting, renderer);
     
-    // Aplicar optimizaciones adicionales si es targeting
     if (isTargeting && this.performanceService.deviceInfo().isLowEnd) {
       this.applyTargetingOptimizations(renderer);
     } else {
@@ -35,13 +32,10 @@ export class AppEventCoordinatorService {
   handleHeaderInteraction(isActive: boolean, renderer: Renderer2): void {
     this.cursorInteractionService.onHeaderInteraction(isActive, renderer);
     
-    // Coordinar con performance para header
     this.coordinateHeaderPerformance(isActive, renderer);
   }
 
-  // COORDINACIÓN ENTRE SERVICIOS
   private coordinateWithPerformance(status: any, renderer: Renderer2): void {
-    // Si hay muchas partículas activas y dispositivo lento
     if (status.activeParticles > 5 && this.performanceService.deviceInfo().isLowEnd) {
       renderer.addClass(document.body, 'performance-mode');
     } else {
@@ -51,10 +45,8 @@ export class AppEventCoordinatorService {
 
   private coordinateHeaderPerformance(isActive: boolean, renderer: Renderer2): void {
     if (isActive) {
-      // Optimizaciones específicas para header
       renderer.addClass(document.body, 'header-interaction-mode');
       
-      // Reducir efectos si es dispositivo lento
       if (this.performanceService.deviceInfo().isLowEnd) {
         renderer.addClass(document.body, 'header-low-end-mode');
       }
@@ -72,7 +64,6 @@ export class AppEventCoordinatorService {
     renderer.removeClass(document.body, 'targeting-optimized');
   }
 
-  // LIMPIEZA DE EVENTOS
   cleanupAllEvents(renderer: Renderer2): void {
     const classesToCleanup = [
       'performance-mode',
@@ -85,11 +76,9 @@ export class AppEventCoordinatorService {
       renderer.removeClass(document.body, className);
     });
 
-    // Limpieza de servicios individuales
     this.cursorInteractionService.cleanupCursorClasses(renderer);
   }
 
-  // MÉTRICAS DE COORDINACIÓN
   getCoordinationMetrics() {
     return {
       cursorInteraction: this.cursorInteractionService.getInteractionMetrics(),

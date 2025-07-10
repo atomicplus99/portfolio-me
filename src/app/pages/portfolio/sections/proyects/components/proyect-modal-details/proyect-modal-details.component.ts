@@ -28,13 +28,11 @@ type ViewportSize = 'mobile' | 'tablet' | 'desktop';
 })
 export class ProjectDetailsModalComponent {
 
-  // Private State Signals
   private readonly modalVisible = signal(false);
   private readonly selectedProject = signal<Project | null>(null);
   private readonly projectsList = signal<Project[]>([]);
   private readonly mobileDevice = signal(false);
 
-  // UI State Signals
   private readonly activeTabState = signal<TabType>('overview');
   private readonly galleryIndex = signal(0);
   private readonly lightboxVisible = signal(false);
@@ -44,7 +42,6 @@ export class ProjectDetailsModalComponent {
   private readonly touchX = signal(0);
   private readonly touchY = signal(0);
 
-  // Computed Signals
   protected readonly isModalVisible = computed(() => this.modalVisible());
   protected readonly currentProject = computed(() => this.selectedProject());
   protected readonly allProjects = computed(() => this.projectsList());
@@ -56,7 +53,6 @@ export class ProjectDetailsModalComponent {
   protected readonly isLoading = computed(() => this.loadingState());
   protected readonly viewportSize = computed(() => this.screenSize());
 
-  // ✅ Computed seguro sin side effects
   protected readonly currentProjectDetails = computed(() => {
     const project = this.currentProject();
     if (!project) return null;
@@ -113,12 +109,10 @@ export class ProjectDetailsModalComponent {
     };
   });
 
-  // Outputs
   @Output() closed = new EventEmitter<void>();
   @Output() projectChanged = new EventEmitter<Project>();
   @Output() actionClicked = new EventEmitter<{ action: 'demo' | 'code', project: Project }>();
 
-  // Input Setters
   @Input() set isVisible(value: boolean) {
     this.modalVisible.set(value);
   }
@@ -146,7 +140,6 @@ export class ProjectDetailsModalComponent {
 
   }
 
-  // ✅ Método helper para resetear estado del modal
   private resetModalState(): void {
     this.activeTabState.set('overview');
     this.galleryIndex.set(0);
@@ -154,9 +147,7 @@ export class ProjectDetailsModalComponent {
     this.videoPlaying.set(false);
   }
 
-  // Effects Setup
   private setupEffects(): void {
-    // Effect para manejar el scroll del body cuando el modal está abierto
     effect(() => {
       if (this.isModalVisible()) {
         document.body.style.overflow = 'hidden';
@@ -165,7 +156,6 @@ export class ProjectDetailsModalComponent {
       }
     });
 
-    // Effect para resetear video cuando cambia el tab
     effect(() => {
       const tab = this.activeTab();
       if (tab !== 'gallery') {
@@ -173,14 +163,12 @@ export class ProjectDetailsModalComponent {
       }
     });
 
-    // Effect para actualizar viewport en cambios de tamaño
     effect(() => {
       if (this.isMobileDevice()) {
         this.screenSize.set('mobile');
       }
     });
 
-    // ✅ Effect para debugging (remover en producción)
     effect(() => {
       const project = this.currentProject();
       const visible = this.isModalVisible();
@@ -189,7 +177,6 @@ export class ProjectDetailsModalComponent {
     });
   }
 
-  // Responsive Methods
   @HostListener('window:resize', ['$event'])
   onWindowResize(): void {
     this.updateViewportSize();
@@ -208,7 +195,6 @@ export class ProjectDetailsModalComponent {
     }
   }
 
-  // Keyboard Navigation
   @HostListener('document:keydown', ['$event'])
   onKeyDown(event: KeyboardEvent): void {
     if (!this.isModalVisible()) return;
@@ -241,7 +227,6 @@ export class ProjectDetailsModalComponent {
     }
   }
 
-  // Touch Gestures for Mobile
   @HostListener('touchstart', ['$event'])
   onTouchStart(event: TouchEvent): void {
     if (!this.isMobileDevice()) return;
@@ -259,7 +244,6 @@ export class ProjectDetailsModalComponent {
     const deltaX = touch.clientX - this.touchX();
     const deltaY = touch.clientY - this.touchY();
 
-    // Swipe horizontal para navegación de proyectos
     if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
       if (deltaX > 0) {
         this.onPreviousProject();
@@ -268,7 +252,6 @@ export class ProjectDetailsModalComponent {
       }
     }
 
-    // Swipe vertical para navegación de galería (solo en tab gallery)
     if (this.activeTab() === 'gallery' && Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 50) {
       if (deltaY > 0) {
         this.onGalleryPrevious();
@@ -278,7 +261,6 @@ export class ProjectDetailsModalComponent {
     }
   }
 
-  // Navigation Methods
   onClose(): void {
     this.modalVisible.set(false);
     this.closed.emit();
@@ -308,7 +290,6 @@ export class ProjectDetailsModalComponent {
     this.projectChanged.emit(previousProject);
   }
 
-  // Tab Methods
   onTabChange(tab: TabType): void {
     this.activeTabState.set(tab);
   }
@@ -327,7 +308,6 @@ export class ProjectDetailsModalComponent {
     this.activeTabState.set(tabs[nextIndex]);
   }
 
-  // Gallery Methods
   onGalleryNext(): void {
     if (!this.hasGalleryNext()) return;
     this.galleryIndex.update(index => index + 1);
@@ -358,12 +338,10 @@ export class ProjectDetailsModalComponent {
     this.videoPlaying.set(false);
   }
 
-  // Public method for lightbox access from template
   showLightboxModal(): void {
     this.lightboxVisible.set(true);
   }
 
-  // Action Methods
   onActionClick(action: 'demo' | 'code'): void {
     const project = this.currentProject();
     if (!project) return;
@@ -371,7 +349,6 @@ export class ProjectDetailsModalComponent {
     this.actionClicked.emit({ action, project });
   }
 
-  // Utility Methods
   getStatusClass(status: string): string {
     switch (status) {
       case 'online': return 'status-online';
@@ -401,7 +378,6 @@ export class ProjectDetailsModalComponent {
     return labels[tab] || 'Overview';
   }
 
-  // Public getter methods for template access
   get isVisible(): boolean {
     return this.isModalVisible();
   }
@@ -414,7 +390,6 @@ export class ProjectDetailsModalComponent {
     return ['overview', 'tech', 'gallery', 'performance'];
   }
 
-  // Track by functions for ngFor optimization
   trackByGalleryItem(index: number, item: ProjectGalleryItem): string {
     return item.id;
   }
@@ -443,7 +418,6 @@ export class ProjectDetailsModalComponent {
     return pattern;
   }
 
-  // Performance and Animation Methods
   getImagePlaceholder(): string {
     return 'data:image/svg+xml;charset=UTF-8,%3Csvg width="400" height="300" xmlns="http://www.w3.org/2000/svg"%3E%3Crect width="100%25" height="100%25" fill="%23374151"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%239ca3af"%3ECargando...%3C/text%3E%3C/svg%3E';
   }
@@ -458,7 +432,6 @@ export class ProjectDetailsModalComponent {
     img.src = this.getImagePlaceholder();
   }
 
-  // Context-aware text formatting
   getContextualDescription(text: string): string {
     const viewport = this.viewportSize();
     if (viewport === 'mobile') {
@@ -485,7 +458,6 @@ export class ProjectDetailsModalComponent {
     return totalFeatures;
   }
 
-  // Accessibility helpers
   getAriaLabel(context: string, data?: any): string {
     switch (context) {
       case 'close-modal':

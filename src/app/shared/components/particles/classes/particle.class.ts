@@ -20,8 +20,7 @@ export class ParticleSystem {
     this.initializeCamera();
     this.initializeRenderer();
     this.createParticles();
-    console.log('🔍 Config recibida:', config);
-    console.log('🔍 Size en material:', this.config.size);
+
   }
 
   private initializeCamera(): void {
@@ -33,7 +32,6 @@ export class ParticleSystem {
       0.1,
       1000
     );
-    // CORREGIDO: Mover cámara más lejos para mejor vista
     this.camera.position.set(0, 0, 50);
   }
 
@@ -55,19 +53,16 @@ export class ParticleSystem {
     const colors = new Float32Array(this.config.count * 3);
 
 
-    // GALÁCTICO: Distribución simple en todo el espacio
     const spread = 150; // Área amplia
     const height = 300; // Altura para múltiples secciones
     const depth = 80;   // Profundidad moderada
 
 
     for (let i = 0; i < this.config.count * 3; i += 3) {
-      // SIMPLE: Distribución uniforme
       positions[i] = (Math.random() - 0.5) * spread;        // X
       positions[i + 1] = (Math.random() - 0.5) * height;    // Y (todo el scroll)
       positions[i + 2] = (Math.random() - 0.5) * depth;     // Z
 
-      // GALÁCTICO: Colores azules/morados simples
       const color = new THREE.Color();
       const intensity = 0.3 + Math.random() * 0.7; // Variación de brillo
 
@@ -86,7 +81,6 @@ export class ParticleSystem {
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
     geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
-    // GALÁCTICO MEJORADO: Material con un poco más de presencia
     const material = new THREE.PointsMaterial({
       size: this.config.size,
       vertexColors: true,
@@ -94,21 +88,16 @@ export class ParticleSystem {
       opacity: this.config.opacity,
       blending: THREE.AdditiveBlending,
       sizeAttenuation: true,
-      // AÑADIR: Textura circular simple para mejor definición
       map: this.createSimpleCircleTexture(),
       alphaTest: 0.1,
-      // ✅ ARREGLAR EL ERROR WEBGL:
       premultipliedAlpha: false
 
     });
-    console.log('🔍 Material size:', material.size);
-    console.log('🔍 Particle count:', this.config.count);
 
     this.particles = new THREE.Points(geometry, material);
     this.scene.add(this.particles);
   }
 
-  // NUEVO: Textura circular simple pero efectiva
   private createSimpleCircleTexture(): THREE.Texture {
     const canvas = document.createElement('canvas');
     canvas.width = 32; // REDUCIDO: menos resolución = mejor performance
@@ -116,7 +105,6 @@ export class ParticleSystem {
 
     const ctx = canvas.getContext('2d')!;
 
-    // Gradiente radial simple pero efectivo
     const gradient = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
     gradient.addColorStop(0, 'rgba(255, 255, 255, 1.0)');   // Centro sólido
     gradient.addColorStop(0.4, 'rgba(255, 255, 255, 0.7)'); // Medio
@@ -127,7 +115,6 @@ export class ParticleSystem {
     ctx.fillRect(0, 0, 32, 32);
 
     const texture = new THREE.CanvasTexture(canvas);
-    // ✅ ARREGLAR EL ERROR WEBGL:
     texture.premultiplyAlpha = false;
     texture.flipY = false;
     texture.needsUpdate = true;
@@ -149,14 +136,11 @@ export class ParticleSystem {
   private updateParticles(elapsedTime: number): void {
     if (!this.particles) return;
 
-    // GALÁCTICO: Rotación lenta pero perceptible
     this.particles.rotation.y = elapsedTime * this.config.speed;
     this.particles.rotation.x = elapsedTime * this.config.speed * 0.3;
 
-    // SUTIL: Movimiento muy ligero solo en algunas partículas
     const positions = this.particles.geometry.attributes['position'].array as Float32Array;
 
-    // Solo actualizar cada 3 frames para performance
     if (Math.floor(elapsedTime * 60) % 3 === 0) {
       for (let i = 0; i < positions.length; i += 9) { // Solo cada 3ra partícula
         positions[i + 1] += Math.sin(elapsedTime * 0.5 + positions[i] * 0.1) * 0.01;
