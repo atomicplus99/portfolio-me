@@ -1,39 +1,205 @@
-.progress-container {
-      width: 320px;
-      max-width: 80vw;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.8s ease-out;
-    }
+/* elegant-progress.component.css */
 
-    .progress-container.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+/* ELEGANT PROGRESS CONTAINER */
+.elegant-progress-container {
+  width: 100%;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-    .progress-bar {
-      width: 100%;
-      height: 3px;
-      background: rgba(148, 163, 184, 0.2);
-      border-radius: 2px;
-      overflow: hidden;
-      margin-bottom: 16px;
-      position: relative;
-    }
+.elegant-progress-container.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
 
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #60a5fa 0%, #67e8f9 100%);
-      border-radius: 2px;
-      transition: width 0.3s ease-out;
-      box-shadow: 0 0 10px rgba(96, 165, 250, 0.5);
-    }
+/* PROGRESS TRACK */
+.elegant-progress-track {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  background: rgba(30, 41, 59, 0.6);
+  border-radius: 8px;
+  overflow: hidden;
+  backdrop-filter: blur(4px);
+  
+  /* Subtle border */
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  
+  /* Elegant shadow */
+  box-shadow: 
+    inset 0 1px 3px rgba(0, 0, 0, 0.2),
+    0 1px 2px rgba(0, 0, 0, 0.1);
+}
 
-    .progress-text {
-      font-family: 'Inter', sans-serif;
-      font-size: 14px;
-      color: #64748b;
-      font-weight: 400;
-      letter-spacing: 1px;
-      text-align: center;
-    }
+/* PROGRESS FILL */
+.elegant-progress-fill {
+  position: relative;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    #6366f1 0%,
+    #8b5cf6 50%,
+    #10b981 100%
+  );
+  border-radius: 8px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Elegant glow */
+  box-shadow: 
+    0 0 8px rgba(99, 102, 241, 0.3),
+    0 0 16px rgba(139, 92, 246, 0.2);
+  
+  /* Performance */
+  transform: translateZ(0);
+  will-change: width;
+  backface-visibility: hidden;
+}
+
+/* PROGRESS SHIMMER */
+.progress-shimmer {
+  position: absolute;
+  top: 0;
+  right: -20px;
+  width: 20px;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  animation: elegantShimmer 2s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+@keyframes elegantShimmer {
+  0% {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+}
+
+/* TRACK OVERLAY */
+.track-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.05),
+    transparent
+  );
+  animation: trackScan 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes trackScan {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* PROGRESS MESSAGE */
+.progress-message {
+  margin-top: 1rem;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  color: #64748b;
+  font-weight: 400;
+  letter-spacing: 0.25px;
+  opacity: 0.8;
+  transition: all 0.3s ease;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .elegant-progress-track {
+    height: 3px;
+  }
+  
+  .progress-message {
+    font-size: 0.8rem;
+    margin-top: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .elegant-progress-track {
+    height: 2px;
+  }
+  
+  .progress-shimmer {
+    width: 15px;
+    right: -15px;
+  }
+}
+
+/* ACCESSIBILITY */
+@media (prefers-reduced-motion: reduce) {
+  .elegant-progress-container {
+    transition: opacity 0.3s ease-out;
+    transform: none !important;
+  }
+  
+  .elegant-progress-fill {
+    transition: width 0.2s linear;
+  }
+  
+  .progress-shimmer,
+  .track-overlay {
+    animation: none !important;
+    display: none;
+  }
+}
+
+/* HIGH CONTRAST */
+@media (prefers-contrast: high) {
+  .elegant-progress-track {
+    background: rgba(75, 85, 99, 0.5);
+    border-color: #6366f1;
+    box-shadow: none;
+  }
+  
+  .elegant-progress-fill {
+    background: #6366f1;
+    box-shadow: none;
+  }
+  
+  .progress-message {
+    color: #e2e8f0;
+  }
+  
+  .progress-shimmer,
+  .track-overlay {
+    display: none;
+  }
+}
+
+/* PERFORMANCE */
+.elegant-progress-fill,
+.progress-shimmer,
+.track-overlay {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}

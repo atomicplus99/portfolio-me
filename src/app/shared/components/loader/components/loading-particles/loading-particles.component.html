@@ -1,8 +1,0 @@
- <div class="particles-container" *ngIf="shouldRender()">
-      <div class="particle"
-           *ngFor="let particle of particles(); trackBy: trackByIndex"
-           [style.left.px]="particle.x"
-           [style.top.px]="particle.y"
-           [style.animation-delay]="particle.delay + 's'">
-      </div>
-    </div>

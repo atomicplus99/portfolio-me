@@ -1,24 +1,207 @@
-.particles-container {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      pointer-events: none;
-    }
+/* portfolio-particles.component.css */
 
-    .particle {
-      position: absolute;
-      width: 2px;
-      height: 2px;
-      background: #60a5fa;
-      border-radius: 50%;
-      animation: float 6s infinite ease-in-out;
-      opacity: 0.4;
-    }
+/* PORTFOLIO PARTICLES CONTAINER */
+.portfolio-particles-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 3;
+  
+  /* Performance optimizations */
+  contain: layout style paint;
+  transform: translateZ(0);
+}
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); opacity: 0.2; }
-      50% { transform: translateY(-15px); opacity: 0.6; }
-    }
+/* PORTFOLIO PARTICLES */
+.portfolio-particle {
+  position: absolute;
+  width: var(--particle-size, 3px);
+  height: var(--particle-size, 3px);
+  background: var(--particle-color);
+  border-radius: 50%;
+  opacity: var(--particle-opacity, 0.8);
+  
+  /* Intense blue glow like portfolio */
+  box-shadow: 
+    0 0 calc(var(--particle-size, 3px) * 3) var(--particle-color),
+    0 0 calc(var(--particle-size, 3px) * 6) var(--particle-color),
+    0 0 calc(var(--particle-size, 3px) * 12) rgba(59, 130, 246, 0.3);
+  
+  /* Dynamic animation */
+  animation: 
+    portfolioDrift var(--animation-duration, 8s) infinite linear,
+    portfolioPulse calc(var(--animation-duration, 8s) * 0.5) infinite ease-in-out alternate;
+  
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* MAIN DRIFT ANIMATION */
+@keyframes portfolioDrift {
+  0% {
+    transform: translateY(0px) translateX(0px) scale(var(--particle-opacity, 0.8));
+  }
+  25% {
+    transform: translateY(-30px) translateX(25px) scale(calc(var(--particle-opacity, 0.8) * 1.3));
+  }
+  50% {
+    transform: translateY(-60px) translateX(-15px) scale(calc(var(--particle-opacity, 0.8) * 1.6));
+  }
+  75% {
+    transform: translateY(-25px) translateX(35px) scale(calc(var(--particle-opacity, 0.8) * 1.1));
+  }
+  100% {
+    transform: translateY(-80px) translateX(-20px) scale(var(--particle-opacity, 0.8));
+  }
+}
+
+/* PULSING GLOW ANIMATION */
+@keyframes portfolioPulse {
+  0% {
+    opacity: calc(var(--particle-opacity, 0.8) * 0.6);
+    box-shadow: 
+      0 0 calc(var(--particle-size, 3px) * 2) var(--particle-color),
+      0 0 calc(var(--particle-size, 3px) * 4) var(--particle-color);
+  }
+  100% {
+    opacity: var(--particle-opacity, 0.8);
+    box-shadow: 
+      0 0 calc(var(--particle-size, 3px) * 4) var(--particle-color),
+      0 0 calc(var(--particle-size, 3px) * 8) var(--particle-color),
+      0 0 calc(var(--particle-size, 3px) * 16) rgba(59, 130, 246, 0.4);
+  }
+}
+
+/* EXTREME RANDOMIZATION */
+.portfolio-particle:nth-child(1) { --animation-duration: 7s; animation-delay: -0.2s; }
+.portfolio-particle:nth-child(2) { --animation-duration: 12s; animation-delay: -1.8s; animation-direction: reverse; }
+.portfolio-particle:nth-child(3) { --animation-duration: 9s; animation-delay: -3.1s; }
+.portfolio-particle:nth-child(4) { --animation-duration: 15s; animation-delay: -0.7s; animation-direction: reverse; }
+.portfolio-particle:nth-child(5) { --animation-duration: 6s; animation-delay: -2.4s; }
+.portfolio-particle:nth-child(6) { --animation-duration: 11s; animation-delay: -4.2s; animation-direction: reverse; }
+.portfolio-particle:nth-child(7) { --animation-duration: 8s; animation-delay: -1.1s; }
+.portfolio-particle:nth-child(8) { --animation-duration: 13s; animation-delay: -3.7s; animation-direction: reverse; }
+.portfolio-particle:nth-child(9) { --animation-duration: 10s; animation-delay: -0.5s; }
+.portfolio-particle:nth-child(10) { --animation-duration: 14s; animation-delay: -2.9s; animation-direction: reverse; }
+.portfolio-particle:nth-child(11) { --animation-duration: 7.5s; animation-delay: -1.6s; }
+.portfolio-particle:nth-child(12) { --animation-duration: 9.5s; animation-delay: -4.1s; animation-direction: reverse; }
+.portfolio-particle:nth-child(13) { --animation-duration: 11.5s; animation-delay: -0.9s; }
+.portfolio-particle:nth-child(14) { --animation-duration: 6.5s; animation-delay: -3.3s; animation-direction: reverse; }
+.portfolio-particle:nth-child(15) { --animation-duration: 12.5s; animation-delay: -2.1s; }
+.portfolio-particle:nth-child(16) { --animation-duration: 8.5s; animation-delay: -4.5s; animation-direction: reverse; }
+.portfolio-particle:nth-child(17) { --animation-duration: 10.5s; animation-delay: -1.3s; }
+.portfolio-particle:nth-child(18) { --animation-duration: 7.2s; animation-delay: -3.8s; animation-direction: reverse; }
+.portfolio-particle:nth-child(19) { --animation-duration: 13.5s; animation-delay: -0.4s; }
+.portfolio-particle:nth-child(20) { --animation-duration: 9.2s; animation-delay: -2.7s; animation-direction: reverse; }
+
+/* ADDITIONAL RANDOM PATTERNS */
+.portfolio-particle:nth-child(odd) {
+  animation-timing-function: cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+.portfolio-particle:nth-child(even) {
+  animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.portfolio-particle:nth-child(3n) {
+  animation-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.portfolio-particle:nth-child(5n) {
+  animation-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* FLOATING UPWARD EFFECT */
+.portfolio-particle:nth-child(4n) {
+  animation: portfolioFloatUp 16s infinite linear;
+}
+
+@keyframes portfolioFloatUp {
+  0% {
+    transform: translateY(100vh) translateX(0px) scale(0.5);
+    opacity: 0;
+  }
+  10% {
+    opacity: var(--particle-opacity, 0.8);
+    transform: translateY(90vh) translateX(20px) scale(0.8);
+  }
+  50% {
+    transform: translateY(50vh) translateX(-30px) scale(1.2);
+  }
+  90% {
+    opacity: var(--particle-opacity, 0.8);
+    transform: translateY(10vh) translateX(15px) scale(0.9);
+  }
+  100% {
+    transform: translateY(-10vh) translateX(-25px) scale(0.3);
+    opacity: 0;
+  }
+}
+
+/* SPIRAL MOTION */
+.portfolio-particle:nth-child(7n) {
+  animation: portfolioSpiral 20s infinite linear;
+}
+
+@keyframes portfolioSpiral {
+  0% {
+    transform: rotate(0deg) translateX(100px) rotate(0deg) scale(0.8);
+  }
+  25% {
+    transform: rotate(90deg) translateX(100px) rotate(-90deg) scale(1.2);
+  }
+  50% {
+    transform: rotate(180deg) translateX(100px) rotate(-180deg) scale(1.5);
+  }
+  75% {
+    transform: rotate(270deg) translateX(100px) rotate(-270deg) scale(1.1);
+  }
+  100% {
+    transform: rotate(360deg) translateX(100px) rotate(-360deg) scale(0.8);
+  }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .portfolio-particle {
+    --animation-duration: 12s !important;
+  }
+  
+  .portfolio-particle:nth-child(n+20) {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .portfolio-particle {
+    --animation-duration: 15s !important;
+  }
+  
+  .portfolio-particle:nth-child(n+15) {
+    display: none;
+  }
+}
+
+/* ACCESSIBILITY */
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-particle {
+    animation: none !important;
+    opacity: calc(var(--particle-opacity, 0.8) * 0.3) !important;
+  }
+}
+
+/* PERFORMANCE */
+.portfolio-particle {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.portfolio-particles-container {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}

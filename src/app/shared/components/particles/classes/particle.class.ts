@@ -91,7 +91,9 @@ export class ParticleSystem {
       sizeAttenuation: true,
       // AÑADIR: Textura circular simple para mejor definición
       map: this.createSimpleCircleTexture(),
-      alphaTest: 0.1
+      alphaTest: 0.1,
+      // ✅ ARREGLAR EL ERROR WEBGL:
+      premultipliedAlpha: false
     });
 
     this.particles = new THREE.Points(geometry, material);
@@ -117,6 +119,9 @@ export class ParticleSystem {
     ctx.fillRect(0, 0, 32, 32);
     
     const texture = new THREE.CanvasTexture(canvas);
+    // ✅ ARREGLAR EL ERROR WEBGL:
+    texture.premultiplyAlpha = false;
+    texture.flipY = false;
     texture.needsUpdate = true;
     return texture;
   }

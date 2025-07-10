@@ -4,7 +4,7 @@
 
 html {
   font-size: 16px;
-  
+  scroll-behavior: smooth;
   background: linear-gradient(135deg, #0f172a 0%, #1f2937 50%, #18181b 100%);
 }
 
@@ -18,7 +18,6 @@ body {
   min-height: 100vh;
 }
 
-
 .zoom-container {
   transform-origin: 0 0;
   width: 100%;
@@ -27,27 +26,23 @@ body {
   background: linear-gradient(135deg, #0f172a 0%, #1f2937 50%, #18181b 100%);
 }
 
-
 * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-
-
-
-*, 
-*::before, 
-*::after, 
-html, 
-body, 
-div, 
-span, 
-p, 
-a, 
-button, 
-input, 
-textarea, 
+*,
+*::before,
+*::after,
+html,
+body,
+div,
+span,
+p,
+a,
+button,
+input,
+textarea,
 select,
 h1, h2, h3, h4, h5, h6,
 .clickable,
@@ -57,7 +52,6 @@ h1, h2, h3, h4, h5, h6,
 [tabindex] {
   cursor: none !important;
 }
-
 
 .zoom-container *,
 .portfolio-content *,

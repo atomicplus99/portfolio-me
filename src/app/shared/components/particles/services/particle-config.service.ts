@@ -13,8 +13,8 @@ export class ParticleConfigService {
 
 
   private readonly defaultConfig: ParticleConfig = {
-    count: 800,       // Densidad galáctica completa
-    size: 1.5,        // Puntos visibles
+    count: 1800,       // Densidad galáctica completa
+    size: 1.0,        // Puntos visibles
     opacity: 0.7,     // Presencia moderada
     speed: 0.03,      // Movimiento galáctico lento
     colors: {

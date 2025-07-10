@@ -16,7 +16,7 @@ import { ParticlesComponent } from './shared/components/particles/main/ts/partic
 import { HeaderComponent } from './pages/portfolio/sections/header/header.component';
 import { CustomCursorComponent } from './shared/components/custom-cursor/main/ts/custom-cursor.component';
 import { HeroComponent } from './pages/portfolio/sections/hero/main/hero.component';
-import { LoaderComponent } from './shared/components/loader/loader.component';
+
 import { LoaderService } from './shared/components/loader/services/loader.service';
 import { AvatarComponent } from './shared/components/avatar/main/avatar.component';
 import { AboutComponent } from './pages/portfolio/sections/about/about.component';
@@ -27,6 +27,7 @@ import { ContactComponent } from './pages/portfolio/sections/contact/contact.com
 import { FooterComponent } from './pages/portfolio/sections/footer/footer.component';
 import { AppLifecycleManagerService } from './core/global/config/app-life-cycle.service';
 import { AppConfigurationService } from './core/global/config/app-configuration.service';
+import { ElegantLoaderComponent } from './shared/components/loader/loader.component';
 
 @Component({
   selector: 'app-root',
@@ -34,7 +35,7 @@ import { AppConfigurationService } from './core/global/config/app-configuration.
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    LoaderComponent,
+    ElegantLoaderComponent,
     HeaderComponent,
     CustomCursorComponent,
     HeroComponent,
@@ -69,8 +70,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   get cursorConfig() {
     return this.configurationService.cursorConfig();
   }
-
-  // ELIMINADO: particleConfig - ParticlesComponent usa ParticleConfigService directamente
 
   get isAppReady(): boolean {
     return this.lifecycleManager.isReady;
@@ -147,7 +146,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   resetSections(): void {
     this.lifecycleManager.resetSections();
   }
-
 
   // MÉTRICAS
   getMetrics() {

@@ -1,21 +1,11 @@
 <div class="portfolio-container">
-  <app-custom-cursor
-    [config]="cursorConfig"
-    [disabled]="loaderService.state().isLoading"
-    (statusChange)="onCursorStatusChange($event)"
-    (targetingChange)="onTargetingChange($event)"
-    class="cursor-layer">
+  <app-custom-cursor [config]="cursorConfig" [disabled]="loaderService.state().isLoading"
+    (statusChange)="onCursorStatusChange($event)" (targetingChange)="onTargetingChange($event)" class="cursor-layer">
   </app-custom-cursor>
 
-  <app-loader
-    *ngIf="loaderService.state().isLoading"
-    logoText="DUQUE"
-    subtitle="Full Stack Developer"
-    [particleCount]="30"
-    class="loader-layer">
-  </app-loader>
+  <app-elegant-loader [logoText]="'DUQUE'" [subtitle]="'Bienvenido'">
+  </app-elegant-loader>
 
-  
   <app-particles class="particles-layer"></app-particles>
 
   <div class="content-wrapper" [class.content-hidden]="loaderService.state().isLoading">
@@ -48,9 +38,7 @@
 
       <div class="section-divider" *ngIf="loadedSections.footer"></div>
 
-      <app-footer
-        *ngIf="loadedSections.footer"
-        class="footer-section">
+      <app-footer *ngIf="loadedSections.footer" class="footer-section">
       </app-footer>
     </main>
 

@@ -1,3 +1,4 @@
+// loader-animated.component.ts
 import { CommonModule } from "@angular/common";
 import { Component, input, OnInit, signal } from "@angular/core";
 
@@ -5,7 +6,28 @@ import { Component, input, OnInit, signal } from "@angular/core";
   selector: 'app-animated-logo',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './loader-animated.component.html',
+  template: `
+    <div class="elegant-logo-container" 
+         [class.visible]="isVisible()"
+         [class.font-loaded]="fontLoaded()">
+      
+      <!-- Main Logo -->
+      <div class="elegant-logo-text" 
+           [class.font-loaded]="fontLoaded()">
+        {{ text() }}
+      </div>
+      
+      <!-- Subtitle -->
+      <div class="elegant-subtitle" 
+           *ngIf="subtitle()">
+        {{ subtitle() }}
+      </div>
+      
+      <!-- Minimal Accent -->
+      <div class="logo-accent"></div>
+      
+    </div>
+  `,
   styleUrls: ['./loader-animated.component.css']
 })
 export class AnimatedLogoComponent implements OnInit {
@@ -19,7 +41,6 @@ export class AnimatedLogoComponent implements OnInit {
   }
 
   private checkFontLoad() {
-
     if (document.fonts) {
       document.fonts.ready.then(() => {
         this.fontLoaded.set(true);
