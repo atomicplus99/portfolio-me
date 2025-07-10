@@ -28,33 +28,65 @@ export class ThreejsService {
   private pointLights: THREE.PointLight[] = [];
   private ambientLight!: THREE.AmbientLight;
 
-  constructor(private projectsService: ProjectsService) {}
+  constructor(private projectsService: ProjectsService) { }
 
   initializeScene(canvas: HTMLCanvasElement, performanceMode: boolean, isMobile: boolean): void {
+    // LIMPIAR ESCENA ANTERIOR COMPLETAMENTE
+    if (this.scene) {
+      // Remover todos los objetos de la escena
+      while (this.scene.children.length > 0) {
+        this.scene.remove(this.scene.children[0]);
+      }
+    }
+
+    // Limpiar arrays
+    this.hologramObjects = [];
+    this.pointLights = [];
+
+    // Cancelar animación anterior
+    if (this.animationId) {
+      cancelAnimationFrame(this.animationId);
+      this.animationId = 0;
+    }
+
+    // Continuar con la configuración normal
     this.setupRenderer(canvas, performanceMode, isMobile);
     this.setupScene(isMobile);
     this.setupCamera(canvas, isMobile);
     this.setupRaycaster();
     this.setupLighting(performanceMode);
     this.createHologramProjects(performanceMode, isMobile);
-    
+
     this.isInitialized.set(true);
     this.startAnimation();
   }
 
   private setupRenderer(canvas: HTMLCanvasElement, performanceMode: boolean, isMobile: boolean): void {
     const pixelRatio = isMobile ? Math.min(window.devicePixelRatio, 2) : window.devicePixelRatio;
-    
-    this.renderer = new THREE.WebGLRenderer({
-      canvas,
-      antialias: !performanceMode,
-      alpha: true,
-      powerPreference: isMobile ? "low-power" : "high-performance"
-    });
-    
+
+    if (!this.renderer) {
+      this.renderer = new THREE.WebGLRenderer({
+        canvas,
+        antialias: !performanceMode,
+        alpha: true,
+        powerPreference: isMobile ? "low-power" : "high-performance"
+      });
+    }
+
+    // FORZAR REDIMENSIONAMIENTO COMPLETO
     const rect = canvas.getBoundingClientRect();
-    this.renderer.setSize(rect.width, rect.height);
-    this.renderer.setPixelRatio(pixelRatio);
+
+    // Forzar que el canvas tome el tamaño del contenedor
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+
+    // Esperar un frame para que el CSS se aplique
+    requestAnimationFrame(() => {
+      const newRect = canvas.getBoundingClientRect();
+      this.renderer.setSize(newRect.width, newRect.height);
+      this.renderer.setPixelRatio(pixelRatio);
+    });
+
     this.renderer.shadowMap.enabled = !performanceMode;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   }
@@ -67,10 +99,18 @@ export class ThreejsService {
   private setupCamera(canvas: HTMLCanvasElement, isMobile: boolean): void {
     const rect = canvas.getBoundingClientRect();
     const fov = isMobile ? 65 : 75;
-    
+
     this.camera = new THREE.PerspectiveCamera(fov, rect.width / rect.height, 0.1, 1000);
     const initialDistance = isMobile ? 25 : 20;
+
+    // RESETEAR COMPLETAMENTE LA CÁMARA
     this.camera.position.set(0, 0, initialDistance);
+    this.camera.rotation.set(0, 0, 0);
+    this.camera.lookAt(0, 0, 0);
+    this.camera.updateProjectionMatrix();
+
+    console.log(`Cámara final: pos=(${this.camera.position.x}, ${this.camera.position.y}, ${this.camera.position.z}), target=(0,0,0)`);
+
   }
 
   private setupRaycaster(): void {
@@ -83,7 +123,7 @@ export class ThreejsService {
 
     const lightCount = performanceMode ? 3 : 6;
     const colors = [0x22d3ee, 0xa855f7, 0x10b981, 0xf59e0b, 0xef4444, 0x3b82f6];
-    
+
     for (let i = 0; i < lightCount; i++) {
       const light = new THREE.PointLight(colors[i], performanceMode ? 0.8 : 1, 20);
       light.position.set(
@@ -99,7 +139,7 @@ export class ThreejsService {
 
   private createHologramProjects(performanceMode: boolean, isMobile: boolean): void {
     const projects = this.projectsService.getProjects();
-    
+
     projects.forEach((project, index) => {
       const hologram = this.createProjectHologram(project, index, performanceMode, isMobile);
       this.hologramObjects.push(hologram);
@@ -119,11 +159,13 @@ export class ThreejsService {
     const y = (Math.random() - 0.5) * (isMobile ? 1 : 2);
 
     group.position.set(x, y, z);
+    console.log(`Holograma ${index} creado en: x=${x.toFixed(1)}, y=${y.toFixed(1)}, z=${z.toFixed(1)}, radio=${radius}`);
+
 
     const sides = performanceMode ? 6 : 8;
     const shape = new THREE.Shape();
     const size = isMobile ? 3 : 3.5;
-    
+
     for (let i = 0; i <= sides; i++) {
       const angle = (i / sides) * Math.PI * 2;
       const shapeX = Math.cos(angle) * size;
@@ -146,7 +188,7 @@ export class ThreejsService {
 
     const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
     const color = this.projectsService.getProjectColor(project.type);
-    
+
     const material = new THREE.MeshPhongMaterial({
       color,
       transparent: true,
@@ -225,9 +267,9 @@ export class ThreejsService {
 
     this.animateHolograms(elapsedTime);
     this.animateLights(elapsedTime);
-    
+
     this.renderer.render(this.scene, this.camera);
-    
+
     const fps = Math.round(1 / deltaTime);
     this.performanceStats.update(stats => ({
       ...stats,
@@ -247,7 +289,7 @@ export class ThreejsService {
       if (hologram.isHovered || hologram.isSelected) {
         const scale = hologram.isSelected ? 1.3 : 1.1;
         hologram.mesh.scale.lerp(new THREE.Vector3(scale, scale, scale), 0.1);
-        
+
         const material = (hologram.mesh.children[0] as THREE.Mesh).material as THREE.MeshPhongMaterial;
         material.emissiveIntensity = hologram.isSelected ? 0.5 : 0.3;
       } else {
@@ -264,7 +306,7 @@ export class ThreejsService {
       light.position.x = Math.cos(angle) * 15;
       light.position.z = Math.sin(angle) * 15;
       light.position.y = Math.sin(elapsedTime + index) * 3;
-      
+
       light.intensity = 0.8 + Math.sin(elapsedTime * 3 + index) * 0.3;
     });
   }
@@ -282,7 +324,7 @@ export class ThreejsService {
     this.camera.position.x = Math.sin(targetRotationY) * radius;
     this.camera.position.z = Math.cos(targetRotationY) * radius;
     this.camera.position.y = targetRotationX * 0.5;
-    
+
     this.camera.lookAt(0, 0, 0);
   }
 
@@ -292,28 +334,28 @@ export class ThreejsService {
 
   checkIntersections(mouse: THREE.Vector2): HologramObject | null {
     this.raycaster.setFromCamera(mouse, this.camera);
-    
+
     this.hologramObjects.forEach(h => h.isHovered = false);
-    
+
     const meshes = this.hologramObjects.map(h => h.mesh);
     const intersects = this.raycaster.intersectObjects(meshes, true);
 
     if (intersects.length > 0) {
       const intersectedObject = intersects[0].object.parent as THREE.Group;
       const hologram = this.hologramObjects.find(h => h.mesh === intersectedObject);
-      
+
       if (hologram) {
         hologram.isHovered = true;
         return hologram;
       }
     }
-    
+
     return null;
   }
 
   selectProject(projectId: number): void {
     this.hologramObjects.forEach(h => h.isSelected = false);
-    
+
     const hologram = this.hologramObjects.find(h => h.project.id === projectId);
     if (hologram) {
       hologram.isSelected = true;
@@ -326,7 +368,7 @@ export class ThreejsService {
 
   onWindowResize(width: number, height: number): void {
     if (!this.camera || !this.renderer) return;
-    
+
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(width, height);
@@ -345,9 +387,10 @@ export class ThreejsService {
       cancelAnimationFrame(this.animationId);
     }
 
-    if (this.renderer) {
-      this.renderer.dispose();
-    }
+    // NO DISPONER EL RENDERER
+    // if (this.renderer) {
+    //   this.renderer.dispose();
+    // }
 
     if (this.scene) {
       this.scene.clear();

@@ -1,10 +1,5 @@
- <div class="threejs-container">
-      <canvas #threeCanvas 
-              class="threejs-canvas"
-              [class.mobile]="isMobile"
-              (mousedown)="onMouseDown($event)"
-              (mousemove)="onMouseMove($event)"
-              (mouseup)="onMouseUp()"
-              (wheel)="onWheel($event)">
-      </canvas>
-    </div>
+<div class="threejs-container">
+        <canvas #threeCanvas class="threejs-canvas" [class.mobile]="isMobileClass" (mousedown)="onMouseDown($event)"
+                (mousemove)="onMouseMove($event)" (mouseup)="onMouseUp()" (wheel)="onWheel($event)">
+        </canvas>
+</div>

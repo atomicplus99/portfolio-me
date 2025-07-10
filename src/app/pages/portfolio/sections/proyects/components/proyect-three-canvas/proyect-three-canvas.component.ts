@@ -44,6 +44,8 @@ export class ThreejsCanvasComponent implements AfterViewInit, OnDestroy {
   private lastTouchDistance = 0;
   private touchStartTime = 0;
   private touchMoved = false;
+  private lastMobileState = false;
+
 
   private mouse = new THREE.Vector2();
 
@@ -69,6 +71,9 @@ export class ThreejsCanvasComponent implements AfterViewInit, OnDestroy {
 
   private initThreeJS(): void {
     if (!this.canvasRef?.nativeElement) return;
+
+    // Guardar el estado móvil actual
+    this.lastMobileState = this.isMobile;
 
     this.threejsService.initializeScene(
       this.canvasRef.nativeElement,
@@ -151,7 +156,7 @@ export class ThreejsCanvasComponent implements AfterViewInit, OnDestroy {
 
   onMouseUp(): void {
     if (this.isMobile) return;
-        this.isMouseDown = false;
+    this.isMouseDown = false;
   }
 
   onWheel(event: WheelEvent): void {
@@ -299,8 +304,37 @@ export class ThreejsCanvasComponent implements AfterViewInit, OnDestroy {
   }
 
   private onWindowResize(): void {
-    const rect = this.canvasRef.nativeElement.getBoundingClientRect();
+  const rect = this.canvasRef.nativeElement.getBoundingClientRect();
+  
+  this.mobileService.updateMobileStatus();
+  const currentMobileState = this.mobileService.getIsMobile();
+  
+  console.log('Current lastMobileState:', this.lastMobileState);
+  console.log('New mobile state:', currentMobileState);
+  console.log('State changed?', currentMobileState !== this.lastMobileState);
+  
+  if (currentMobileState !== this.lastMobileState) {
+    console.log('🔄 EJECUTANDO CAMBIO DE ESTADO');
+    
+    this.lastMobileState = currentMobileState;
+    this.isMobile = currentMobileState; // ✅ CORRECTO
+    
+    // AGREGAR LA RE-INICIALIZACIÓN:
+    this.threejsService.cleanup();
+    this.threejsService.initializeScene(
+      this.canvasRef.nativeElement,
+      this.performanceMode,
+      currentMobileState
+    );
+    
+  } else {
+    console.log('📏 SOLO REDIMENSIONANDO');
     this.threejsService.onWindowResize(rect.width, rect.height);
+  }
+}
+
+  get isMobileClass(): boolean {
+    return this.mobileService.getIsMobile();
   }
 
   private setupMouseEventListeners(): void {
