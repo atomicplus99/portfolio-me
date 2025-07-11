@@ -36,7 +36,9 @@ export class AnimatedLogoComponent implements OnInit {
   readonly fontLoaded = signal(false);
 
   ngOnInit() {
+    
     this.checkFontLoad();
+    
   }
 
   private checkFontLoad() {
@@ -48,4 +50,5 @@ export class AnimatedLogoComponent implements OnInit {
       setTimeout(() => this.fontLoaded.set(true), 100);
     }
   }
+  
 }

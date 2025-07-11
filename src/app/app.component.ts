@@ -18,7 +18,6 @@ import { HeroComponent } from './pages/portfolio/sections/hero/main/hero.compone
 
 import { LoaderService } from './shared/components/loader/services/loader.service';
 
-import { AvatarComponent } from './shared/components/avatar/main/avatar.component';
 import { AboutComponent } from './pages/portfolio/sections/about/about.component';
 import { AboutMeComponent } from './pages/portfolio/sections/about-me/about-me.component';
 import { ProjectsComponent } from './pages/portfolio/sections/proyects/main/proyects.component';
@@ -40,7 +39,6 @@ import { LenisScrollService } from './core/global/services/portfolio-scroll.serv
     CustomCursorComponent,
     HeroComponent,
     ParticlesComponent,
-    AvatarComponent,
     AboutComponent,
     AboutMeComponent,
     ProjectsComponent,

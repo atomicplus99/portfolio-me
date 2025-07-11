@@ -1,15 +1,16 @@
 import { CommonModule } from "@angular/common";
-import { Component, input, OnInit, signal } from "@angular/core";
+import { Component, input, OnInit, OnDestroy, signal } from "@angular/core";
 
-export interface MinimalParticle {
+export interface NebulaLayer {
   x: number;
   y: number;
-  delay: number;
-  size: number;
+  width: number;
+  height: number;
+  rotation: number;
   opacity: number;
-  speed: number;
-  direction: number;
-  color: string;
+  colorIndex: number;
+  layer: number;
+  animationDelay: number;
 }
 
 @Component({
@@ -17,72 +18,121 @@ export interface MinimalParticle {
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="portfolio-particles-container" 
-         *ngIf="shouldRender()">
+    <div class="galaxy-nebula" *ngIf="shouldRender()">
       
-      <!-- Dynamic Particles -->
-      <div class="portfolio-particle"
-           *ngFor="let particle of particles(); trackBy: trackByIndex"
-           [style.left.px]="particle.x"
-           [style.top.px]="particle.y"
-           [style.animation-delay.s]="particle.delay"
-           [style.animation-duration.s]="particle.speed"
-           [style.--particle-size.px]="particle.size"
-           [style.--particle-opacity]="particle.opacity"
-           [style.--particle-color]="particle.color"
-           [style.transform]="'rotate(' + particle.direction + 'deg)'">
+      <!-- Main nebula structure -->
+      <div class="nebula-core"></div>
+      
+      <!-- Layered nebula clouds -->
+      <div class="nebula-layer"
+           *ngFor="let layer of layers(); trackBy: trackByLayer"
+           [class]="'layer-' + layer.layer"
+           [style.left.%]="layer.x"
+           [style.top.%]="layer.y"
+           [style.width.px]="layer.width"
+           [style.height.px]="layer.height"
+           [style.transform]="'rotate(' + layer.rotation + 'deg)'"
+           [style.opacity]="layer.opacity"
+           [style.animation-delay.s]="layer.animationDelay"
+           [style.--layer-color]="galacticColors[layer.colorIndex]">
       </div>
+      
+      <!-- Dust lanes -->
+      <div class="nebula-dust"
+           *ngFor="let dust of dustLanes(); trackBy: trackByDust"
+           [style.left.%]="dust.x"
+           [style.top.%]="dust.y"
+           [style.width.px]="dust.width"
+           [style.height.px]="dust.height"
+           [style.transform]="'rotate(' + dust.rotation + 'deg)'">
+      </div>
+      
+      <!-- Star field -->
+      <div class="nebula-stars"></div>
+      
+      <!-- Bright center -->
+      <div class="nebula-center"></div>
       
     </div>
   `,
   styleUrls: ['./loading-particles.component.css']
 })
-export class LoadingParticlesComponent implements OnInit {
-  readonly count = input<number>(30);
+export class LoadingParticlesComponent implements OnInit, OnDestroy {
+  readonly count = input<number>(6);
   
-  readonly particles = signal<MinimalParticle[]>([]);
+  readonly layers = signal<NebulaLayer[]>([]);
+  readonly dustLanes = signal<NebulaLayer[]>([]);
   readonly shouldRender = signal(false);
 
-  private blueColors = [
-    'rgba(59, 130, 246, 0.9)',   // Blue-500
-    'rgba(96, 165, 250, 0.8)',   // Blue-400  
-    'rgba(147, 197, 253, 0.7)',  // Blue-300
-    'rgba(191, 219, 254, 0.6)',  // Blue-200
-    'rgba(37, 99, 235, 1)',      // Blue-600
-    'rgba(29, 78, 216, 0.9)'     // Blue-700
+  // COLORES MASCULINOS - Azules profundos, grises, blancos
+  galacticColors = [
+    'rgba(30, 58, 138, 0.8)',     // Azul marino profundo
+    'rgba(37, 99, 235, 0.9)',     // Azul real intenso
+    'rgba(59, 130, 246, 0.7)',    // Azul brillante
+    'rgba(71, 85, 105, 0.8)',     // Gris azulado
+    'rgba(100, 116, 139, 0.6)',   // Gris acero
+    'rgba(148, 163, 184, 0.5)'    // Gris claro
   ];
 
   ngOnInit(): void {
-    requestIdleCallback(() => {
-      this.generatePortfolioParticles();
-      this.shouldRender.set(true);
-    });
+    this.generateGalaxyLayers();
+    this.generateDustLanes();
+    this.shouldRender.set(true);
   }
 
-  private generatePortfolioParticles(): void {
-    const particleCount = Math.min(this.count(), 40); // Max 40 particles
-    const newParticles: MinimalParticle[] = [];
+  ngOnDestroy(): void {
+    this.layers.set([]);
+    this.dustLanes.set([]);
+    this.shouldRender.set(false);
+  }
+
+  private generateGalaxyLayers(): void {
+    const layerCount = this.count();
+    const newLayers: NebulaLayer[] = [];
     
-    for (let i = 0; i < particleCount; i++) {
-      const x = Math.random() * (window.innerWidth + 200) - 100; // Extend beyond viewport
-      const y = Math.random() * (window.innerHeight + 200) - 100;
-      
-      newParticles.push({
-        x: x,
-        y: y,
-        delay: Math.random() * 10, // 0-10s random start
-        size: 1 + Math.random() * 5, // 1-6px variety
-        opacity: 0.4 + Math.random() * 0.6, // 0.4-1.0 opacity
-        speed: 6 + Math.random() * 8, // 6-14s animation speed
-        direction: Math.random() * 360, // Random rotation
-        color: this.blueColors[Math.floor(Math.random() * this.blueColors.length)]
+    for (let i = 0; i < layerCount; i++) {
+      newLayers.push({
+        x: 20 + Math.random() * 60,
+        y: 15 + Math.random() * 70,
+        width: 300 + Math.random() * 600,
+        height: 200 + Math.random() * 400,
+        rotation: Math.random() * 360,
+        opacity: 0.3 + Math.random() * 0.5,
+        colorIndex: Math.floor(Math.random() * this.galacticColors.length),
+        layer: i % 3,
+        animationDelay: Math.random() * 10
       });
     }
     
-    this.particles.set(newParticles);
+    this.layers.set(newLayers);
   }
 
-  trackByIndex(index: number): number {
+  private generateDustLanes(): void {
+    const dustCount = 2;
+    const newDust: NebulaLayer[] = [];
+    
+    for (let i = 0; i < dustCount; i++) {
+      newDust.push({
+        x: 30 + Math.random() * 40,
+        y: 25 + Math.random() * 50,
+        width: 200 + Math.random() * 400,
+        height: 100 + Math.random() * 200,
+        rotation: Math.random() * 180,
+        opacity: 0.6 + Math.random() * 0.3,
+        colorIndex: 0,
+        layer: 0,
+        animationDelay: 0
+      });
+    }
+    
+    this.dustLanes.set(newDust);
+  }
+
+  trackByLayer(index: number): number {
+    return index;
+  }
+
+  trackByDust(index: number): number {
     return index;
   }
 }

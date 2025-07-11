@@ -52,31 +52,9 @@
   display: none;
 }
 
+/* PUNTITOS ELIMINADOS */
 .minimal-stars {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: 
-    radial-gradient(2px 2px at 20px 30px, rgba(59, 130, 246, 0.9), transparent),
-    radial-gradient(1px 1px at 80px 70px, rgba(96, 165, 250, 0.7), transparent),
-    radial-gradient(1px 1px at 160px 40px, rgba(147, 197, 253, 0.8), transparent),
-    radial-gradient(2px 2px at 200px 90px, rgba(59, 130, 246, 0.6), transparent),
-    radial-gradient(1px 1px at 300px 150px, rgba(96, 165, 250, 0.5), transparent),
-    radial-gradient(1px 1px at 120px 200px, rgba(147, 197, 253, 0.7), transparent);
-  background-repeat: repeat;
-  background-size: 180px 180px, 220px 220px, 280px 280px, 160px 160px, 200px 200px, 240px 240px;
-  animation: portfolioStarsDrift 50s linear infinite;
-  opacity: 0.9;
-}
-
-@keyframes portfolioStarsDrift {
-  0% { transform: translateY(0) translateX(0); }
-  25% { transform: translateY(-100px) translateX(20px); }
-  50% { transform: translateY(-200px) translateX(-10px); }
-  75% { transform: translateY(-300px) translateX(15px); }
-  100% { transform: translateY(-400px) translateX(0); }
+  display: none;
 }
 
 /* MAIN CONTENT */
@@ -179,34 +157,11 @@
   display: none;
 }
 
-@keyframes frameBreathe {
-  0% {
-    opacity: 0.3;
-    transform: scale(1);
-  }
-  100% {
-    opacity: 0.6;
-    transform: scale(1.005);
-  }
-}
-
 /* RESPONSIVE */
 @media (max-width: 768px) {
   .elegant-content {
     gap: 3rem;
     padding: 1.5rem;
-  }
-  
-  .frame-border {
-    top: 1rem;
-    left: 1rem;
-    right: 1rem;
-    bottom: 1rem;
-  }
-  
-  .minimal-stars {
-    animation-duration: 80s;
-    opacity: 0.3;
   }
 }
 
@@ -226,9 +181,7 @@
 /* ACCESSIBILITY */
 @media (prefers-reduced-motion: reduce) {
   .gradient-overlay,
-  .minimal-stars,
-  .indicator-dot,
-  .frame-border {
+  .indicator-dot {
     animation: none !important;
   }
   
@@ -247,26 +200,14 @@
     display: none;
   }
   
-  .minimal-stars {
-    opacity: 0.1;
-  }
-  
   .status-label,
   .message-display {
     color: #e2e8f0;
   }
-  
-  .frame-border {
-    border: 1px solid #10b981;
-    background: none;
-    mask: none;
-  }
 }
 
 /* PERFORMANCE */
-.gradient-overlay,
-.minimal-stars,
-.frame-border {
+.gradient-overlay {
   transform: translateZ(0);
   backface-visibility: hidden;
 }

@@ -26,8 +26,8 @@ import { LoaderService } from './services/loader.service';
       
       <!-- Minimal Particles -->
       <app-loading-particles 
-        [count]="8"
-        *ngIf="loaderService.state().isLoading">
+      [count]="5"
+      *ngIf="loaderService.state().isLoading">
       </app-loading-particles>
       
       <!-- Main Content -->
