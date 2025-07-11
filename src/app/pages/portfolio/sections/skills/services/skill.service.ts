@@ -5,72 +5,72 @@ import { Skill, SkillCategory, StatsInfo } from '../interfaces/skill.interface';
   providedIn: 'root'
 })
 export class SkillsService {
-  
+
   private readonly skills = signal<Skill[]>([
-    { 
-      name: 'Angular', 
-      level: 85, 
-      icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/angularjs/angularjs-original.svg', 
-      category: 'Frontend', 
+    {
+      name: 'Angular',
+      level: 85,
+      icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/angularjs/angularjs-original.svg',
+      category: 'Frontend',
       color: '#DD0031',
       description: 'Signals, RxJs, NgRx'
     },
-    { 
-      name: 'TypeScript', 
-      level: 80, 
-      icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg', 
-      category: 'Frontend', 
+    {
+      name: 'TypeScript',
+      level: 80,
+      icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg',
+      category: 'Frontend',
       color: '#3178C6',
       description: 'Type-safe development'
     },
-    { 
-      name: 'React', 
-      level: 60, 
-      icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg', 
-      category: 'Frontend', 
+    {
+      name: 'React',
+      level: 60,
+      icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg',
+      category: 'Frontend',
       color: '#61DAFB',
       description: 'Hooks, Context API'
     },
-    
-    { 
-      name: 'NestJS', 
-      level: 85, 
-      icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/nestjs/nestjs-plain.svg', 
-      category: 'Backend', 
+
+    {
+      name: 'NestJS',
+      level: 85,
+      icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/nestjs/nestjs-original.svg',
+      category: 'Backend',
       color: '#E0234E',
       description: 'Hexagonal Architecture'
     },
-    { 
-      name: 'Node.js', 
-      level: 80, 
-      icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg', 
-      category: 'Backend', 
+    {
+      name: 'Node.js',
+      level: 80,
+      icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg',
+      category: 'Backend',
       color: '#339933',
       description: 'Server-side JavaScript'
     },
-    
-    { 
-      name: 'MySQL', 
-      level: 85, 
-      icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original.svg', 
-      category: 'Database', 
+
+    {
+      name: 'MySQL',
+      level: 85,
+      icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original.svg',
+      category: 'Database',
       color: '#4479A1',
       description: 'Relational database'
     },
-    { 
-      name: 'MongoDB', 
-      level: 80, 
-      icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original.svg', 
-      category: 'Database', 
+    {
+      name: 'MongoDB',
+      level: 80,
+      icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original.svg',
+      category: 'Database',
       color: '#47A248',
       description: 'NoSQL database'
     },
-    
-    { 
-      name: 'Git', 
-      level: 90, 
-      icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/git/git-original.svg', 
-      category: 'Tools', 
+
+    {
+      name: 'Git',
+      level: 90,
+      icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/git/git-original.svg',
+      category: 'Tools',
       color: '#F05032',
       description: 'Version control'
     }

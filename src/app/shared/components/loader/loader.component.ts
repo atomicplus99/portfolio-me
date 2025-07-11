@@ -49,8 +49,8 @@ import { LoaderService } from './services/loader.service';
           <!-- Status Bar -->
           <div class="status-bar">
             <div class="status-indicator">
-              <div class="indicator-dot"></div>
-              <span class="status-label">Sistema</span>
+             
+              <span class="status-label">Cargando</span>
             </div>
             <div class="progress-percentage">
               {{ loaderService.state().progress }}%
@@ -73,8 +73,7 @@ import { LoaderService } from './services/loader.service';
         </div>
         
       </div>
-      
-      <!-- Elegant Frame -->
+
       <div class="elegant-frame">
         <div class="frame-border"></div>
       </div>

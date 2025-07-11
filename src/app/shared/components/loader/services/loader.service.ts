@@ -24,14 +24,14 @@ export class LoaderService {
   readonly state = this.loaderState.asReadonly();
 
   private loadingPhases = [
-    { progress: 12, message: 'Configurando entorno...', duration: 500 },
-    { progress: 25, message: 'Cargando dependencias...', duration: 600 },
-    { progress: 40, message: 'Inicializando servicios...', duration: 450 },
-    { progress: 55, message: 'Preparando interfaz...', duration: 500 },
+    { progress: 12, message: 'Iniciando portfolio...', duration: 500 },
+    { progress: 25, message: 'Configurando interacciones...', duration: 600 },
+    { progress: 40, message: 'Preparando la presentacion...', duration: 450 },
+    { progress: 55, message: 'Verificando componentes...', duration: 500 },
     { progress: 70, message: 'Optimizando rendimiento...', duration: 400 },
     { progress: 85, message: 'Aplicando configuración...', duration: 350 },
     { progress: 95, message: 'Finalizando carga...', duration: 300 },
-    { progress: 100, message: 'Sistema listo', duration: 400 }
+    { progress: 100, message: 'Portfolio cargado', duration: 400 }
   ];
 
   private currentPhaseIndex = 0;
@@ -110,7 +110,7 @@ export class LoaderService {
     setTimeout(() => {
       this.loaderState.update(state => ({
         ...state,
-        message: 'Bienvenido'
+        message: 'Bienvenido!!'
       }));
 
       setTimeout(() => {

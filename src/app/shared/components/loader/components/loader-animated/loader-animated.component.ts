@@ -31,7 +31,7 @@ import { Component, input, OnInit, signal } from "@angular/core";
 })
 export class AnimatedLogoComponent implements OnInit {
   readonly text = input<string>('DUQUE');
-  readonly subtitle = input<string>('');
+  readonly subtitle = input<string>('hola');
   readonly isVisible = input<boolean>(false);
   readonly fontLoaded = signal(false);
 

@@ -3,7 +3,7 @@
     (statusChange)="onCursorStatusChange($event)" (targetingChange)="onTargetingChange($event)" class="cursor-layer">
   </app-custom-cursor>
 
-  <app-elegant-loader [logoText]="'DUQUE'" [subtitle]="'Bienvenido'">
+  <app-elegant-loader [logoText]="'@duque.dev'" [subtitle]="'Bienvenido! :)'">
   </app-elegant-loader>
 
   <app-particles class="particles-layer"></app-particles>
@@ -29,7 +29,7 @@
       </section>
 
       <section id="skills" class="section-container" *ngIf="loadedSections.skills">
-        <app-skills></app-skills>
+        <app-skills ></app-skills>
       </section>
 
       <section id="contact" class="section-container" *ngIf="loadedSections.contact">
