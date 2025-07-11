@@ -7,13 +7,4 @@
         <span class="control-icon">↻</span>
       </button>
 
-      <button 
-        class="control-btn performance" 
-        [class.eco]="isPerformanceMode"
-        (click)="onTogglePerformanceMode()" 
-        [title]="isPerformanceMode ? 'Modo Alto Rendimiento' : 'Modo Eco'"
-        type="button">
-        <span class="control-icon" *ngIf="!isPerformanceMode">⚡</span>
-        <span class="control-icon" *ngIf="isPerformanceMode">☀</span>
-      </button>
     </div>

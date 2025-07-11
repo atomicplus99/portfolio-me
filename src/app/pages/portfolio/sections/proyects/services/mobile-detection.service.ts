@@ -44,7 +44,6 @@ export class MobileDetectionService {
     const isResponsiveMode = window.innerWidth !== window.screen.width;
     const isMobile = isResponsiveMode ? widthMobile : (userAgentMobile || widthMobile);
 
-    console.log('Detection - screenWidth:', screenWidth, 'userAgent:', userAgentMobile, 'responsive:', isResponsiveMode, 'result:', isMobile);
 
     return isMobile;
   }

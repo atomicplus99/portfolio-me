@@ -109,7 +109,6 @@ export class ThreejsService {
     this.camera.lookAt(0, 0, 0);
     this.camera.updateProjectionMatrix();
 
-    console.log(`Cámara final: pos=(${this.camera.position.x}, ${this.camera.position.y}, ${this.camera.position.z}), target=(0,0,0)`);
 
   }
 
@@ -159,7 +158,6 @@ export class ThreejsService {
     const y = (Math.random() - 0.5) * (isMobile ? 1 : 2);
 
     group.position.set(x, y, z);
-    console.log(`Holograma ${index} creado en: x=${x.toFixed(1)}, y=${y.toFixed(1)}, z=${z.toFixed(1)}, radio=${radius}`);
 
 
     const sides = performanceMode ? 6 : 8;

@@ -107,7 +107,6 @@
     }
 
     .project-icon::before {
-      content: "⚡";
       color: #60a5fa;
       font-size: 16px;
     }

@@ -101,13 +101,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
     const rect = projectsSection.getBoundingClientRect();
     const windowHeight = window.innerHeight;
-
-    // Debug temporal
-    console.log('🔍 Rect top:', rect.top);
-    console.log('🔍 Rect bottom:', rect.bottom);
-    console.log('🔍 Window height:', windowHeight);
     const isAtSectionStart = rect.top >= -100 && rect.top <= 200;
-    console.log('🔍 ¿Está en inicio de sección?', isAtSectionStart);
+
 
     return isAtSectionStart;
   }
@@ -251,21 +246,12 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   }
 
   async onOpenDetailModal(): Promise<void> {
-    console.log('🔥 Modal abriéndose...');
-    console.log('🔥 ¿Está en sección proyectos?', this.isInProjectsSection());
     const project = this.selectedProject();
     if (!project) return;
 
     try {
-      // Paso 1: Scroll a la sección si no está ahí
-      console.log('🔥 Iniciando scroll...');
       await this.scrollToProjectsSection();
-      console.log('🔥 Scroll completado');
-
-      // Paso 2: Pequeña pausa para suavidad
       await new Promise(resolve => setTimeout(resolve, 100));
-
-      // Paso 3: Bloquear scroll
       this.lenisService.stop();
 
       // Paso 4: Abrir modal

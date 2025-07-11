@@ -309,12 +309,10 @@ export class ThreejsCanvasComponent implements AfterViewInit, OnDestroy {
   this.mobileService.updateMobileStatus();
   const currentMobileState = this.mobileService.getIsMobile();
   
-  console.log('Current lastMobileState:', this.lastMobileState);
-  console.log('New mobile state:', currentMobileState);
-  console.log('State changed?', currentMobileState !== this.lastMobileState);
+
   
   if (currentMobileState !== this.lastMobileState) {
-    console.log('🔄 EJECUTANDO CAMBIO DE ESTADO');
+
     
     this.lastMobileState = currentMobileState;
     this.isMobile = currentMobileState; // ✅ CORRECTO
@@ -328,7 +326,7 @@ export class ThreejsCanvasComponent implements AfterViewInit, OnDestroy {
     );
     
   } else {
-    console.log('📏 SOLO REDIMENSIONANDO');
+
     this.threejsService.onWindowResize(rect.width, rect.height);
   }
 }
