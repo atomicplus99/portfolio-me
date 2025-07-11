@@ -34,7 +34,7 @@ export class SkillsService {
 
     {
       name: 'NestJS',
-      level: 85,
+      level: 85, 
       icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/nestjs/nestjs-original.svg',
       category: 'Backend',
       color: '#E0234E',

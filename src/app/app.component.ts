@@ -13,7 +13,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { ParticlesComponent } from './shared/components/particles/main/ts/particles';
 import { HeaderComponent } from './pages/portfolio/sections/header/header.component';
-import { CustomCursorComponent } from './shared/components/custom-cursor/main/ts/custom-cursor.component';
+
 import { HeroComponent } from './pages/portfolio/sections/hero/main/hero.component';
 
 import { LoaderService } from './shared/components/loader/services/loader.service';
@@ -36,7 +36,6 @@ import { LenisScrollService } from './core/global/services/portfolio-scroll.serv
     ReactiveFormsModule,
     ElegantLoaderComponent,
     HeaderComponent,
-    CustomCursorComponent,
     HeroComponent,
     ParticlesComponent,
     AboutComponent,
@@ -78,7 +77,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.lifecycleManager.initializeAfterViewInit();
-    
+
     setTimeout(() => {
       this.ensureAllSectionsLoaded();
     }, 100);
@@ -101,7 +100,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         setTimeout(checkLoader, 200);
       }
     };
-    
+
     await checkLoader();
   }
 
@@ -123,25 +122,13 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   private ensureAllSectionsLoaded(): void {
     const loaded = this.loadedSections;
     const requiredSections = ['about', 'aboutMe', 'projects', 'skills', 'contact', 'footer'];
-    
+
     const missing = requiredSections.filter(section => !loaded[section as keyof typeof loaded]);
-    
+
     if (missing.length > 0) {
       this.lifecycleManager.loadAllSections();
       this.cdr.detectChanges();
-    } 
-  }
-
-  onCursorStatusChange(status: any): void {
-    this.lifecycleManager.handleCursorStatusChange(status, this.renderer);
-  }
-
-  onTargetingChange(isTargeting: boolean): void {
-    this.lifecycleManager.handleTargetingChange(isTargeting, this.renderer);
-  }
-
-  onHeaderInteraction(isActive: boolean): void {
-    this.lifecycleManager.handleHeaderInteraction(isActive, this.renderer);
+    }
   }
 
   optimizePerformance(): void {

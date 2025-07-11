@@ -1,5 +1,6 @@
 * {
   box-sizing: border-box;
+
 }
 
 html {
@@ -29,13 +30,3 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.zoom-container *:not(.mobile-menu):not(.mobile-menu *),
-.portfolio-content *:not(.mobile-menu):not(.mobile-menu *),
-app-header *:not(.mobile-menu):not(.mobile-menu *),
-app-hero *,
-app-about *,
-app-projects *,
-app-skills *,
-app-contact * {
-  cursor: none;
-}
