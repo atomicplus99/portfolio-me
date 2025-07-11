@@ -83,7 +83,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     
     setTimeout(() => {
       this.ensureAllSectionsLoaded();
-    }, 1000);
+    }, 100);
 
     this.initLenisWhenReady();
   }
@@ -98,7 +98,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       if (!this.loaderService.state().isLoading) {
         setTimeout(async () => {
           await this.lenisService.initLenis();
-        }, 1000);
+        }, 100);
       } else {
         setTimeout(checkLoader, 200);
       }
@@ -119,7 +119,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     setTimeout(() => {
       this.lifecycleManager.loadAllSections();
       this.cdr.detectChanges();
-    }, 500);
+    }, 100);
   }
 
   private ensureAllSectionsLoaded(): void {

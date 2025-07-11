@@ -147,10 +147,25 @@ export class ProjectDetailsModalComponent {
     this.videoPlaying.set(false);
   }
 
+  private enableModalWheelScroll(): void {
+    if (typeof document === 'undefined') return;
+
+    setTimeout(() => {
+      const modalBody = document.querySelector('.modal-body') as HTMLElement;
+      if (modalBody) {
+        modalBody.addEventListener('wheel', (e) => {
+          e.preventDefault();
+          modalBody.scrollTop += e.deltaY;
+        }, { passive: false });
+      }
+    }, 100);
+  }
+
   private setupEffects(): void {
     effect(() => {
       if (this.isModalVisible()) {
         document.body.style.overflow = 'hidden';
+        this.enableModalWheelScroll();
       } else {
         document.body.style.overflow = '';
       }
@@ -264,7 +279,19 @@ export class ProjectDetailsModalComponent {
   onClose(): void {
     this.modalVisible.set(false);
     this.closed.emit();
+
+    // AGREGAR: Limpiar event listeners
+    const modalBody = document.querySelector('.modal-body') as HTMLElement;
+    if (modalBody) {
+      modalBody.removeEventListener('wheel', this.handleWheel);
+    }
   }
+
+  private handleWheel = (e: WheelEvent) => {
+    e.preventDefault();
+    const target = e.currentTarget as HTMLElement;
+    target.scrollTop += e.deltaY;
+  };
 
   onNextProject(): void {
     const projects = this.allProjects();
@@ -477,5 +504,5 @@ export class ProjectDetailsModalComponent {
     }
   }
 
-  
+
 }

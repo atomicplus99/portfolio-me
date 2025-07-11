@@ -12,8 +12,6 @@
   min-height: 100vh;
   overflow: hidden;
   -webkit-overflow-scrolling: touch;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
 }
 
 
@@ -159,12 +157,6 @@
 }
 
 
-.projects-container {
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-}
 
 
 @media (max-width: 768px) {
@@ -245,4 +237,55 @@
   app-project-details-modal {
     display: none;
   }
+}
+
+
+::ng-deep app-project-details-modal .modal-overlay {
+  z-index: 10000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: visible;
+}
+
+/* FORZAR scroll independiente en el modal con mayor especificidad */
+::ng-deep app-project-details-modal .modal-overlay .modal-content .modal-body {
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  height: auto;
+  max-height: none;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Asegurar que el contenido del modal pueda hacer scroll */
+::ng-deep app-project-details-modal .modal-content {
+  overflow: hidden;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Forzar que las pestañas de contenido permitan scroll */
+::ng-deep app-project-details-modal .tab-content {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Asegurar que el lightbox también esté por encima */
+::ng-deep app-project-details-modal .lightbox-overlay {
+  z-index: 10001;
+}
+
+/* Asegurar que las partículas no interfieran */
+.particles-layer {
+  z-index: 5;
+}
+
+/* Header siempre visible pero bajo el modal */
+.header-fixed {
+  z-index: 50;
 }
