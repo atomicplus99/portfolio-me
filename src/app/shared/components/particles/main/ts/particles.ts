@@ -10,7 +10,6 @@ import { DeviceDetectorDirective } from "../../directives/device-dectector.direc
   standalone: true,
   imports: [CommonModule, DeviceDetectorDirective],
   templateUrl: '../template/particle.template.html',
-  styleUrls: ['../css/particles.css']
 })
 export class ParticlesComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() customConfig?: Partial<ParticleConfig>;

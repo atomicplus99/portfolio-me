@@ -4,10 +4,8 @@ import { CommonModule } from '@angular/common';
 import { ViewportService } from '../services/viewport.service';
 import { ProfileSectionComponent } from '../components/hero-profile-section/hero-profile-section.component';
 import { MassiveTextComponent } from '../components/hero-massive-text/hero-massive-text.component';
-import { CodeSnippetComponent } from '../components/hero-code-snippet/hero-code-snipeet.component';
-import { MotivationalQuoteComponent } from '../components/hero-motivational-quote/hero-motivational-quote.component';
-import { GeometricElementsComponent } from '../components/hero-geometric-elements/hero-geometric-elements.component';
 import { ScrollIndicatorComponent } from '../components/hero-scroll-indicator/hero-scroll-indicator.component';
+
 
 
 
@@ -18,11 +16,8 @@ import { ScrollIndicatorComponent } from '../components/hero-scroll-indicator/he
     CommonModule,
     ProfileSectionComponent,
     MassiveTextComponent,
-    CodeSnippetComponent,
-    MotivationalQuoteComponent,
-    GeometricElementsComponent,
-    ScrollIndicatorComponent
-  ],
+    ScrollIndicatorComponent,
+],
   templateUrl: './hero.component.html',
   styleUrls: ['./hero.component.css']
 })

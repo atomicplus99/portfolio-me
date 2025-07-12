@@ -1,0 +1,23 @@
+.galaxy-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: -1;
+  cursor: grab;
+  pointer-events: auto;
+}
+
+.galaxy-container:active {
+  cursor: grabbing;
+}
+
+.galaxy-container canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  touch-action: none;
+  filter: brightness(1.4) contrast(1.6) saturate(2.2) hue-rotate(10deg);
+}

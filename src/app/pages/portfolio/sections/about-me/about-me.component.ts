@@ -20,8 +20,8 @@ import { AnimationService } from './services/animation.service';
     ProfileCardComponent,
     StatsGridComponent,
     StoryCardComponent,
-    BackgroundDecorationsComponent
-  ],
+    BackgroundDecorationsComponent,
+],
   templateUrl: './about-me.component.html',
   styleUrls: ['./about-me.component.css']
 })

@@ -8,14 +8,15 @@ import { AboutConfigService } from './services/about-config.service';
 
 
 
+
 @Component({
   selector: 'app-about',
   standalone: true,
   imports: [
     CommonModule,
     QuoteSectionComponent,
-    CtaButtonComponent
-  ],
+    CtaButtonComponent,
+],
   templateUrl: './about.component.html'
 })
 export class AboutComponent implements OnInit, AfterViewInit, OnDestroy {

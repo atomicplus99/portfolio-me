@@ -1,7 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { CodeSnippet, Developer, Quote } from '../interfaces/hero.interface';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -9,67 +8,87 @@ export class DeveloperService {
   private readonly developer = signal<Developer>({
     name: 'Abel Arias',
     title: 'Full Stack Developer',
-    description: 'Especializado en Angular, React y Node.js. Transformo ideas en soluciones digitales innovadoras.',
-    location: 'Lima, Perú',
-    experience: '2+ años experiencia',
+    description: 'Creando experiencias web extraordinarias con código limpio y arquitectura escalable. Especialista en ecosistemas JavaScript modernos.',
+    location: 'Lima, Perú 🇵🇪',
+    experience: '1+ años construyendo el futuro',
     email: 'abel.arias@email.com',
-    skills: ['Angular', 'React', 'Node.js'],
+    skills: [''],
     status: {
       available: true,
-      message: 'Disponible para proyectos'
+      message: 'Disponibilidad inmediata'
     }
   });
 
   private readonly quote = signal<Quote>({
-    text: 'El código limpio no se escribe siguiendo un conjunto de reglas. Se escribe con pasión.',
-    author: 'Robert C. Martin',
+    text: 'El mejor código es el que resuelve problemas reales y hace la vida más fácil a las personas.',
+    author: 'Abel Arias',
     year: '2025'
   });
 
   private readonly codeSnippets = signal<CodeSnippet[]>([
     {
       lines: [
-        { text: "@Component({", class: "text-red-400" },
-        { text: "  selector: 'app-hero',", class: "text-green-300" },
-        { text: "  standalone: true,", class: "text-blue-300" },
-        { text: "  templateUrl: './hero.html'", class: "text-green-300" },
-        { text: "})", class: "text-red-400" }
+        { text: "const [user, setUser] = useState(null);", class: "text-yellow-400" },
+        { text: "const [loading, setLoading] = useState(false);", class: "text-cyan-300" },
+        { text: "const [error, setError] = useState(null);", class: "text-red-300" }
       ]
     },
     {
       lines: [
-        { text: "interface Developer {", class: "text-purple-400" },
-        { text: "  name: string;", class: "text-blue-300" },
-        { text: "  skills: string[];", class: "text-cyan-300" },
-        { text: "  experience: number;", class: "text-blue-300" },
-        { text: "}", class: "text-purple-400" }
+        { text: "type User = {", class: "text-purple-400" },
+        { text: "  id: number;", class: "text-blue-300" },
+        { text: "  name: string;", class: "text-green-300" },
+        { text: "  email?: string;", class: "text-cyan-300" },
+        { text: "};", class: "text-purple-400" }
       ]
     },
     {
       lines: [
-        { text: "const dev: Developer = {", class: "text-yellow-400" },
-        { text: "  name: 'Abel Arias',", class: "text-green-300" },
-        { text: "  skills: ['Angular', 'React'],", class: "text-cyan-300" },
-        { text: "  experience: 2", class: "text-blue-300" },
+        { text: "const fetchUser = async (id) => {", class: "text-yellow-400" },
+        { text: "  const response = await api.get(`/users/${id}`);", class: "text-blue-300" },
+        { text: "  return response.data;", class: "text-green-300" },
         { text: "};", class: "text-yellow-400" }
       ]
     },
     {
       lines: [
-        { text: "async function build() {", class: "text-yellow-400" },
-        { text: "  const code = await write();", class: "text-blue-300" },
-        { text: "  const tests = validate(code);", class: "text-cyan-300" },
-        { text: "  return deploy(tests);", class: "text-green-300" },
-        { text: "}", class: "text-yellow-400" }
+        { text: "const Button = styled.button`", class: "text-purple-400" },
+        { text: "  background: linear-gradient(45deg, #667eea);", class: "text-pink-300" },
+        { text: "  border-radius: 8px;", class: "text-cyan-300" },
+        { text: "`;", class: "text-purple-400" }
       ]
     },
     {
       lines: [
-        { text: "class Portfolio {", class: "text-purple-400" },
-        { text: "  constructor() {", class: "text-yellow-400" },
-        { text: "    this.createMagic();", class: "text-blue-300" },
-        { text: "  }", class: "text-yellow-400" },
+        { text: "class ErrorBoundary extends Component {", class: "text-purple-400" },
+        { text: "  state = { hasError: false };", class: "text-blue-300" },
+        { text: "  componentDidCatch() { /* handle */ }", class: "text-yellow-400" },
         { text: "}", class: "text-purple-400" }
+      ]
+    },
+    {
+      lines: [
+        { text: "app.get('/api/users', async (req, res) => {", class: "text-yellow-400" },
+        { text: "  const users = await User.find();", class: "text-cyan-300" },
+        { text: "  res.json({ data: users });", class: "text-green-300" },
+        { text: "});", class: "text-yellow-400" }
+      ]
+    },
+    {
+      lines: [
+        { text: "const useLocalStorage = (key, initial) => {", class: "text-yellow-400" },
+        { text: "  const [value, setValue] = useState(initial);", class: "text-blue-300" },
+        { text: "  return [value, setValue];", class: "text-purple-400" },
+        { text: "};", class: "text-yellow-400" }
+      ]
+    },
+    {
+      lines: [
+        { text: "const config = {", class: "text-purple-400" },
+        { text: "  baseURL: '/api/v1',", class: "text-blue-300" },
+        { text: "  timeout: 5000,", class: "text-cyan-300" },
+        { text: "  headers: { 'Content-Type': 'json' }", class: "text-green-300" },
+        { text: "};", class: "text-purple-400" }
       ]
     }
   ]);
@@ -81,7 +100,7 @@ export class DeveloperService {
   openCV(): void {
     const cvUrl = 'assets/cv/CV-ARIASABEL-2025.pdf';
     const newWindow = window.open(cvUrl, '_blank', 'noopener,noreferrer');
-    
+
     if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
       const link = document.createElement('a');
       link.href = cvUrl;
@@ -93,13 +112,21 @@ export class DeveloperService {
 
   openContact(): void {
     const dev = this.developer();
-    const subject = encodeURIComponent('Contacto desde Portfolio - Abel Arias');
-    const body = encodeURIComponent(`Hola Abel,
+    const subject = encodeURIComponent('🚀 Colaboración Profesional - Abel Arias');
+    const body = encodeURIComponent(`¡Hola Abel!
 
-Me interesa conocer más sobre tus servicios como Full Stack Developer.
+He revisado tu portfolio y me impresiona tu trabajo como Full Stack Developer.
 
-Saludos!`);
-    
+Me gustaría explorar una posible colaboración en:
+□ Desarrollo de aplicación web
+□ Consultoría técnica
+□ Proyecto a largo plazo
+□ Otro: ___________
+
+¿Podríamos agendar una reunión para discutir los detalles?
+
+Saludos cordiales!`);
+
     const mailtoUrl = `mailto:${dev.email}?subject=${subject}&body=${body}`;
     window.open(mailtoUrl, '_blank');
   }

@@ -28,6 +28,11 @@ import { AppLifecycleManagerService } from './core/global/config/app-life-cycle.
 import { AppConfigurationService } from './core/global/config/app-configuration.service';
 import { ElegantLoaderComponent } from './shared/components/loader/loader.component';
 import { LenisScrollService } from './core/global/services/portfolio-scroll.service';
+import { GalaxyComponent } from './shared/components/galaxy/main/galaxy.component';
+
+
+
+
 
 @Component({
   selector: 'app-root',
@@ -43,8 +48,9 @@ import { LenisScrollService } from './core/global/services/portfolio-scroll.serv
     ProjectsComponent,
     SkillsComponent,
     ContactComponent,
-    FooterComponent
-  ],
+    FooterComponent,
+    GalaxyComponent
+],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
