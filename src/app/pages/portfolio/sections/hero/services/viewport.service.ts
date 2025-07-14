@@ -5,7 +5,7 @@ import { Injectable, signal, effect } from '@angular/core';
 })
 export class ViewportService {
   private readonly _isMobile = signal(false);
-  private readonly _showDesktopElements = signal(false); // ✅ Cambiar a false inicialmente
+  private readonly _showDesktopElements = signal(false);
   private readonly _isInitialized = signal(false);
 
   readonly isMobile = this._isMobile.asReadonly();

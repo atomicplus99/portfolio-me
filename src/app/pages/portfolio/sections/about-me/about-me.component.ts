@@ -4,13 +4,16 @@ import { Subscription } from 'rxjs';
 import { AboutMeConfig } from './interfaces/about.interface';
 import { AboutMeConfigService } from './services/about-me-config.service';
 import { AnimationService } from './services/animation.service';
+import { ScrollIndicatorComponent } from "../hero/components/hero-scroll-indicator/hero-scroll-indicator.component";
 
 @Component({
   selector: 'app-about-me',
   standalone: true,
   imports: [
-    CommonModule  // Solo necesitas CommonModule
-  ],
+    CommonModule // Solo necesitas CommonModule
+    ,
+    ScrollIndicatorComponent
+],
   templateUrl: './about-me.component.html',
   styleUrls: ['./about-me.component.css']
 })

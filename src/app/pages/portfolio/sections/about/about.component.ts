@@ -5,6 +5,7 @@ import { CtaButtonComponent } from './components/cta-button/cta-button.component
 import { AboutConfig } from './interfaces/about.interface';
 import { ThreeSceneManager } from './classes/three-scene.classes';
 import { AboutConfigService } from './services/about-config.service';
+import { ScrollIndicatorComponent } from "../hero/components/hero-scroll-indicator/hero-scroll-indicator.component";
 
 
 
@@ -16,6 +17,7 @@ import { AboutConfigService } from './services/about-config.service';
     CommonModule,
     QuoteSectionComponent,
     CtaButtonComponent,
+    ScrollIndicatorComponent
 ],
   templateUrl: './about.component.html'
 })

@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SkillsHeaderComponent } from '../components/skils-header/skils-header.component';
 import { SkillsGridComponent } from '../components/skills-grid/skills-grid.component';
-import { StatsCardsComponent } from '../components/skills-stats-card/skills-stats-card.component';
 import { SkillsService } from '../services/skill.service';
 import { Skill, SkillCategory, StatsInfo } from '../interfaces/skill.interface';
 
@@ -15,7 +14,6 @@ import { AnimationService } from '../services/skill-animation.service';
     CommonModule,
     SkillsHeaderComponent,
     SkillsGridComponent,
-    StatsCardsComponent
   ],
   templateUrl: './skills.component.html',
   styleUrls: ['./skills.component.css']

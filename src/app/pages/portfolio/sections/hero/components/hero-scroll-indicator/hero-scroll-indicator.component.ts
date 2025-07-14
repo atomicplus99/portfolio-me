@@ -9,9 +9,11 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./hero-scroll-indicator.component.css']
 })
 export class ScrollIndicatorComponent {
-  @Output() scrollClick = new EventEmitter<void>();
-
-  onScrollClick(): void {
-    this.scrollClick.emit();
+  scrollToNextSection(): void {
+    // Scroll simple hacia abajo una pantalla
+    window.scrollBy({
+      top: window.innerHeight,
+      behavior: 'smooth'
+    });
   }
 }
