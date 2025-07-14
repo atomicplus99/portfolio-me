@@ -1,27 +1,16 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { SectionHeaderComponent } from './components/header-about/header-about.component';
-import { ProfileCardComponent } from './components/profile-card/profile-card.component';
-import { StatsGridComponent } from './components/stats-grid/stats-grid.component';
-import { StoryCardComponent } from './components/story-card/story-card.component';
-import { BackgroundDecorationsComponent } from './components/background-decorations/background-decorations.component';
 import { AboutMeConfig } from './interfaces/about.interface';
 import { AboutMeConfigService } from './services/about-me-config.service';
 import { AnimationService } from './services/animation.service';
-
 
 @Component({
   selector: 'app-about-me',
   standalone: true,
   imports: [
-    CommonModule,
-    SectionHeaderComponent,
-    ProfileCardComponent,
-    StatsGridComponent,
-    StoryCardComponent,
-    BackgroundDecorationsComponent,
-],
+    CommonModule  // Solo necesitas CommonModule
+  ],
   templateUrl: './about-me.component.html',
   styleUrls: ['./about-me.component.css']
 })
@@ -61,7 +50,7 @@ export class AboutMeComponent implements OnInit, OnDestroy {
   }
 
   private initializeAnimations(): void {
-    this.animationService.initializeStaggeredAnimation(4, 200);
+    this.animationService.initializeStaggeredAnimation(5, 200); // Cambié a 5 elementos
   }
 
   onImageError(event: Event): void {
@@ -71,12 +60,5 @@ export class AboutMeComponent implements OnInit, OnDestroy {
     if (fallback) {
       fallback.classList.remove('hidden');
     }
-  }
-
-  scrollToNextSection(): void {
-    window.scrollBy({
-      top: window.innerHeight,
-      behavior: 'smooth'
-    });
   }
 }

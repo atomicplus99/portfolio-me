@@ -14,12 +14,12 @@ export class AboutConfigService {
         'mi profesión',
         'es mi arte"'
       ],
-      subtitle: 'Transformo ideas complejas en soluciones digitales elegantes que impulsan el futuro'
+      subtitle: 'Comprometido para crear soluciones que funcionan y sorprenden.'
     },
     cta: {
-      text: 'Hablemos',
+      text: 'Contactame',
       email: 'abel.ariase.soft@gmail.com',
-      subject: 'Hablemos sobre tu próximo proyecto'
+      subject: 'Dejame un asunto'
     },
     geometries: [
       { 

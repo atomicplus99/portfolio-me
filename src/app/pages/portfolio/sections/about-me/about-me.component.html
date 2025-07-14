@@ -1,67 +1,122 @@
+<section class="about-me-section w-full min-h-screen relative flex items-center justify-center"
+         [class.visible]="isVisible">
+  
+  <!-- Sin fondo galáctico -->
 
-<section class="about-me-section w-full min-h-screen relative flex items-center justify-center py-20 px-4"
-             [class.visible]="isVisible">
+  <div class="container mx-auto relative z-10">
+    <!-- Header Section -->
+    <div class="text-center mb-12 opacity-0 transform translate-y-8"
+         [class.opacity-100]="visibleElements[0]"
+         [class.translate-y-0]="visibleElements[0]"
+         style="transition: all 0.8s ease;">
+      <h2 class="galactic-title text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-4">
+        {{ config.header.title }}
+      </h2>
+      <p class="text-lg text-gray-300 max-w-xl mx-auto" *ngIf="config.header.subtitle">
+        {{ config.header.subtitle }}
+      </p>
+    </div>
+
+    <!-- Layout Horizontal Principal -->
+    <div class="horizontal-container">
       
-      
-      <app-background-decorations></app-background-decorations>
-
-      <div class="container mx-auto max-w-6xl relative z-10">
-        
-        
-        <app-section-header
-          [title]="config.header.title"
-          [subtitle]="config.header.subtitle"
-          [titleVisible]="visibleElements[0]"
-          [subtitleVisible]="visibleElements[1]">
-        </app-section-header>
-
-        
-        <div class="space-y-8 sm:space-y-12 mb-32 sm:mb-40">
+      <!-- Sección Izquierda: Perfil -->
+      <div class="profile-section">
+        <div class="relative">
           
+          <!-- Partículas cósmicas -->
+          <div class="cosmic-particle particle-1"></div>
+          <div class="cosmic-particle particle-2"></div>
+          <div class="cosmic-particle particle-3"></div>
           
-          <div class="flex flex-col items-center text-center opacity-0 transform translate-y-8"
+          <!-- Profile Card -->
+          <div class="profile-frame w-80 h-96 rounded-3xl flex flex-col items-center justify-center relative overflow-hidden mx-auto">
+            
+            <div class="relative z-10 text-center p-8 w-full flex flex-col items-center">
+              <!-- Avatar -->
+              <div class="w-40 h-40 mb-6 rounded-full overflow-hidden relative flex-shrink-0 ring-2 ring-purple-500/30">
+                <img 
+                  [src]="config.profile.image" 
+                  [alt]="config.profile.name + ' - ' + config.profile.title"
+                  class="w-full h-full object-cover object-center rounded-full"
+                  (error)="onImageError($event)"
+                >
+                
+                <div class="fallback-avatar absolute inset-0 bg-slate-700 flex items-center justify-center text-3xl font-bold text-white hidden rounded-full">
+                  {{ config.profile.fallbackText }}
+                </div>
+              </div>
+              
+              <!-- Info -->
+              <h3 class="text-2xl font-bold text-white mb-2">{{ config.profile.name }}</h3>
+              <p class="text-purple-400 font-medium mb-2 text-lg">{{ config.profile.title }}</p>
+              <p class="text-gray-400 text-sm mb-6">{{ config.profile.location }}</p>
+              
+              <!-- Status Galáctico -->
+              <div class="cosmic-status">
+                <div class="status-pulse"></div>
+                <span class="text-sm font-medium text-green-400">
+                  {{ config.profile.status.text }}
+                </span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Stats Grid debajo del perfil -->
+          <div class="stats-grid mt-8 opacity-0 transform translate-y-8"
                [class.opacity-100]="visibleElements[2]"
                [class.translate-y-0]="visibleElements[2]"
                style="transition: all 0.8s ease; transition-delay: 0.4s;">
-            
-            <app-profile-card
-              [profile]="config.profile"
-              (imageError)="onImageError($event)">
-            </app-profile-card>
-
-            
-            <app-stats-grid [stats]="config.stats"></app-stats-grid>
-          </div>
-
-          
-          <div class="opacity-0 transform translate-y-8"
-               [class.opacity-100]="visibleElements[3]"
-               [class.translate-y-0]="visibleElements[3]"
-               style="transition: all 0.8s ease; transition-delay: 0.6s;">
-            
-            <app-story-card [story]="config.story"></app-story-card>
-          </div>
-        </div>
-
-        
-        <div class="scroll-indicator-about absolute bottom-16 sm:bottom-20 left-1/2 transform -translate-x-1/2 z-30
-                    flex flex-col items-center gap-3 cursor-pointer group"
-             (click)="scrollToNextSection()">
-          
-          <span class="font-inter font-medium text-slate-400 
-                       uppercase tracking-[0.2em]
-                       text-xs sm:text-sm group-hover:text-blue-300 
-                       transition-colors duration-300">
-            Siguiente
-          </span>
-          
-          <div class="relative">
-            <div class="w-1 h-8 sm:h-10 bg-gradient-to-b from-blue-400/80 to-transparent 
-                        rounded-full animate-bounce shadow-lg"></div>
-            
-            <div class="absolute -inset-2 border border-blue-400/20 rounded-full 
-                        animate-ping opacity-0 group-hover:opacity-100"></div>
+            <div *ngFor="let stat of config.stats"
+                 class="stat-card rounded-xl p-6 border text-center">
+              <div class="stat-value text-3xl font-bold mb-1">{{ stat.value }}</div>
+              <div class="text-sm text-gray-400">{{ stat.label }}</div>
+            </div>
           </div>
         </div>
       </div>
-    </section>
+
+      <!-- Sección Derecha: Historia -->
+      <div class="content-section">
+        <div class="story-card rounded-3xl p-8 border opacity-0 transform translate-y-8"
+             [class.opacity-100]="visibleElements[3]"
+             [class.translate-y-0]="visibleElements[3]"
+             style="transition: all 0.8s ease; transition-delay: 0.6s;">
+          
+          <!-- Header de la historia -->
+          <div class="flex items-center gap-4 mb-8">
+            <div class="w-12 h-12 rounded-xl bg-slate-700/50 backdrop-blur-sm flex items-center justify-center border border-purple-500/30">
+              <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path [attr.d]="config.story.icon"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            <h3 class="text-3xl font-bold text-white">{{ config.story.title }}</h3>
+          </div>
+          
+          <!-- Contenido de la historia -->
+          <div class="space-y-6 text-gray-300 leading-relaxed text-lg">
+            <p *ngFor="let paragraph of config.story.paragraphs" 
+               [innerHTML]="paragraph"
+               class="opacity-0 transform translate-x-8"
+               [class.opacity-100]="visibleElements[4]"
+               [class.translate-x-0]="visibleElements[4]"
+               style="transition: all 0.8s ease; transition-delay: 0.8s;">
+            </p>
+          </div>
+          
+          <!-- Línea decorativa -->
+          <div class="mt-8 pt-6 border-t border-purple-500/20">
+            <div class="flex items-center justify-center">
+              <div class="flex space-x-2">
+                <div class="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
+                <div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse" style="animation-delay: 0.5s;"></div>
+                <div class="w-2 h-2 bg-cyan-500 rounded-full animate-pulse" style="animation-delay: 1s;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
