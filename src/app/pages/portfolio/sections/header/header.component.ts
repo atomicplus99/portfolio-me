@@ -28,7 +28,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   readonly navigationItems: NavigationItem[] = [
     { id: 'proyectos', label: 'PROYECTOS', delay: '0.1s' },
-    { id: 'experiencia', label: 'EXPERIENCIA', delay: '0.2s' },
+    { id: 'experiencia', label: 'STACK', delay: '0.2s' },
     { id: 'sobre-mi', label: 'SOBRE MI', delay: '0.3s' }
   ];
 

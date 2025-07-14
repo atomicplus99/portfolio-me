@@ -6,6 +6,7 @@ import { SkillsService } from '../services/skill.service';
 import { Skill, SkillCategory, StatsInfo } from '../interfaces/skill.interface';
 
 import { AnimationService } from '../services/skill-animation.service';
+import { ScrollIndicatorComponent } from "../../hero/components/hero-scroll-indicator/hero-scroll-indicator.component";
 
 @Component({
   selector: 'app-skills',
@@ -14,7 +15,8 @@ import { AnimationService } from '../services/skill-animation.service';
     CommonModule,
     SkillsHeaderComponent,
     SkillsGridComponent,
-  ],
+    ScrollIndicatorComponent
+],
   templateUrl: './skills.component.html',
   styleUrls: ['./skills.component.css']
 })

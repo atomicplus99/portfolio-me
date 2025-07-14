@@ -8,20 +8,20 @@ import { ContactConfig } from '../interfaces/contact-interface';
 export class ContactConfigService {
   private readonly defaultConfig: ContactConfig = {
     header: {
-      title: 'Conectemos',
-      subtitle: '¿Listo para discutir tu próximo proyecto? Estoy aquí para ayudarte a dar vida a tus ideas con tecnología de vanguardia y soluciones creativas.',
+      title: 'Contacto',
+      subtitle: '¿Tienes un proyecto en mente? Hablemos y hagámoslo realidad!',
       status: {
-        text: 'Disponible para nuevas oportunidades',
+        text: '',
         available: true
       }
     },
     form: {
       title: 'Enviar Mensaje',
-      subtitle: 'Te responderé en menos de 24 horas',
+      subtitle: 'Te estare respondiendo en menos de 24 horas',
       submitText: 'Enviar Mensaje',
       successMessage: {
         title: '¡Mensaje enviado con éxito!',
-        description: 'Gracias por contactarme. Te responderé en menos de 24 horas.'
+        description: 'Gracias por contactarme. Te estare respondiendo en menos de 24 horas'
       }
     },
     email: {
@@ -32,15 +32,15 @@ export class ContactConfigService {
       {
         name: 'Email',
         value: 'abel.ariase.soft@gmail.com',
-        link: 'mailto:abel.ariase.soft@gmail.com?subject=Oportunidad de Colaboración Profesional',
+        link: 'mailto:abel.ariase.soft@gmail.com?subject=',
         icon: 'email',
         color: '#3b82f6',
-        description: 'Comunicación profesional'
+        description: ''
       },
       {
         name: 'WhatsApp',
         value: '+51 991 753 149',
-        link: 'https://wa.me/51991753149?text=¡Hola Abel! Me gustaría discutir una oportunidad de proyecto.',
+        link: 'https://wa.me/51991753149?text=',
         icon: 'whatsapp',
         color: '#10b981',
         description: 'Mensajería instantánea'

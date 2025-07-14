@@ -1,10 +1,16 @@
-
-
-
 .skills-section .bg-slate-800\/20 {
     background: rgba(30, 41, 59, 0.2);
 }
 
 .skills-section .bg-slate-800\/40 {
     background: rgba(30, 41, 59, 0.4);
+}
+
+/* Posicionar el scroll indicator más abajo */
+.skills-section app-scroll-indicator {
+    position: absolute;
+    bottom: -4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
 }

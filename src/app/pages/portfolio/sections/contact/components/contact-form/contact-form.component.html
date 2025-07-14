@@ -1,100 +1,104 @@
-  <div class="form-container bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-8 
-                hover:border-blue-500/30 transition-all duration-500">
+<div class="bg-gradient-to-br from-blue-900/20 via-cyan-900/15 to-blue-800/20 backdrop-blur-xl 
+                rounded-2xl border border-cyan-500/20 p-8 
+                hover:border-cyan-400/30 hover:bg-gradient-to-br hover:from-blue-900/25 hover:via-cyan-900/20 hover:to-blue-800/25
+                transition-all duration-500 shadow-lg shadow-blue-500/10">
 
       
       <div class="form-header mb-8">
-        <h2 class="text-2xl font-bold text-white mb-2">{{ formTitle }}</h2>
-        <p class="text-slate-400">{{ formSubtitle }}</p>
+        <h2 class="text-2xl font-bold bg-gradient-to-r from-white via-cyan-200 to-blue-300 
+                   bg-clip-text text-transparent mb-2">{{ formTitle }}</h2>
+        <p class="text-slate-300">{{ formSubtitle }}</p>
       </div>
 
       <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="space-y-6">
 
         
         <div class="form-group">
-          <label class="form-label block text-slate-300 text-sm font-medium mb-2">
+          <label class="block text-cyan-200 text-sm font-medium mb-2">
             Nombre Completo *
           </label>
-          <div class="input-wrapper">
+          <div class="relative">
             <input type="text" formControlName="name"
-              class="form-input w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white 
-                     placeholder-slate-400 focus:border-blue-500 focus:outline-none transition-all duration-300"
+              class="w-full bg-blue-900/20 border border-cyan-500/30 rounded-xl px-4 py-3 text-white 
+                     placeholder-cyan-300/60 focus:border-cyan-400/60 focus:outline-none 
+                     focus:bg-blue-900/30 transition-all duration-300"
               [class.border-red-400]="isFieldInvalid('name')" 
               placeholder="Tu nombre completo"
               (focus)="onInputFocus('name')"
               (blur)="onInputBlur('name')">
-            <div class="input-effect"></div>
           </div>
-          <div *ngIf="isFieldInvalid('name')" class="error-message text-red-400 text-sm mt-1">
+          <div *ngIf="isFieldInvalid('name')" class="text-red-400 text-sm mt-1">
             {{ getFieldError('name') }}
           </div>
         </div>
 
         
         <div class="form-group">
-          <label class="form-label block text-slate-300 text-sm font-medium mb-2">
+          <label class="block text-cyan-200 text-sm font-medium mb-2">
             Correo Electrónico *
           </label>
-          <div class="input-wrapper">
+          <div class="relative">
             <input type="email" formControlName="email"
-              class="form-input w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white 
-                     placeholder-slate-400 focus:border-blue-500 focus:outline-none transition-all duration-300"
+              class="w-full bg-blue-900/20 border border-cyan-500/30 rounded-xl px-4 py-3 text-white 
+                     placeholder-cyan-300/60 focus:border-cyan-400/60 focus:outline-none 
+                     focus:bg-blue-900/30 transition-all duration-300"
               [class.border-red-400]="isFieldInvalid('email')" 
-              placeholder="tu@email.com"
+              placeholder="Tu correo electronico"
               (focus)="onInputFocus('email')"
               (blur)="onInputBlur('email')">
-            <div class="input-effect"></div>
           </div>
-          <div *ngIf="isFieldInvalid('email')" class="error-message text-red-400 text-sm mt-1">
+          <div *ngIf="isFieldInvalid('email')" class="text-red-400 text-sm mt-1">
             {{ getFieldError('email') }}
           </div>
         </div>
 
         
         <div class="form-group">
-          <label class="form-label block text-slate-300 text-sm font-medium mb-2">
+          <label class="block text-cyan-200 text-sm font-medium mb-2">
             Asunto *
           </label>
-          <div class="input-wrapper">
+          <div class="relative">
             <input type="text" formControlName="subject"
-              class="form-input w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white 
-                     placeholder-slate-400 focus:border-blue-500 focus:outline-none transition-all duration-300"
+              class="w-full bg-blue-900/20 border border-cyan-500/30 rounded-xl px-4 py-3 text-white 
+                     placeholder-cyan-300/60 focus:border-cyan-400/60 focus:outline-none 
+                     focus:bg-blue-900/30 transition-all duration-300"
               [class.border-red-400]="isFieldInvalid('subject')" 
-              placeholder="Consulta sobre colaboración de proyecto"
+              placeholder="Dejame un asunto"
               (focus)="onInputFocus('subject')"
               (blur)="onInputBlur('subject')">
-            <div class="input-effect"></div>
           </div>
-          <div *ngIf="isFieldInvalid('subject')" class="error-message text-red-400 text-sm mt-1">
+          <div *ngIf="isFieldInvalid('subject')" class="text-red-400 text-sm mt-1">
             {{ getFieldError('subject') }}
           </div>
         </div>
 
         
         <div class="form-group">
-          <label class="form-label block text-slate-300 text-sm font-medium mb-2">
+          <label class="block text-cyan-200 text-sm font-medium mb-2">
             Mensaje *
           </label>
-          <div class="input-wrapper">
+          <div class="relative">
             <textarea formControlName="message" rows="5"
-              class="form-input w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white 
-                     placeholder-slate-400 focus:border-blue-500 focus:outline-none transition-all duration-300 resize-none"
+              class="w-full bg-blue-900/20 border border-cyan-500/30 rounded-xl px-4 py-3 text-white 
+                     placeholder-cyan-300/60 focus:border-cyan-400/60 focus:outline-none 
+                     focus:bg-blue-900/30 transition-all duration-300 resize-none"
               [class.border-red-400]="isFieldInvalid('message')" 
-              placeholder="Cuéntame sobre tu proyecto, objetivos y cómo puedo ayudarte a tener éxito..."
+              placeholder="Cuéntame sobre tu proyecto, objetivos y cómo puedo ayudarte a tener éxito"
               (focus)="onInputFocus('message')"
               (blur)="onInputBlur('message')"></textarea>
-            <div class="input-effect"></div>
           </div>
-          <div *ngIf="isFieldInvalid('message')" class="error-message text-red-400 text-sm mt-1">
+          <div *ngIf="isFieldInvalid('message')" class="text-red-400 text-sm mt-1">
             {{ getFieldError('message') }}
           </div>
         </div>
 
         
         <button type="submit" [disabled]="isSubmitting" 
-          class="submit-btn w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold py-4 px-6 
-                 rounded-xl hover:from-blue-500 hover:to-indigo-500 transform hover:scale-[1.02] hover:shadow-xl
+          class="w-full bg-blue-300/20 text-white font-semibold py-4 px-6 
+                 rounded-xl hover:bg-blue-400 transform hover:scale-[1.02] 
+                 hover:shadow-xl hover:shadow-cyan-500/20 cursor-pointer
                  transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed 
-                 disabled:transform-none relative overflow-hidden">
+                 disabled:transform-none border-0">
           
           <span *ngIf="!isSubmitting" class="relative z-10 flex items-center justify-center gap-2">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -111,14 +115,12 @@
             </svg>
             Enviando...
           </span>
-
-          <div class="button-effect"></div>
         </button>
       </form>
 
       
-      <div *ngIf="showSuccess" class="success-message mt-6 bg-emerald-500/10 border border-emerald-500/30 
-                                     rounded-xl p-4 text-emerald-300">
+      <div *ngIf="showSuccess" class="mt-6 bg-emerald-900/20 border border-emerald-500/30 
+                                     rounded-xl p-4 text-emerald-300 backdrop-blur-sm">
         <div class="flex items-center gap-3 mb-2">
           <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>

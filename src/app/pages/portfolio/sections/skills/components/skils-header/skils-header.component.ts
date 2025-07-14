@@ -8,5 +8,8 @@ import { CommonModule } from '@angular/common';
   templateUrl: './skils-header.component.html',
   styleUrls: ['./skils-header.component.css']
 })
-export class SkillsHeaderComponent {}
+export class SkillsHeaderComponent {
+
+  
+}
 

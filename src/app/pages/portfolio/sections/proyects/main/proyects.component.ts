@@ -16,6 +16,7 @@ import { ThreejsService } from '../services/three.service';
 import { Project } from '../interfaces/proyect.interface';
 import { ProjectDetailsModalComponent } from '../components/proyect-modal-details/proyect-modal-details.component';
 import { LenisScrollService } from '../../../../../core/global/services/portfolio-scroll.service';
+import { ScrollIndicatorComponent } from "../../hero/components/hero-scroll-indicator/hero-scroll-indicator.component";
 
 @Component({
   selector: 'app-projects',
@@ -31,8 +32,9 @@ import { LenisScrollService } from '../../../../../core/global/services/portfoli
     ProjectPanelComponent,
     MatrixRainComponent,
     ThreejsCanvasComponent,
-    ProjectDetailsModalComponent
-  ],
+    ProjectDetailsModalComponent,
+    ScrollIndicatorComponent
+],
   templateUrl: './proyects.component.html',
   styleUrls: ['./proyects.component.css']
 })

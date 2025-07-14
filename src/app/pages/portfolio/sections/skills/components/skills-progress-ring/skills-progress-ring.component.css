@@ -1,4 +1,40 @@
- svg circle {
-   transition: stroke-dashoffset 3s cubic-bezier(0.4, 0, 0.2, 1);
-   will-change: stroke-dashoffset;
- }
+/* Progress ring espacial sutil para skills-progress-ring.component.css */
+svg circle {
+  transition: stroke-dashoffset 3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: stroke-dashoffset;
+}
+
+/* Ring de fondo sutil */
+svg circle:first-child {
+  stroke: rgba(71, 85, 105, 0.15);
+  filter: drop-shadow(0 0 3px rgba(139, 92, 246, 0.05));
+}
+
+/* Ring de progreso con glow sutil */
+svg circle:last-child {
+  filter: drop-shadow(0 0 6px currentColor);
+  stroke-width: 2;
+  opacity: 0.85;
+  transition: all 3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Efectos sutiles en hover */
+.group:hover svg circle:last-child {
+  opacity: 1;
+  stroke-width: 2.5;
+  filter: 
+    drop-shadow(0 0 8px currentColor) 
+    drop-shadow(0 0 15px rgba(139, 92, 246, 0.3));
+}
+
+/* Contenedor del SVG con brillo muy sutil */
+.absolute.inset-3 {
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.group:hover .absolute.inset-3 {
+  background: radial-gradient(circle at center, 
+    rgba(139, 92, 246, 0.05) 0%, 
+    transparent 60%);
+}

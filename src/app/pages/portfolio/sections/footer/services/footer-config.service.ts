@@ -9,13 +9,13 @@ export class FooterConfigService {
     brand: {
       name: 'Abel Arias',
       title: 'Full Stack Developer',
-      location: 'Huaral, Lima - Perú'
+      location: 'Lima - Perú'
     },
     tech: {
-      badge: 'Angular Powered',
-      icon: '⚡'
+      badge: 'Angular',
+      icon: ''
     },
-    version: 'v2024.1'
+    version: '2025'
   };
 
   getConfig(): FooterConfig {

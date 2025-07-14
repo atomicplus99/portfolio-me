@@ -94,8 +94,7 @@
             <h3 class="text-3xl font-bold text-white">{{ config.story.title }}</h3>
           </div>
           
-          <!-- Contenido de la historia -->
-          <div class="space-y-6 text-gray-300 leading-relaxed text-lg">
+          <div class="story-content space-y-6 text-gray-300 leading-relaxed text-lg">
             <p *ngFor="let paragraph of config.story.paragraphs" 
                [innerHTML]="paragraph"
                class="opacity-0 transform translate-x-8"
