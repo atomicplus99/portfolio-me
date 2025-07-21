@@ -158,7 +158,7 @@ export class ProjectDetailsModalComponent {
           modalBody.scrollTop += e.deltaY;
         }, { passive: false });
       }
-    }, 100);
+    }, 1);
   }
 
   private setupEffects(): void {

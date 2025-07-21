@@ -34,7 +34,7 @@ import { ScrollIndicatorComponent } from "../../hero/components/hero-scroll-indi
     ThreejsCanvasComponent,
     ProjectDetailsModalComponent,
     ScrollIndicatorComponent
-],
+  ],
   templateUrl: './proyects.component.html',
   styleUrls: ['./proyects.component.css']
 })
@@ -95,19 +95,6 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     this.initializeSignals();
     this.setupEffects();
   }
-  private isInProjectsSection(): boolean {
-    if (typeof window === 'undefined') return true;
-
-    const projectsSection = document.getElementById('projects');
-    if (!projectsSection) return true;
-
-    const rect = projectsSection.getBoundingClientRect();
-    const windowHeight = window.innerHeight;
-    const isAtSectionStart = rect.top >= -100 && rect.top <= 200;
-
-
-    return isAtSectionStart;
-  }
 
   private initializeSignals(): void {
     this.isMobile.set(this.mobileService.getIsMobile());
@@ -148,22 +135,6 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     // Asegurar que Lenis esté activo al destruir el componente
     this.lenisService.start();
-  }
-
-  private async scrollToProjectsSection(): Promise<void> {
-    return new Promise((resolve) => {
-      if (this.isInProjectsSection()) {
-        resolve();
-        return;
-      }
-
-      // Scroll súper sutil y rápido
-      this.lenisService.scrollTo('#projects', {
-        duration: 0.2,
-        easing: (t: number) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t,
-        onComplete: () => resolve()
-      });
-    });
   }
 
   onProjectSelected(projectId: number): void {
@@ -247,24 +218,36 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     }
   }
 
+  // ⚡ MÉTODO CORREGIDO - SIEMPRE HACE SCROLL Y DESPUÉS MODAL
   async onOpenDetailModal(): Promise<void> {
     const project = this.selectedProject();
     if (!project) return;
 
     try {
+      // ✅ SIEMPRE hacer scroll a la sección (sin verificar posición)
       await this.scrollToProjectsSection();
-      await new Promise(resolve => setTimeout(resolve, 100));
-      this.lenisService.stop();
 
-      // Paso 4: Abrir modal
+      // ✅ DESPUÉS: Abrir modal instantáneamente
+      this.lenisService.stop();
       this.modalProject.set(project);
       this.showDetailModal.set(true);
 
     } catch (error) {
-      // En caso de error, asegurar que el modal se abra
+      // En caso de error, abrir modal de todas formas
+      this.lenisService.stop();
       this.modalProject.set(project);
       this.showDetailModal.set(true);
     }
+  }
+
+  private async scrollToProjectsSection(): Promise<void> {
+    return new Promise((resolve) => {
+      this.lenisService.scrollTo('#projects', {
+        duration: 0.3, // Rápido pero visible
+        easing: (t: number) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t,
+        onComplete: () => resolve()
+      });
+    });
   }
 
   onModalClosed(): void {
@@ -362,7 +345,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
         if (e.key === 'Enter' && this.selectedProject() && !this.showDetailModal()) {
           e.preventDefault();
-          this.onOpenDetailModal();
+          this.onOpenDetailModal(); // ⚡ Ahora es completamente instantáneo
         }
 
         if (e.key === 'Escape') {

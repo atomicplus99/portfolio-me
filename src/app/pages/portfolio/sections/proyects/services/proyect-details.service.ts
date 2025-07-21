@@ -60,19 +60,17 @@ export class ProjectDetailService {
 
             'AI INTERFACE': `${project.description} Un terminal de comunicación avanzado que permite interacción directa con múltiples modelos de IA especializados. La interfaz utiliza procesamiento de lenguaje natural para interpretar comandos complejos y distribuir tareas a diferentes sistemas de IA, optimizando respuestas y proporcionando insights inteligentes.`,
 
-            'CYBER DEFENSE': `${project.description} Sistema de defensa cibernética de próxima generación que utiliza machine learning para detectar y neutralizar amenazas en tiempo real. Implementa análisis predictivo para anticipar ataques, mientras que su sistema de respuesta automatizada puede tomar medidas preventivas sin intervención humana.`
-        };
+            'Sistema de control de asistencia': `${project.description} La plataforma incorpora un módulo administrativo completo que facilita la supervisión y control de la asistencia académica. La implementación aprovecha las tabletas proporcionadas por el Gobierno del Perú, configuradas específicamente como dispositivos de escaneo para permitir el registro simultáneo de múltiples estudiantes. Esta infraestructura tecnológica optimiza los procesos de control de asistencia en instituciones educativas.
+Cada estudiante cuenta con un código QR único generado por el sistema, el cual debe presentar para registrar tanto su ingreso como su salida de las instalaciones educativas. Los auxiliares educativos desempeñan un rol de supervisión. Gestionan el control de asistencia estudiantil a través del panel administrativo.
+El módulo administrativo proporciona herramientas especializadas para la gestión y generación de reportes destinados a los subdirectores administrativos, facilitando la toma de decisiones basada en datos de asistencia en tiempo real.
+Se ha implementado un módulo de notificaciones automáticas que monitorea el estado de asistencia estudiantil, enviando actualizaciones en tiempo real a los padres de familia o tutores legales, fortaleciendo así la comunicación entre la institución educativa y el núcleo familiar.`};
 
         return descriptions[project.name] || `${project.description} Este proyecto implementa tecnologías de vanguardia para resolver desafíos complejos del mundo real, combinando diseño innovador con arquitectura robusta y escalable.`;
     }
 
     private getObjectives(project: Project): string[] {
         const commonObjectives = [
-            'Crear una interfaz de usuario intuitiva y moderna',
-            'Implementar arquitectura escalable y mantenible',
-            'Optimizar el rendimiento para todos los dispositivos',
-            'Asegurar la accesibilidad y usabilidad universal',
-            'Aplicar las mejores prácticas de desarrollo'
+''
         ];
 
         const specificObjectives: Record<string, string[]> = {
@@ -93,7 +91,15 @@ export class ProjectDetailService {
                 'Optimizar para dispositivos móviles diversos',
                 'Crear comunicación P2P sin servidores centrales',
                 'Desarrollar interfaz intuitiva para tecnología compleja'
-            ]
+            ],
+            'Sistema de control de asistencia': [
+               'Desarrollar una plataforma de registro de asistencia que permita la captura simultánea de códigos QR estudiantiles a través de dispositivos de escaneo especializados',
+               'Aprovechar eficientemente las tabletas gubernamentales del Perú, configurándolas como dispositivos de escaneo dedicados para el control de asistencia estudiantil.',
+               'Crear un sistema de identificación único mediante códigos QR individuales para cada estudiante, facilitando el registro preciso de ingresos y salidas.',
+               'Implementar un panel administrativo integral que permita a los auxiliares educativos supervisar y gestionar el control de asistencia de manera centralizada.',
+               'Desarrollar herramientas de generación de reportes especializados para subdirectores administrativos, facilitando la toma de decisiones basada en datos de asistencia.',
+               'Establecer un sistema de notificaciones automáticas en tiempo real que informe a los padres de familia sobre el estado de asistencia de sus hijos.'
+            ],
         };
 
         return [...commonObjectives, ...(specificObjectives[project.name] || [])];

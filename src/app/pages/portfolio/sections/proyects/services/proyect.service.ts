@@ -64,13 +64,13 @@ export class ProjectsService {
     },
     {
       id: 6,
-      name: 'CYBER DEFENSE',
-      description: 'Sistema de monitoreo y defensa en tiempo real contra amenazas cibernéticas con análisis predictivo.',
+      name: 'Sistema de control de asistencia',
+      description: 'Este sistema constituye una solución tecnológica para el registro y gestión de asistencia estudiantil, operando mediante la captura de códigos QR a través de dispositivos de escaneo especializados.',
       type: 'web',
-      techStack: ['Next.js', 'Rust', 'GraphQL', 'Docker'],
+      techStack: ['Angular', 'Tailwind', 'NestJS', 'MySQL'],
       demoUrl: '#',
       codeUrl: '#',
-      status: 'maintenance',
+      status: 'online',
       imageUrl: 'assets/images/cyber-project.jpg'
     }
   ]);
