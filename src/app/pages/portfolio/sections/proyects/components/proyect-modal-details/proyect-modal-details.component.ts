@@ -9,7 +9,7 @@ import { Project } from '../../interfaces/proyect.interface';
 import { ProjectDetailService } from '../../services/proyect-details.service';
 import { ProjectGalleryItem } from '../../interfaces/proyect-details.interface';
 
-type TabType = 'overview' | 'tech' | 'gallery' | 'performance';
+type TabType = 'overview' | 'gallery';
 type ViewportSize = 'mobile' | 'tablet' | 'desktop';
 
 @Component({
@@ -19,9 +19,7 @@ type ViewportSize = 'mobile' | 'tablet' | 'desktop';
     CommonModule,
     TechClassPipe,
     ModalResponsivePipe,
-    FormatFileSizePipe,
     FormatDurationPipe,
-    TechIconPipe
   ],
   templateUrl: './proyect-modal-details.component.html',
   styleUrls: ['./proyect-modal-details.component.css']
@@ -136,8 +134,6 @@ export class ProjectDetailsModalComponent {
   constructor(private projectDetailService: ProjectDetailService) {
     this.setupEffects();
     this.updateViewportSize();
-
-
   }
 
   private resetModalState(): void {
@@ -280,7 +276,6 @@ export class ProjectDetailsModalComponent {
     this.modalVisible.set(false);
     this.closed.emit();
 
-    // AGREGAR: Limpiar event listeners
     const modalBody = document.querySelector('.modal-body') as HTMLElement;
     if (modalBody) {
       modalBody.removeEventListener('wheel', this.handleWheel);
@@ -322,7 +317,7 @@ export class ProjectDetailsModalComponent {
   }
 
   private onTabCycle(reverse: boolean = false): void {
-    const tabs: TabType[] = ['overview', 'tech', 'gallery', 'performance'];
+    const tabs: TabType[] = ['overview', 'gallery'];
     const currentIndex = tabs.indexOf(this.activeTab());
 
     let nextIndex: number;
@@ -385,24 +380,12 @@ export class ProjectDetailsModalComponent {
     }
   }
 
-  getTabIcon(tab: TabType): string {
-    const icons = {
-      overview: '📋',
-      tech: '⚙️',
-      gallery: '🖼️',
-      performance: '📊'
-    };
-    return icons[tab] || '📋';
-  }
-
   getTabLabel(tab: TabType): string {
     const labels = {
-      overview: 'Overview',
-      tech: this.viewportSize() === 'mobile' ? 'Tech' : 'Técnico',
-      gallery: this.viewportSize() === 'mobile' ? 'Media' : 'Galería',
-      performance: this.viewportSize() === 'mobile' ? 'Stats' : 'Métricas'
+      overview: 'Resumen',
+      gallery: 'Galería'
     };
-    return labels[tab] || 'Overview';
+    return labels[tab] || 'Resumen';
   }
 
   get isVisible(): boolean {
@@ -414,7 +397,7 @@ export class ProjectDetailsModalComponent {
   }
 
   getTabTypes(): TabType[] {
-    return ['overview', 'tech', 'gallery', 'performance'];
+    return ['overview', 'gallery'];
   }
 
   trackByGalleryItem(index: number, item: ProjectGalleryItem): string {
@@ -435,14 +418,6 @@ export class ProjectDetailsModalComponent {
 
   trackByLearning(index: number, learning: string): string {
     return `learning-${index}-${learning.slice(0, 10)}`;
-  }
-
-  trackByChallenge(index: number, challenge: string): string {
-    return `challenge-${index}-${challenge.slice(0, 10)}`;
-  }
-
-  trackByPattern(index: number, pattern: string): string {
-    return pattern;
   }
 
   getImagePlaceholder(): string {
@@ -503,6 +478,4 @@ export class ProjectDetailsModalComponent {
         return '';
     }
   }
-
-
 }

@@ -1,4 +1,3 @@
-
 <div class="modal-overlay" 
      [ngClass]="modalClasses()" 
      (click)="onClose()" 
@@ -31,9 +30,11 @@
         <button class="nav-btn" 
                 [disabled]="!hasPreviousProject()" 
                 (click)="onPreviousProject()"
-                [attr.aria-label]="getAriaLabel('previous-project')" 
+                [attr.aria-label]="'Proyecto anterior'" 
                 type="button">
-          <span class="nav-icon" aria-hidden="true">‹</span>
+          <svg class="nav-icon" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </button>
 
         <span class="project-counter"
@@ -44,18 +45,22 @@
         <button class="nav-btn" 
                 [disabled]="!hasNextProject()" 
                 (click)="onNextProject()"
-                [attr.aria-label]="getAriaLabel('next-project')" 
+                [attr.aria-label]="'Siguiente proyecto'" 
                 type="button">
-          <span class="nav-icon" aria-hidden="true">›</span>
+          <svg class="nav-icon" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </button>
       </nav>
 
       
       <button class="close-btn" 
               (click)="onClose()" 
-              [attr.aria-label]="getAriaLabel('close-modal')" 
+              [attr.aria-label]="'Cerrar modal'" 
               type="button">
-        <span aria-hidden="true">×</span>
+        <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
       </button>
     </header>
 
@@ -65,11 +70,23 @@
               class="tab-btn"
               [class.active]="activeTab() === tab" 
               (click)="onTabChange(tab)"
-              [attr.aria-label]="getAriaLabel('tab', tab)" 
+              [attr.aria-label]="'Pestaña ' + getTabLabel(tab)" 
               [attr.aria-selected]="activeTab() === tab" 
               role="tab"
               type="button">
-        <span class="tab-icon" aria-hidden="true">{{ getTabIcon(tab) }}</span>
+        <svg class="tab-icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <ng-container [ngSwitch]="tab">
+            <!-- Resumen -->
+            <g *ngSwitchCase="'overview'">
+              <path d="M3 3v18h18V3H3zm16 16H5V5h14v14z" fill="currentColor"/>
+              <path d="M7 7h10v2H7zm0 4h10v2H7zm0 4h7v2H7z" fill="currentColor"/>
+            </g>
+            <!-- Galería -->
+            <g *ngSwitchCase="'gallery'">
+              <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" fill="currentColor"/>
+            </g>
+          </ng-container>
+        </svg>
         <span class="tab-text">{{ getTabLabel(tab) }}</span>
       </button>
     </nav>
@@ -84,7 +101,7 @@
                [attr.aria-labelledby]="'tab-overview'">
 
         <article class="overview-section">
-          <h2 class="section-title">Descripción Detallada</h2>
+          <h2 class="section-title">Descripción del Proyecto</h2>
           <p class="extended-description">
             {{ getContextualDescription(currentProjectDetails()!.extendedDescription) }}
           </p>
@@ -96,7 +113,11 @@
             <li *ngFor="let objective of currentProjectDetails()!.objectives; trackBy: trackByObjective"
                 class="objective-item" 
                 role="listitem">
-              <span class="objective-icon" aria-hidden="true">🎯</span>
+              <svg class="objective-icon" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                <circle cx="12" cy="12" r="6" fill="currentColor"/>
+                <circle cx="12" cy="12" r="2" fill="white"/>
+              </svg>
               {{ objective }}
             </li>
           </ul>
@@ -107,7 +128,9 @@
           <div class="features-grid">
             <div *ngFor="let feature of currentProjectDetails()!.keyFeatures.slice(0, getResponsiveFeatureCount()); trackBy: trackByFeature"
                  class="feature-card">
-              <span class="feature-icon" aria-hidden="true">✨</span>
+              <svg class="feature-icon" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <polygon points="12,2 15.09,8.26 22,9 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9 8.91,8.26" fill="currentColor"/>
+              </svg>
               <span class="feature-text">{{ feature }}</span>
             </div>
           </div>
@@ -115,10 +138,32 @@
           
           <button *ngIf="viewportSize() === 'mobile' && currentProjectDetails()!.keyFeatures.length > 6"
                   class="show-more-btn" 
-                  (click)="onTabChange('tech')" 
+                  (click)="onTabChange('gallery')" 
                   type="button">
             Ver más características →
           </button>
+        </section>
+
+       <section class="tech-stack-section">
+          <h3 class="section-title">Tecnologías Utilizadas</h3>
+          <div class="tech-stack-grid">
+            <div *ngFor="let tech of currentProject()!.techStack; trackBy: trackByTech" 
+                 class="tech-item"
+                 [class]="tech | techClass">
+              <svg class="tech-icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                <path d="M9 9h6v6H9z" fill="currentColor"/>
+              </svg>
+              <span class="tech-name">{{ tech }}</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="architecture-section">
+          <h3 class="section-title">Arquitectura</h3>
+          <p class="architecture-description">
+            {{ currentProjectDetails()!.architecture | modalResponsive:viewportSize() }}
+          </p>
         </section>
 
         <section class="process-section" *ngIf="viewportSize() !== 'mobile'">
@@ -142,73 +187,13 @@
         <section class="learnings-section" *ngIf="viewportSize() === 'desktop'">
           <h3 class="section-title">Aprendizajes Clave</h3>
           <ul class="learnings-list" role="list">
-            <li *ngFor="let learning of currentProjectDetails()!.learnings.slice(0, 3); trackBy: trackByLearning"
+            <li *ngFor="let learning of currentProjectDetails()!.learnings trackBy: trackByLearning"
                 class="learning-item" 
                 role="listitem">
-              <span class="learning-icon" aria-hidden="true">💡</span>
+              <svg class="learning-icon" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M9 21c0 .5.4 1 1 1h4c.6 0 1-.5 1-1v-1H9v1zm3-19C8.1 2 5 5.1 5 9c0 2.4 1.2 4.5 3 5.7V17c0 .5.4 1 1 1h6c.6 0 1-.5 1-1v-2.3c1.8-1.3 3-3.4 3-5.7 0-3.9-3.1-7-7-7z" fill="currentColor"/>
+              </svg>
               {{ learning }}
-            </li>
-          </ul>
-        </section>
-      </section>
-
-      
-      <section class="tab-content" 
-               [class.active]="activeTab() === 'tech'"
-               role="tabpanel" 
-               [attr.aria-labelledby]="'tab-tech'">
-
-        <div class="tech-stack-section">
-          <h3 class="section-title">Stack Tecnológico</h3>
-          <div class="tech-stack-grid">
-            <div *ngFor="let tech of currentProject()!.techStack; trackBy: trackByTech" 
-                 class="tech-item"
-                 [class]="tech | techClass">
-              <span class="tech-icon" aria-hidden="true">{{ tech | techIcon }}</span>
-              <span class="tech-name">{{ tech }}</span>
-            </div>
-          </div>
-        </div>
-
-        <section class="architecture-section">
-          <h3 class="section-title">Arquitectura</h3>
-          <p class="architecture-description">
-            {{ currentProjectDetails()!.architecture | modalResponsive:viewportSize() }}
-          </p>
-        </section>
-
-        <section class="patterns-section" *ngIf="viewportSize() !== 'mobile'">
-          <h3 class="section-title">Patrones de Diseño</h3>
-          <div class="patterns-grid">
-            <div *ngFor="let pattern of currentProjectDetails()!.designPatterns; trackBy: trackByPattern"
-                 class="pattern-item">
-              <span class="pattern-icon" aria-hidden="true">🏗️</span>
-              <span class="pattern-name">{{ pattern }}</span>
-            </div>
-          </div>
-        </section>
-
-        <section class="challenges-section">
-          <h3 class="section-title">Desafíos Técnicos</h3>
-          <ul class="challenges-list" role="list">
-            <li *ngFor="let challenge of currentProjectDetails()!.technicalChallenges; trackBy: trackByChallenge"
-                class="challenge-item" 
-                role="listitem">
-              <span class="challenge-icon" aria-hidden="true">⚡</span>
-              {{ challenge | modalResponsive:viewportSize() }}
-            </li>
-          </ul>
-        </section>
-
-        
-        <section class="learnings-section" *ngIf="viewportSize() === 'mobile'">
-          <h3 class="section-title">Aprendizajes Clave</h3>
-          <ul class="learnings-list" role="list">
-            <li *ngFor="let learning of currentProjectDetails()!.learnings; trackBy: trackByLearning"
-                class="learning-item" 
-                role="listitem">
-              <span class="learning-icon" aria-hidden="true">💡</span>
-              {{ learning | modalResponsive:viewportSize() }}
             </li>
           </ul>
         </section>
@@ -239,7 +224,12 @@
                       (click)="showLightboxModal()"
                       [attr.aria-label]="'Ampliar imagen: ' + currentGalleryItem()!.title" 
                       type="button">
-                <span aria-hidden="true">🔍</span>
+                <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+                  <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <line x1="11" y1="8" x2="11" y2="14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <line x1="8" y1="11" x2="14" y2="11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
               </button>
             </div>
 
@@ -260,17 +250,21 @@
             <button class="gallery-nav prev" 
                     (click)="onGalleryPrevious()"
                     [disabled]="!hasGalleryPrevious()" 
-                    [attr.aria-label]="getAriaLabel('gallery-previous')"
+                    [attr.aria-label]="'Imagen anterior'"
                     type="button">
-              <span aria-hidden="true">‹</span>
+              <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
             </button>
 
             <button class="gallery-nav next" 
                     (click)="onGalleryNext()" 
                     [disabled]="!hasGalleryNext()"
-                    [attr.aria-label]="getAriaLabel('gallery-next')" 
+                    [attr.aria-label]="'Siguiente imagen'" 
                     type="button">
-              <span aria-hidden="true">›</span>
+              <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
             </button>
           </div>
 
@@ -305,7 +299,9 @@
                    loading="lazy">
 
               <div *ngIf="item.type === 'video'" class="thumbnail-video">
-                <span class="video-icon" aria-hidden="true">▶</span>
+                <svg class="video-icon" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <polygon points="5,3 19,12 5,21" fill="currentColor"/>
+                </svg>
               </div>
 
               <div class="thumbnail-overlay">
@@ -316,69 +312,6 @@
         </section>
       </section>
 
-      
-      <section class="tab-content" 
-               [class.active]="activeTab() === 'performance'"
-               role="tabpanel" 
-               [attr.aria-labelledby]="'tab-performance'">
-
-        <div class="metrics-section">
-          <h3 class="section-title">Métricas de Performance</h3>
-
-          <div class="metrics-grid" [class.mobile]="isMobile">
-            <div class="metric-card lighthouse">
-              <div class="metric-icon" aria-hidden="true">🚀</div>
-              <div class="metric-info">
-                <span class="metric-label">Lighthouse Score</span>
-                <span class="metric-value">{{ currentProjectDetails()!.performanceMetrics.lightHouseScore }}/100</span>
-              </div>
-            </div>
-
-            <div class="metric-card load-time">
-              <div class="metric-icon" aria-hidden="true">⚡</div>
-              <div class="metric-info">
-                <span class="metric-label">Tiempo de Carga</span>
-                <span class="metric-value">{{ currentProjectDetails()!.performanceMetrics.loadTime }}</span>
-              </div>
-            </div>
-
-            <div class="metric-card bundle-size" *ngIf="viewportSize() !== 'mobile'">
-              <div class="metric-icon" aria-hidden="true">📦</div>
-              <div class="metric-info">
-                <span class="metric-label">Tamaño Bundle</span>
-                <span class="metric-value">{{ currentProjectDetails()!.performanceMetrics.bundleSize | formatFileSize }}</span>
-              </div>
-            </div>
-
-            <div class="metric-card core-vitals">
-              <div class="metric-icon" aria-hidden="true">❤️</div>
-              <div class="metric-info">
-                <span class="metric-label">Core Web Vitals</span>
-                <span class="metric-value">{{ currentProjectDetails()!.performanceMetrics.coreWebVitals }}</span>
-              </div>
-            </div>
-          </div>
-
-          
-          <div class="detailed-metrics" *ngIf="viewportSize() === 'desktop'">
-            <h4 class="subsection-title">Métricas Detalladas</h4>
-            <div class="detailed-metrics-grid">
-              <div class="detailed-metric">
-                <span class="detailed-label">First Contentful Paint:</span>
-                <span class="detailed-value">{{ currentProjectDetails()!.performanceMetrics.firstContentfulPaint }}</span>
-              </div>
-              <div class="detailed-metric">
-                <span class="detailed-label">Largest Contentful Paint:</span>
-                <span class="detailed-value">{{ currentProjectDetails()!.performanceMetrics.largestContentfulPaint }}</span>
-              </div>
-              <div class="detailed-metric">
-                <span class="detailed-label">Cumulative Layout Shift:</span>
-                <span class="detailed-value">{{ currentProjectDetails()!.performanceMetrics.cumulativeLayoutShift }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
     </main>
 
     
@@ -388,7 +321,10 @@
               *ngIf="currentProject()!.codeUrl"
               type="button" 
               [attr.aria-label]="'Ver código de ' + currentProject()!.name">
-        <span class="btn-icon" aria-hidden="true">💻</span>
+        <svg class="btn-icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <polyline points="16,18 22,12 16,6" stroke="currentColor" stroke-width="2" fill="none"/>
+          <polyline points="8,6 2,12 8,18" stroke="currentColor" stroke-width="2" fill="none"/>
+        </svg>
         <span class="btn-text">{{ viewportSize() === 'mobile' ? 'Código' : 'Ver Código' }}</span>
       </button>
 
@@ -397,7 +333,11 @@
               *ngIf="currentProject()!.demoUrl"
               type="button" 
               [attr.aria-label]="'Ver demo de ' + currentProject()!.name">
-        <span class="btn-icon" aria-hidden="true">🌐</span>
+        <svg class="btn-icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+          <path d="M2 12h20" stroke="currentColor" stroke-width="2"/>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke="currentColor" stroke-width="2"/>
+        </svg>
         <span class="btn-text">{{ viewportSize() === 'mobile' ? 'Demo' : 'Ver Proyecto' }}</span>
       </button>
     </footer>
@@ -424,7 +364,9 @@
             (click)="onCloseLightbox()" 
             [attr.aria-label]="'Cerrar imagen ampliada'"
             type="button">
-      <span aria-hidden="true">×</span>
+      <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
     </button>
 
     <div class="lightbox-info" *ngIf="currentGalleryItem()!.description">
@@ -439,7 +381,9 @@
             [attr.aria-label]="'Imagen anterior'" 
             type="button" 
             *ngIf="!isMobile">
-      <span aria-hidden="true">‹</span>
+      <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
     </button>
 
     <button class="lightbox-nav next" 
@@ -448,7 +392,9 @@
             [attr.aria-label]="'Siguiente imagen'" 
             type="button" 
             *ngIf="!isMobile">
-      <span aria-hidden="true">›</span>
+      <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
     </button>
   </div>
 </div>
@@ -457,7 +403,12 @@
 <div class="modal-loading" 
      *ngIf="isLoading()" 
      [attr.aria-label]="'Cargando detalles del proyecto'">
-  <div class="loading-spinner" aria-hidden="true"></div>
+  <svg class="loading-spinner" aria-hidden="true" width="40" height="40" viewBox="0 0 24 24" fill="none">
+    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-dasharray="31.416" stroke-dashoffset="31.416">
+      <animate attributeName="stroke-dasharray" dur="2s" values="0 31.416;15.708 15.708;0 31.416" repeatCount="indefinite"/>
+      <animate attributeName="stroke-dashoffset" dur="2s" values="0;-15.708;-31.416" repeatCount="indefinite"/>
+    </circle>
+  </svg>
   <span class="loading-text">Cargando detalles...</span>
 </div>
 

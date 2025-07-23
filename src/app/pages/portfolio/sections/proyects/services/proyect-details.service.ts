@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Project } from '../interfaces/proyect.interface';
 import { PerformanceMetrics, ProjectDetailExtended, ProjectGalleryItem } from '../interfaces/proyect-details.interface';
+import { AppLifecycleManagerService } from '../../../../../core/global/config/app-life-cycle.service';
 
 @Injectable({
     providedIn: 'root'
@@ -50,110 +51,64 @@ export class ProjectDetailService {
 
     private getExtendedDescription(project: Project): string {
         const descriptions: Record<string, string> = {
-            'E-COMMERCE NEXUS': `${project.description} Este proyecto representa una revolución en el comercio electrónico, implementando inteligencia artificial avanzada para predecir comportamientos de compra y realidad aumentada para visualizar productos. La plataforma utiliza algoritmos de machine learning para personalizar la experiencia de cada usuario, mientras que la integración AR permite a los clientes ver productos en su entorno real antes de comprar.`,
+            'E-COMMERCE de tienda de comida rapida': `${project.description} La plataforma incluye carrito de compras, sistema de pedidos en línea, gestión de usuarios, reportes de ventas y herramientas para optimizar las operaciones diarias del restaurante. `,
 
-            'NEURAL DASHBOARD': `${project.description} Una interfaz de comando futurística diseñada para científicos de datos y analistas que necesitan procesar grandes volúmenes de información en tiempo real. El dashboard implementa visualizaciones interactivas avanzadas usando D3.js y Three.js, permitiendo manipular datos multidimensionales de forma intuitiva y descubrir patrones ocultos mediante algoritmos de deep learning.`,
-
-            'QUANTUM MOBILE': `${project.description} Esta aplicación móvil pionera implementa computación cuántica para ofrecer un nivel de seguridad sin precedentes en comunicaciones móviles. Utiliza algoritmos cuánticos para encriptación y desencriptación de mensajes, garantizando comunicaciones completamente seguras contra cualquier tipo de interceptación o ataque cibernético.`,
-
-            'BLOCKCHAIN HUB': `${project.description} Un centro de comando completo para el ecosistema DeFi, diseñado para gestionar múltiples protocolos blockchain simultáneamente. La plataforma permite crear, desplegar y monitorear contratos inteligentes, mientras proporciona análisis en tiempo real de transacciones y liquidez en diferentes redes blockchain.`,
-
-            'AI INTERFACE': `${project.description} Un terminal de comunicación avanzado que permite interacción directa con múltiples modelos de IA especializados. La interfaz utiliza procesamiento de lenguaje natural para interpretar comandos complejos y distribuir tareas a diferentes sistemas de IA, optimizando respuestas y proporcionando insights inteligentes.`,
-
-            'Sistema de control de asistencia': `${project.description} La plataforma incorpora un módulo administrativo completo que facilita la supervisión y control de la asistencia académica. La implementación aprovecha las tabletas proporcionadas por el Gobierno del Perú, configuradas específicamente como dispositivos de escaneo para permitir el registro simultáneo de múltiples estudiantes. Esta infraestructura tecnológica optimiza los procesos de control de asistencia en instituciones educativas.
-Cada estudiante cuenta con un código QR único generado por el sistema, el cual debe presentar para registrar tanto su ingreso como su salida de las instalaciones educativas. Los auxiliares educativos desempeñan un rol de supervisión. Gestionan el control de asistencia estudiantil a través del panel administrativo.
-El módulo administrativo proporciona herramientas especializadas para la gestión y generación de reportes destinados a los subdirectores administrativos, facilitando la toma de decisiones basada en datos de asistencia en tiempo real.
-Se ha implementado un módulo de notificaciones automáticas que monitorea el estado de asistencia estudiantil, enviando actualizaciones en tiempo real a los padres de familia o tutores legales, fortaleciendo así la comunicación entre la institución educativa y el núcleo familiar.`};
+            'Sistema de control de asistencia': `${project.description} lo cual desarrolle una plataforma que moderniza el control de asistencia para colegios en el caso de los alumnos, aprovechando las tabletas del gobierno como estaciones de escaneo. Los estudiantes usan códigos QR únicos para registrar su entrada y salida, mientras que los auxiliares supervisan todo desde un panel administrativo intuitivo.
+El sistema genera reportes automáticos para subdirectores y envía notificaciones en tiempo real a los padres cuando sus hijos llegan o salen del colegio. Esto elimina el papeleo manual y mejora significativamente la comunicación entre la escuela y las familias.`};
 
         return descriptions[project.name] || `${project.description} Este proyecto implementa tecnologías de vanguardia para resolver desafíos complejos del mundo real, combinando diseño innovador con arquitectura robusta y escalable.`;
     }
 
     private getObjectives(project: Project): string[] {
-        const commonObjectives = [
-''
-        ];
 
         const specificObjectives: Record<string, string[]> = {
-            'E-COMMERCE NEXUS': [
-                'Integrar IA predictiva para recomendaciones personalizadas',
-                'Implementar realidad aumentada para visualización de productos',
-                'Crear sistema de pagos seguro y fluido',
-                'Desarrollar dashboard de analytics para vendedores'
-            ],
-            'NEURAL DASHBOARD': [
-                'Procesar big data en tiempo real',
-                'Crear visualizaciones interactivas complejas',
-                'Implementar machine learning para insights automáticos',
-                'Optimizar rendimiento para datasets masivos'
-            ],
-            'QUANTUM MOBILE': [
-                'Implementar encriptación cuántica segura',
-                'Optimizar para dispositivos móviles diversos',
-                'Crear comunicación P2P sin servidores centrales',
-                'Desarrollar interfaz intuitiva para tecnología compleja'
+            'E-COMMERCE de tienda de comida rapida': [
+                'Ofrecer una experiencia de compra comoda y eficiente para el cliente',
+                'Digitalizar las ventas y expandir el alcance del negocio',
+                'Reducir los costos operativos automatizando los procesos manuales',
+                'Simplificar el proceso de pago de pedido de los clientes',
+                'Facilitar el acceso al menu con los precios constantemente actualizados'
             ],
             'Sistema de control de asistencia': [
-               'Desarrollar una plataforma de registro de asistencia que permita la captura simultánea de códigos QR estudiantiles a través de dispositivos de escaneo especializados',
-               'Aprovechar eficientemente las tabletas gubernamentales del Perú, configurándolas como dispositivos de escaneo dedicados para el control de asistencia estudiantil.',
-               'Crear un sistema de identificación único mediante códigos QR individuales para cada estudiante, facilitando el registro preciso de ingresos y salidas.',
-               'Implementar un panel administrativo integral que permita a los auxiliares educativos supervisar y gestionar el control de asistencia de manera centralizada.',
-               'Desarrollar herramientas de generación de reportes especializados para subdirectores administrativos, facilitando la toma de decisiones basada en datos de asistencia.',
-               'Establecer un sistema de notificaciones automáticas en tiempo real que informe a los padres de familia sobre el estado de asistencia de sus hijos.'
+                'Desarrollar una plataforma de registro de asistencia que permita la captura simultánea de códigos QR estudiantiles a través de dispositivos de escaneo especializados',
+                'Aprovechar eficientemente las tabletas gubernamentales del Perú, configurándolas como dispositivos de escaneo dedicados para el control de asistencia estudiantil.',
+                'Crear un sistema de identificación único mediante códigos QR individuales para cada estudiante, facilitando el registro preciso de ingresos y salidas.',
+                'Implementar un panel administrativo integral que permita a los auxiliares educativos supervisar y gestionar el control de asistencia de manera centralizada.',
+                'Desarrollar herramientas de generación de reportes especializados para subdirectores administrativos, facilitando la toma de decisiones basada en datos de asistencia.',
+                'Establecer un sistema de notificaciones automáticas en tiempo real que informe a los padres de familia sobre el estado de asistencia de sus hijos.'
             ],
         };
 
-        return [...commonObjectives, ...(specificObjectives[project.name] || [])];
+        return [...(specificObjectives[project.name] || [])];
     }
 
     private getKeyFeatures(project: Project): string[] {
-        const baseFeatures = [
-            'Diseño responsive mobile-first',
-            'Arquitectura de componentes reutilizables',
-            'Sistema de estado global optimizado',
-            'Implementación de PWA con soporte offline',
-            'Optimizaciones de performance avanzadas',
-            'Sistema de testing automatizado completo',
-            'Integración con APIs REST y GraphQL',
-            'Modo oscuro/claro dinámico'
-        ];
 
         const specificFeatures: Record<string, string[]> = {
-            'E-COMMERCE NEXUS': [
-                'Motor de recomendaciones con IA',
-                'Visualizador AR de productos',
-                'Sistema de pagos múltiples',
-                'Chat en tiempo real con vendedores',
-                'Sistema de reviews inteligente',
-                'Gestión de inventario automatizada'
+            'E-COMMERCE de tienda de comida rapida': [
+                'Carrito de compras funcional con cálculo automático de totales de precio',
+                'Seccion de checkout completo con resumen del pedido',
+                'Métodos de pago (Yape, Plin)',
+                'Filtros para múltiples campos',
+                'Panel de tienda para gestionar usuarios, precios, stock, productos, promociones, etc.',
+                'Diseño responsive adaptado para dispositivos moviles'
+
             ],
-            'NEURAL DASHBOARD': [
-                'Visualizaciones 3D interactivas',
-                'Procesamiento de datos en tiempo real',
-                'Algoritmos de machine learning integrados',
-                'Sistema de alertas inteligentes',
-                'Exportación de reportes automática',
-                'Colaboración en tiempo real'
+            'Sistema de control de asistencia': [
+                'Acceso multi-usuario con roles para supervision de la asistencia de los estudiantes',
+                'Registro y control de asistencia de estudiantes mediante codigos QR',
+                'Procesamiento en tiempo real de notificaciones de asistencia',
+                'Interfaz web de escaner y panel administrativo con diseño responsive',
+                'Configuraciones de emisiones y recepciones de notificaciones y generadores de codigos QR',
+                'Asistente virtual implementado para atencion personalizada al personal administrativo.'
             ],
-            'QUANTUM MOBILE': [
-                'Encriptación cuántica end-to-end',
-                'Comunicación P2P segura',
-                'Autenticación biométrica avanzada',
-                'Backup cuántico de datos',
-                'Interfaz adaptativa inteligente'
-            ]
+
         };
 
-        return [...baseFeatures, ...(specificFeatures[project.name] || [])];
+        return [...(specificFeatures[project.name] || [])];
     }
 
     private getTechnicalChallenges(project: Project): string[] {
-        const commonChallenges = [
-            'Optimización de renderizado para interfaces complejas',
-            'Manejo eficiente de estado global con múltiples fuentes',
-            'Implementación de lazy loading y code splitting',
-            'Compatibilidad cross-browser y dispositivos legacy',
-            'Optimización de bundle size y performance'
-        ];
 
         const specificChallenges: Record<string, string[]> = {
             'E-COMMERCE NEXUS': [
@@ -176,16 +131,13 @@ Se ha implementado un módulo de notificaciones automáticas que monitorea el es
             ]
         };
 
-        return [...commonChallenges, ...(specificChallenges[project.name] || [])];
+        return [...(specificChallenges[project.name] || [])];
     }
 
     private getArchitecture(project: Project): string {
         const architectures: Record<string, string> = {
-            'E-COMMERCE NEXUS': 'Arquitectura hexagonal con separación clara entre dominio, infraestructura y presentación. Implementa CQRS para separar operaciones de lectura y escritura, especialmente para el motor de recomendaciones. Utiliza Event Sourcing para auditoría de transacciones y patrón Saga para manejar procesos de compra distribuidos.',
-
-            'NEURAL DASHBOARD': 'Clean Architecture con capas bien definidas y patrón Repository para abstracción de datos. Implementa Observer Pattern para actualizaciones en tiempo real y Strategy Pattern para diferentes algoritmos de visualización. Utiliza Worker Threads para procesamiento intensivo sin bloquear la UI principal.',
-
-            'QUANTUM MOBILE': 'Arquitectura orientada a microservicios con comunicación asíncrona. Implementa patrón Circuit Breaker para resilencia y CQRS para optimizar consultas. Utiliza Event-Driven Architecture para comunicación entre componentes cuánticos y traditional.'
+            'Sistema de control de asistencia': 'Arquitectura hexagonal con separacion entre dominio y infraestructura. ',
+            'E-COMMERCE de tienda de comida rapida': 'Arquitectura cliente-servidor con React y Laravel',
         };
 
         return architectures[project.name] || 'Clean Architecture con separación de responsabilidades en capas (Presentation, Domain, Infrastructure). Implementa patrón Repository para el manejo de datos, Observer para comunicación entre componentes y Factory para creación de objetos complejos. Utiliza Dependency Injection para desacoplamiento y facilitar testing.';
@@ -231,79 +183,243 @@ Se ha implementado un módulo de notificaciones automáticas que monitorea el es
     }
 
     private getGallery(project: Project): ProjectGalleryItem[] {
-        const baseGallery: ProjectGalleryItem[] = [
-            {
-                id: `${project.id}-hero`,
-                type: 'image',
-                url: `assets/images/projects/${project.name.toLowerCase().replace(/\s+/g, '-')}/hero-screenshot.jpg`,
-                title: 'Vista Principal',
-                description: 'Captura de la interfaz principal del proyecto mostrando el diseño y funcionalidades clave',
-                thumbnail: `assets/images/projects/${project.name.toLowerCase().replace(/\s+/g, '-')}/hero-screenshot-thumb.jpg`
-            },
-            {
-                id: `${project.id}-demo`,
-                type: 'gif',
-                url: `assets/images/projects/${project.name.toLowerCase().replace(/\s+/g, '-')}/interaction-demo.gif`,
-                title: 'Demostración Interactiva',
-                description: 'Animación mostrando las principales interacciones y flujos de usuario',
-                thumbnail: `assets/images/projects/${project.name.toLowerCase().replace(/\s+/g, '-')}/interaction-demo-thumb.jpg`
-            },
-            {
-                id: `${project.id}-video`,
-                type: 'video',
-                url: `assets/videos/projects/${project.name.toLowerCase().replace(/\s+/g, '-')}/full-demo.mp4`,
-                title: 'Video Completo',
-                description: 'Demostración completa de todas las características y funcionalidades del proyecto',
-                thumbnail: `assets/images/projects/${project.name.toLowerCase().replace(/\s+/g, '-')}/video-thumb.jpg`
-            },
-            {
-                id: `${project.id}-mobile`,
-                type: 'image',
-                url: `assets/images/projects/${project.name.toLowerCase().replace(/\s+/g, '-')}/mobile-responsive.jpg`,
-                title: 'Versión Móvil',
-                description: 'Diseño responsive optimizado para dispositivos móviles y tablets',
-                thumbnail: `assets/images/projects/${project.name.toLowerCase().replace(/\s+/g, '-')}/mobile-responsive-thumb.jpg`
-            },
-            {
-                id: `${project.id}-architecture`,
-                type: 'image',
-                url: `assets/images/projects/${project.name.toLowerCase().replace(/\s+/g, '-')}/architecture-diagram.jpg`,
-                title: 'Diagrama de Arquitectura',
-                description: 'Estructura técnica detallada y flujo de datos del sistema',
-                thumbnail: `assets/images/projects/${project.name.toLowerCase().replace(/\s+/g, '-')}/architecture-diagram-thumb.jpg`
-            }
-        ];
+        const projectGalleries: Record<string, ProjectGalleryItem[]> = {
+            'Sistema de control de asistencia': [
+                {
+                    id: `${project.id}-asistente-virtual`,
+                    type: 'image',
+                    url: 'assets/proyects/sistema-de-control-de-asistencia/ASISTENTE-VIRTUAL-DE-AYUDA.png',
+                    title: 'Asistente virtual',
+                    description: 'Chat bot integrado "Andrés Bot" para soporte al personal administrativo respecto al uso del escaner',
+                    thumbnail: 'assets/proyects/sistema-de-control-de-asistencia/ASISTENTE-VIRTUAL-DE-AYUDA.png'
+                },
+                {
+                    id: `${project.id}-escaner-qr-de-estudiantes`,
+                    type: 'image',
+                    url: 'assets/proyects/sistema-de-control-de-asistencia/ESCANER-QR-DE-ESTUDIANTES.png',
+                    title: 'Panel de registro de asistencia con escaneo QR',
+                    description: 'Registro de asistencia de estudiantes mediante codigos QR de estudiantes',
+                    thumbnail: 'assets/proyects/sistema-de-control-de-asistencia/ESCANER-QR-DE-ESTUDIANTES.png'
+                },
+                {
+                    id: `${project.id}-lista-estudiantes`,
+                    type: 'image',
+                    url: 'assets/proyects/sistema-de-control-de-asistencia/LISTA-ALUMNOS.png',
+                    title: 'Lista de alumnos',
+                    description: 'Intefaz de estudiantes de la institucion educativa "Andres de los reyes". ',
+                    thumbnail: 'assets/proyects/sistema-de-control-de-asistencia/LISTA-ALUMNOS.png'
+                },
+                {
+                    id: `${project.id}-lista-asistencia-estudiantes`,
+                    type: 'image',
+                    url: 'assets/proyects/sistema-de-control-de-asistencia/LISTA-DE-ASISTENCIA.png',
+                    title: 'Lista de asistencia de estudiantes',
+                    description: 'Interfaz de control de asistencia de estudiantes, en el podemos visualizar y ver mas detalles de asistencia de cada alumno y darle seguimiento.',
+                    thumbnail: 'assets/proyects/sistema-de-control-de-asistencia/LISTA-DE-ASISTENCIA.png'
+                },
+                {
+                    id: `${project.id}-login`,
+                    type: 'image',
+                    url: 'assets/proyects/sistema-de-control-de-asistencia/LOGIN.png',
+                    title: 'Login principal',
+                    description: 'Interfaz de login para acceder al sistema panel de administrador, donde tiene acceso el personal administrativo de la institucion.',
+                    thumbnail: 'assets/proyects/sistema-de-control-de-asistencia/LOGIN.png'
+                },
+                {
+                    id: `${project.id}-notificacion`,
+                    type: 'image',
+                    url: 'assets/proyects/sistema-de-control-de-asistencia/NOTIFICACION-A-PADRE-DE-FAMILIA.jpg',
+                    title: 'Notificaciones automaticas Telegram',
+                    description: 'Sitio de notificaciones en tiempo real para cada apoderado del alumno indicando el estado actual del alumno segun asistencia',
+                    thumbnail: 'assets/proyects/sistema-de-control-de-asistencia/NOTIFICACION-A-PADRE-DE-FAMILIA.jpg'
+                },
+                {
+                    id: `${project.id}-menu-principal`,
+                    type: 'image',
+                    url: 'assets/proyects/sistema-de-control-de-asistencia/PANTALLA-PRINCIPAL.png',
+                    title: 'Menu Principal',
+                    description: 'Interfaz principal del panel administrador donde puede gestionar multiples procesos respecto al control de asistencia',
+                    thumbnail: 'assets/proyects/sistema-de-control-de-asistencia/PANTALLA-PRINCIPAL.png'
+                },
+                {
+                    id: `${project.id}-qr-estudiantes`,
+                    type: 'image',
+                    url: 'assets/proyects/sistema-de-control-de-asistencia/QR-ESTUDIANTES.png',
+                    title: 'Generador de codigos QR',
+                    description: 'Interfaz generador de codigos QR unicos para cada estudiante de la institucion',
+                    thumbnail: 'assets/proyects/sistema-de-control-de-asistencia/QR-ESTUDIANTES.png'
+                },
+                {
+                    id: `${project.id}-registro-estudiantes`,
+                    type: 'image',
+                    url: 'assets/proyects/sistema-de-control-de-asistencia/REGISTRO-DE-ALUMNOS.png',
+                    title: 'Interfaz de registro de alumnos',
+                    description: 'Interfaz de registro de estudiantes de la institucion',
+                    thumbnail: 'assets/proyects/sistema-de-control-de-asistencia/REGISTRO-DE-ALUMNOS.png'
+                },
 
-        return baseGallery;
+
+
+            ],
+            'E-COMMERCE de tienda de comida rapida': [
+                {
+                    id: `${project.id}-presentacion`,
+                    type: 'image',
+                    url: 'assets/proyects/ecommerce-virtual/PRESENTACION.png',
+                    title: 'Interfaz de bienvenida',
+                    description: 'Interfaz principal de acceso al panel administrador',
+                    thumbnail: 'assets/proyects/ecommerce-virtual/PRESENTACION.png',
+                },
+                {
+                    id: `${project.id}-admin-productos`,
+                    type: 'image',
+                    url: 'assets/proyects/ecommerce-virtual/ADMIN-PRODUCTOS.png',
+                    title: 'Interfaz de productos',
+                    description: 'Interfaz para gestionar los productos de tienda virtual',
+                    thumbnail: 'assets/proyects/ecommerce-virtual/ADMIN-PRODUCTOS.png',
+                },
+                {
+                    id: `${project.id}-ADMIN-USUARIO`,
+                    type: 'image',
+                    url: 'assets/proyects/ecommerce-virtual/ADMIN-USUARIO.png',
+                    title: 'Interfaz de usuarios',
+                    description: 'Interfaz para administrar el control de usuario',
+                    thumbnail: 'assets/proyects/ecommerce-virtual/ADMIN-USUARIO.png',
+                },
+                {
+                    id: `${project.id}-CARRITO`,
+                    type: 'image',
+                    url: 'assets/proyects/ecommerce-virtual/CARRITO.png',
+                    title: 'Interfaz de carrito de compras',
+                    description: 'Vista para visualizar a detalle productos de cliente',
+                    thumbnail: 'assets/proyects/ecommerce-virtual/CARRITO.png',
+                },
+                {
+                    id: `${project.id}-CATEGORIA`,
+                    type: 'image',
+                    url: 'assets/proyects/ecommerce-virtual/CATEGORIA.png',
+                    title: 'Interfaz categorias de productos',
+                    description: 'Interfaz para clasificar los productos de tienda para mejores busquedas en los filtros',
+                    thumbnail: 'assets/proyects/ecommerce-virtual/CATEGORIA.png',
+                },
+                {
+                    id: `${project.id}-CHECKOUT`,
+                    type: 'image',
+                    url: 'assets/proyects/ecommerce-virtual/CHECKOUT.png',
+                    title: 'Intefaz para completar compra',
+                    description: 'Interfaz para ingresar a detalles datos de facturacion y carrito de compras',
+                    thumbnail: 'assets/proyects/ecommerce-virtual/CHECKOUT.png',
+                },
+                {
+                    id: `${project.id}-CHECKOUT`,
+                    type: 'image',
+                    url: 'assets/proyects/ecommerce-virtual/CHECKOUT.png',
+                    title: 'Intefaz para completar compra',
+                    description: 'Interfaz para ingresar a detalles datos de facturacion y carrito de compras',
+                    thumbnail: 'assets/proyects/ecommerce-virtual/CHECKOUT.png',
+                },
+                {
+                    id: `${project.id}-CLIENTES`,
+                    type: 'image',
+                    url: 'assets/proyects/ecommerce-virtual/CLIENTES.png',
+                    title: 'Interfaz de clientes',
+                    description: 'Interfaz para visualizar nuestros clientes registrados',
+                    thumbnail: 'assets/proyects/ecommerce-virtual/CLIENTES.png',
+                },
+                {
+                    id: `${project.id}-CONFIG `,
+                    type: 'image',
+                    url: 'assets/proyects/ecommerce-virtual/CONFIG-PERFIL.png',
+                    title: 'Interfaz de configuracion de perfil',
+                    description: 'Vista de configuracion para actualizar nuestros datos de perfil',
+                    thumbnail: 'assets/proyects/ecommerce-virtual/CONFIG-PERFIL.png',
+                },
+                {
+                    id: `${project.id}-DETALLE-PEDIDO `,
+                    type: 'image',
+                    url: 'assets/proyects/ecommerce-virtual/DETALLE-PEDIDO.png',
+                    title: 'Interfaz de pedido de cliente',
+                    description: 'Vista para visualizar detalles de pedidos de cliente',
+                    thumbnail: 'assets/proyects/ecommerce-virtual/DETALLE-PEDIDO.png',
+                },
+                {
+                    id: `${project.id}-DETALLE-PRODUCTO `,
+                    type: 'image',
+                    url: 'assets/proyects/ecommerce-virtual/DETALLE-PRODUCTO.png',
+                    title: 'Vista de producto',
+                    description: 'Vista para visualizar detalles de producto, descripcion y precio',
+                    thumbnail: 'assets/proyects/ecommerce-virtual/DETALLE-PRODUCTO.png',
+                },
+                {
+                    id: `${project.id}-INICIO-PANEL `,
+                    type: 'image',
+                    url: 'assets/proyects/ecommerce-virtual/INICIO-PANEL.png',
+                    title: 'Vista principal de administrador',
+                    description: 'Menu principal de panel de administrador',
+                    thumbnail: 'assets/proyects/ecommerce-virtual/INICIO-PANEL.png',
+                },
+                {
+                    id: `${project.id}-LOGIN `,
+                    type: 'image',
+                    url: 'assets/proyects/ecommerce-virtual/LOGIN.png',
+                    title: 'Login panel administrador',
+                    description: 'Login para usuarios de personal de tienda',
+                    thumbnail: 'assets/proyects/ecommerce-virtual/LOGIN.png',
+                },
+                {
+                    id: `${project.id}-LOGIN-BACK `,
+                    type: 'image',
+                    url: 'assets/proyects/ecommerce-virtual/LOGIN-BACK.png',
+                    title: 'Login clientes',
+                    description: 'Login para clientes para acceder a compras los productos',
+                    thumbnail: 'assets/proyects/ecommerce-virtual/LOGIN-BACK.png',
+                },
+                {
+                    id: `${project.id}-PAGO `,
+                    type: 'image',
+                    url: 'assets/proyects/ecommerce-virtual/PAGO.png',
+                    title: 'Interfaz de pago',
+                    description: 'Vista para clientes donde realizara el medio de pago de su preferencia',
+                    thumbnail: 'assets/proyects/ecommerce-virtual/PAGO.png',
+                },
+                {
+                    id: `${project.id}-TIENDA `,
+                    type: 'image',
+                    url: 'assets/proyects/ecommerce-virtual/TIENDA.png',
+                    title: 'Vista de listado de productos de tienda',
+                    description: 'Vista para los clientes donde pueden visualizar y buscar productos de tienda',
+                    thumbnail: 'assets/proyects/ecommerce-virtual/TIENDA.png',
+                },
+            ]
+
+        };
+
+        return projectGalleries[project.name] || [];
     }
 
     private getDevelopmentProcess(project: Project): any {
+
         const processes = {
-            'E-COMMERCE NEXUS': {
-                methodology: 'Agile Scrum + Design Thinking',
-                duration: '4 meses',
-                teamSize: 6,
-                startDate: '2024-01-15',
-                endDate: '2024-05-15',
-                role: 'Full Stack Developer & Tech Lead'
-            },
-            'NEURAL DASHBOARD': {
-                methodology: 'Lean Startup + DevOps',
+            'Sistema de control de asistencia': {
+                methodology: 'Scrum',
                 duration: '3 meses',
-                teamSize: 4,
-                startDate: '2024-02-01',
-                endDate: '2024-05-01',
-                role: 'Frontend Lead & Data Visualization Specialist'
+                teamSize: 1,
+                startDate: '2025-03-01',
+                endDate: '2025-06-01',
+                role: 'Full Stack Developer'
             },
-            'QUANTUM MOBILE': {
-                methodology: 'Waterfall + Research Spikes',
-                duration: '6 meses',
-                teamSize: 8,
-                startDate: '2023-10-01',
-                endDate: '2024-04-01',
-                role: 'Mobile Developer & Security Specialist'
-            }
+            'E-COMMERCE de tienda de comida rapida': {
+                methodology: 'Scrum',
+                duration: '3 meses',
+                teamSize: 1,
+                startDate: '2024-09-01',
+                endDate: '2024-12-01',
+                role: 'Full Stack Developer'
+            },
+
+
         };
+
 
         return processes[project.name as keyof typeof processes] || {
             methodology: 'Agile Scrum',
@@ -316,36 +432,28 @@ Se ha implementado un módulo de notificaciones automáticas que monitorea el es
     }
 
     private getLearnings(project: Project): string[] {
-        const commonLearnings = [
-            'Implementación avanzada de patrones de diseño en aplicaciones complejas',
-            'Optimización de performance con técnicas de rendering selectivo',
-            'Desarrollo de componentes reutilizables con alta cohesión y bajo acoplamiento',
-            'Testing automatizado con coverage superior al 90%',
-            'Metodologías ágiles aplicadas a proyectos de alta complejidad'
-        ];
+
 
         const specificLearnings: Record<string, string[]> = {
-            'E-COMMERCE NEXUS': [
-                'Integración de modelos de IA en aplicaciones web frontend',
-                'Implementación de realidad aumentada en navegadores web',
-                'Optimización de algoritmos de recomendación personalizada',
-                'Manejo de transacciones complejas con Event Sourcing'
+            'Sistema de control de asistencia': [
+                'Desarrollo de notificaciones automaticas con telegram para comunicacion entre institucion y padres de familia',
+                'Desarrollo de API REST para sincronizacion de registros simultaneos de estudiantes con codigos QR',
+                'Implementacion de arquitectura hexagonal para separacion clara de dominio y infraestructura',
+                'Aplicacion de principios SOLID en capos de dominio y aplicacion',
+                'Integracion de tecnologias Angular con NestJS y MySQL para sistema de control de asistencia.',
+                'Control de estados de asistencia automaticos para reportes administrativos de asistencia.'
             ],
-            'NEURAL DASHBOARD': [
-                'Visualización de datos complejos con D3.js y Three.js',
-                'Procesamiento eficiente de big data en el cliente',
-                'Implementación de WebGL para gráficos de alta performance',
-                'Arquitectura para aplicaciones data-intensive'
+            'E-COMMERCE de tienda de comida rapida': [
+                'Desarrollé lógica para actualizar cantidades y calcular totales en tiempo real sin afectar el performance',
+                'Desarrollé validación de vouchers de pago mediante upload de imágenes',
+                'Implementé tokens de sesión con expiración automática para usuarios inactivos',
+                'Implementacion de query scopes con eloquent para filtros dinamicos en busquedas mas especificas de productos',
+                'Implementé Laravel Echo Server con Pusher para comunicación en tiempo real',
             ],
-            'QUANTUM MOBILE': [
-                'Implementación de algoritmos cuánticos en JavaScript',
-                'Desarrollo de aplicaciones móviles con Flutter avanzado',
-                'Criptografía cuántica aplicada a comunicaciones móviles',
-                'Optimización para dispositivos con recursos limitados'
-            ]
+
         };
 
-        return [...commonLearnings, ...(specificLearnings[project.name] || [])];
+        return [...(specificLearnings[project.name] || [])];
     }
 
     private getHighlights(project: Project): string[] {

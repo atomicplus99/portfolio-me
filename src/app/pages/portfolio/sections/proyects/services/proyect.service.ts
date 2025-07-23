@@ -9,69 +9,25 @@ export class ProjectsService {
   private readonly projects = signal<Project[]>([
     {
       id: 1,
-      name: 'E-COMMERCE NEXUS',
-      description: 'Plataforma de comercio cuántico con IA predictiva y realidad aumentada integrada para experiencias inmersivas de compra.',
+      name: 'E-COMMERCE de tienda de comida rapida',
+      description: 'Este sistema esta distribuido por una tienda virtual en donde se puede visualizar los productos de la tienda y por otro lado un sistema de panel administrativo para gestionar las actualizaciones de productos tales como nuevos productos, cambios de precios, promociones, servicios delivery, etc.',
       type: 'web',
-      techStack: ['Angular', 'TypeScript', 'Node.js', 'MongoDB'],
+      techStack: ['React', 'Laravel', 'MySQL'],
       demoUrl: '#',
       codeUrl: '#',
       status: 'online',
-      imageUrl: 'assets/images/ecommerce-project.jpg'
-    },
-    {
-      id: 2,
-      name: 'NEURAL DASHBOARD',
-      description: 'Interface de comando para análisis de datos multidimensionales en tiempo real con capacidades de machine learning.',
-      type: 'dashboard',
-      techStack: ['React', 'D3.js', 'Python', 'TensorFlow'],
-      demoUrl: '#',
-      codeUrl: '#',
-      status: 'online',
-      imageUrl: 'assets/images/dashboard-project.jpg'
-    },
-    {
-      id: 3,
-      name: 'QUANTUM MOBILE',
-      description: 'Aplicación móvil con computación cuántica para criptografía avanzada y comunicaciones seguras.',
-      type: 'mobile',
-      techStack: ['Flutter', 'Dart', 'Firebase', 'Quantum-SDK'],
-      demoUrl: '#',
-      codeUrl: '#',
-      status: 'development',
-      imageUrl: 'assets/images/mobile-project.jpg'
-    },
-    {
-      id: 4,
-      name: 'BLOCKCHAIN HUB',
-      description: 'Centro de comando para gestión de contratos inteligentes descentralizados y DeFi protocols.',
-      type: 'web',
-      techStack: ['Vue.js', 'Solidity', 'Web3', 'IPFS'],
-      demoUrl: '#',
-      codeUrl: '#',
-      status: 'online',
-      imageUrl: 'assets/images/blockchain-project.jpg'
-    },
-    {
-      id: 5,
-      name: 'AI INTERFACE',
-      description: 'Terminal de comunicación directa con sistemas de inteligencia artificial para procesamiento de lenguaje natural.',
-      type: 'dashboard',
-      techStack: ['Svelte', 'OpenAI', 'FastAPI', 'Redis'],
-      demoUrl: '#',
-      codeUrl: '#',
-      status: 'online',
-      imageUrl: 'assets/images/ai-project.jpg'
+      imageUrl: 'assets/ecommerce-virtual/'
     },
     {
       id: 6,
       name: 'Sistema de control de asistencia',
-      description: 'Este sistema constituye una solución tecnológica para el registro y gestión de asistencia estudiantil, operando mediante la captura de códigos QR a través de dispositivos de escaneo especializados.',
+      description: 'Este sistema constituye una solución tecnológica para el registro y control de asistencia de estudiantes de la institucion educativa "Andres de los Reyes", operando mediante la captura de códigos QR a través de tablets proporcionados por el gobierno de peru.',
       type: 'web',
       techStack: ['Angular', 'Tailwind', 'NestJS', 'MySQL'],
       demoUrl: '#',
       codeUrl: '#',
       status: 'online',
-      imageUrl: 'assets/images/cyber-project.jpg'
+      imageUrl: 'assets/proyects/sistema-de-control-de-asistencia/LOGIN.png'
     }
   ]);
 
