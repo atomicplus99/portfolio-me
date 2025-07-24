@@ -31,10 +31,7 @@ export interface ProjectDetailExtended {
   extendedDescription: string;
   objectives: string[];
   keyFeatures: string[];
-  technicalChallenges: string[];
   architecture: string;
-  designPatterns: string[];
-  performanceMetrics: PerformanceMetrics;
   gallery: ProjectGalleryItem[];
   developmentProcess: DevelopmentProcess;
   learnings: string[];

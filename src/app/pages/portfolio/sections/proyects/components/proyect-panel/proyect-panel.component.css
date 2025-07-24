@@ -344,3 +344,82 @@
 .action-btn:hover .btn-icon {
   transform: scale(1.1);
 }
+
+/* Office & Automation */
+.tech-tag.tech-excel { background: #107c41; color: white; }
+.tech-tag.tech-vba { background: #4472c4; color: white; }
+.tech-tag.tech-powerbi { background: #f2c94c; color: #212121; }
+.tech-tag.tech-office { background: #d9534f; color: white; }
+.tech-tag.tech-sharepoint { background: #03787c; color: white; }
+
+/* Backend Frameworks adicionales */
+.tech-tag.tech-laravel { background: #ff2d20; color: white; }
+.tech-tag.tech-django { background: #092e20; color: white; }
+.tech-tag.tech-flask { background: #000000; color: white; }
+.tech-tag.tech-spring { background: #6db33f; color: white; }
+.tech-tag.tech-dotnet { background: #5d2c89; color: white; }
+.tech-tag.tech-fastapi { background: #009688; color: white; }
+
+/* Lenguajes adicionales */
+.tech-tag.tech-csharp { background: #5d2c89; color: white; }
+.tech-tag.tech-kotlin { background: #7c62ee; color: white; }
+.tech-tag.tech-swift { background: #fa5f37; color: white; }
+.tech-tag.tech-go { background: #00add8; color: white; }
+.tech-tag.tech-rust { background: #ce3d00; color: white; }
+
+/* Bases de datos adicionales */
+.tech-tag.tech-redis { background: #dc2f02; color: white; }
+.tech-tag.tech-sqlite { background: #03396c; color: white; }
+.tech-tag.tech-oracle { background: #f26722; color: white; }
+.tech-tag.tech-supabase { background: #3ecf8e; color: white; }
+
+/* Cloud adicional */
+.tech-tag.tech-azure { background: #0078d7; color: white; }
+.tech-tag.tech-gcp { background: #4285f4; color: white; }
+.tech-tag.tech-vercel { background: #000000; color: white; }
+.tech-tag.tech-netlify { background: #00adb5; color: white; }
+.tech-tag.tech-heroku { background: #793eb5; color: white; }
+
+/* Frameworks Frontend adicionales */
+.tech-tag.tech-svelte { background: #ff3e00; color: white; }
+.tech-tag.tech-nextjs { background: #000000; color: white; }
+.tech-tag.tech-nuxt { background: #00c49a; color: white; }
+
+/* Tools adicionales */
+.tech-tag.tech-github { background: #24292f; color: white; }
+.tech-tag.tech-gitlab { background: #fc6d26; color: white; }
+.tech-tag.tech-jenkins { background: #d55555; color: white; }
+.tech-tag.tech-webpack { background: #8bcdfb; color: #212121; }
+.tech-tag.tech-vite { background: #646cff; color: white; }
+.tech-tag.tech-kubernetes { background: #326ce5; color: white; }
+
+/* Mobile Development */
+.tech-tag.tech-flutter { background: #027df7; color: white; }
+.tech-tag.tech-react-native { background: #61dafb; color: #20232a; }
+.tech-tag.tech-ionic { background: #4690fb; color: white; }
+.tech-tag.tech-android { background: #a4c639; color: white; }
+.tech-tag.tech-ios { background: #007aff; color: white; }
+
+/* Testing */
+.tech-tag.tech-jest { background: #c4544b; color: white; }
+.tech-tag.tech-cypress { background: #171717; color: white; }
+.tech-tag.tech-selenium { background: #43b02a; color: white; }
+.tech-tag.tech-testing { background: #8b5cf6; color: white; }
+
+/* Data & Analytics */
+.tech-tag.tech-tableau { background: #e87b0d; color: white; }
+.tech-tag.tech-pandas { background: #151935; color: white; }
+.tech-tag.tech-numpy { background: #13508c; color: white; }
+.tech-tag.tech-jupyter { background: #f37e1c; color: white; }
+.tech-tag.tech-r { background: #276dc3; color: white; }
+
+/* CMS & E-commerce */
+.tech-tag.tech-wordpress { background: #21759b; color: white; }
+.tech-tag.tech-shopify { background: #95bd42; color: white; }
+.tech-tag.tech-magento { background: #ee631a; color: white; }
+.tech-tag.tech-strapi { background: #4e5ddc; color: white; }
+
+/* Styling adicional */
+.tech-tag.tech-styled-components { background: #db7093; color: white; }
+.tech-tag.tech-chakra { background: #38b2ac; color: white; }
+.tech-tag.tech-material { background: #2196f3; color: white; }

@@ -37,10 +37,7 @@ export class ProjectDetailService {
             extendedDescription: this.getExtendedDescription(project),
             objectives: this.getObjectives(project),
             keyFeatures: this.getKeyFeatures(project),
-            technicalChallenges: this.getTechnicalChallenges(project),
             architecture: this.getArchitecture(project),
-            designPatterns: this.getDesignPatterns(project),
-            performanceMetrics: this.getPerformanceMetrics(project),
             gallery: this.getGallery(project),
             developmentProcess: this.getDevelopmentProcess(project),
             learnings: this.getLearnings(project),
@@ -51,6 +48,11 @@ export class ProjectDetailService {
 
     private getExtendedDescription(project: Project): string {
         const descriptions: Record<string, string> = {
+
+            'Gifs App': `${project.description}. Esta aplicacion logra realizar varias peticiones generando nuevos gifs app permitiendo que el usuario pueda tener mas variedad de elegir el gif de su preferencia. `,
+
+            'Sistema de guias de remision remitente': `${project.description}. El sistema puede registrar las ventas donde detalla empresa remitente, datos del destinatario, datos del producto y generacion de documento de guia. Esta aplicacion hecha con Excel VBA cumple con una parte fundamental de la automatizacion de guias de remision cumpliendo con el formato que dicta la SUNAT, para una empresa madedera especializada en fabricacion de los pallets, asi mismo tiene la capacidad de mantener un historial correlativo de las guias generadas para reportes generales. esta solucion fue implementada con exito alcanzando una optima reduccion de tiempo de proceso de registro en un 75% mas rapido en lo que era antes con el proceso manual. `,
+
             'E-COMMERCE de tienda de comida rapida': `${project.description} La plataforma incluye carrito de compras, sistema de pedidos en línea, gestión de usuarios, reportes de ventas y herramientas para optimizar las operaciones diarias del restaurante. `,
 
             'Sistema de control de asistencia': `${project.description} lo cual desarrolle una plataforma que moderniza el control de asistencia para colegios en el caso de los alumnos, aprovechando las tabletas del gobierno como estaciones de escaneo. Los estudiantes usan códigos QR únicos para registrar su entrada y salida, mientras que los auxiliares supervisan todo desde un panel administrativo intuitivo.
@@ -62,6 +64,17 @@ El sistema genera reportes automáticos para subdirectores y envía notificacion
     private getObjectives(project: Project): string[] {
 
         const specificObjectives: Record<string, string[]> = {
+
+            'Gifs App': [
+                'Proporcionar entretenimiento y diversion a usuarios de diferentes edades',
+                'Organizacion eficiente de contenido por busquedas de interes',
+                'Facil navegacion para interactuar con la aplicacion de diferentes pantallas'
+            ],
+            'Sistema de guias de remision remitente': [
+                'Reducir el tiempo de emision de guias de remision remitente',
+                'Centralizar la informacion de historial de registros para futuros reportes',
+                'Conectar procesos de venta, logistica y facturacion de manera modularizada',
+            ],
             'E-COMMERCE de tienda de comida rapida': [
                 'Ofrecer una experiencia de compra comoda y eficiente para el cliente',
                 'Digitalizar las ventas y expandir el alcance del negocio',
@@ -85,6 +98,21 @@ El sistema genera reportes automáticos para subdirectores y envía notificacion
     private getKeyFeatures(project: Project): string[] {
 
         const specificFeatures: Record<string, string[]> = {
+
+            'Gifs App': [
+                'Búsqueda de GIFs mediante campo de búsqueda',
+                'trending para mostrar contenido popular',
+                'Visualización en galería optimizada',
+                'Menu de historial de busqueda de gifs'
+            ],
+            'Sistema de guias de remision remitente': [
+                'Emision de forma automatizada de guias de remision cumpliendo con el formato que dicta la SUNAT',
+                'Registro automatico de historial centralizado para futuros reportes',
+                'Autocompletado de datos de empresa remitente y destinataria junto con datos de logistica y venta',
+                'Autorellenado de formato de guia para previa impresion',
+                'Interfaces de actualizacion de datos para diversos modulos.',
+                'Distribuido para personal administrativo podia acceder al sistema desde la red de la empresa'
+            ],
             'E-COMMERCE de tienda de comida rapida': [
                 'Carrito de compras funcional con cálculo automático de totales de precio',
                 'Seccion de checkout completo con resumen del pedido',
@@ -92,7 +120,6 @@ El sistema genera reportes automáticos para subdirectores y envía notificacion
                 'Filtros para múltiples campos',
                 'Panel de tienda para gestionar usuarios, precios, stock, productos, promociones, etc.',
                 'Diseño responsive adaptado para dispositivos moviles'
-
             ],
             'Sistema de control de asistencia': [
                 'Acceso multi-usuario con roles para supervision de la asistencia de los estudiantes',
@@ -108,34 +135,12 @@ El sistema genera reportes automáticos para subdirectores y envía notificacion
         return [...(specificFeatures[project.name] || [])];
     }
 
-    private getTechnicalChallenges(project: Project): string[] {
 
-        const specificChallenges: Record<string, string[]> = {
-            'E-COMMERCE NEXUS': [
-                'Integración de modelos de IA en el frontend',
-                'Implementación de AR en navegadores web',
-                'Sincronización de inventario en tiempo real',
-                'Optimización de recomendaciones personalizadas'
-            ],
-            'NEURAL DASHBOARD': [
-                'Renderizado eficiente de grandes datasets',
-                'Implementación de WebGL para visualizaciones 3D',
-                'Procesamiento de datos sin bloquear la UI',
-                'Sincronización en tiempo real con WebSockets'
-            ],
-            'QUANTUM MOBILE': [
-                'Implementación de algoritmos cuánticos en JavaScript',
-                'Optimización de encriptación para dispositivos móviles',
-                'Manejo de comunicaciones P2P complejas',
-                'Interfaz adaptativa para diferentes niveles técnicos'
-            ]
-        };
-
-        return [...(specificChallenges[project.name] || [])];
-    }
 
     private getArchitecture(project: Project): string {
         const architectures: Record<string, string> = {
+            'Gifs App': 'Aplicacion SPA mediante arquitectura organizada de componentes',
+            'Sistema de guias de remision remitente': 'Arquitectura monotitica con separacion de interfaces',
             'Sistema de control de asistencia': 'Arquitectura hexagonal con separacion entre dominio y infraestructura. ',
             'E-COMMERCE de tienda de comida rapida': 'Arquitectura cliente-servidor con React y Laravel',
         };
@@ -143,47 +148,47 @@ El sistema genera reportes automáticos para subdirectores y envía notificacion
         return architectures[project.name] || 'Clean Architecture con separación de responsabilidades en capas (Presentation, Domain, Infrastructure). Implementa patrón Repository para el manejo de datos, Observer para comunicación entre componentes y Factory para creación de objetos complejos. Utiliza Dependency Injection para desacoplamiento y facilitar testing.';
     }
 
-    private getDesignPatterns(project: Project): string[] {
-        const commonPatterns = [
-            'Observer Pattern',
-            'Repository Pattern',
-            'Factory Pattern',
-            'Singleton Pattern',
-            'Strategy Pattern'
-        ];
 
-        const specificPatterns: Record<string, string[]> = {
-            'E-COMMERCE NEXUS': ['Command Pattern', 'Saga Pattern', 'CQRS Pattern', 'Event Sourcing'],
-            'NEURAL DASHBOARD': ['Builder Pattern', 'Decorator Pattern', 'Chain of Responsibility', 'State Pattern'],
-            'QUANTUM MOBILE': ['Circuit Breaker Pattern', 'Adapter Pattern', 'Facade Pattern', 'Proxy Pattern']
-        };
 
-        return [...commonPatterns, ...(specificPatterns[project.name] || [])];
-    }
 
-    private getPerformanceMetrics(project: Project): PerformanceMetrics {
-        const baseMetrics = {
-            lightHouseScore: 95 + Math.floor(Math.random() * 5),
-            loadTime: `${(1.0 + Math.random() * 0.8).toFixed(1)}s`,
-            bundleSize: `${Math.floor(200 + Math.random() * 100)}KB`,
-            coreWebVitals: 'Excellent',
-            firstContentfulPaint: `${(0.8 + Math.random() * 0.4).toFixed(1)}s`,
-            largestContentfulPaint: `${(1.2 + Math.random() * 0.6).toFixed(1)}s`,
-            cumulativeLayoutShift: `0.0${Math.floor(Math.random() * 3 + 1)}`
-        };
-
-        const complexProjects = ['NEURAL DASHBOARD', 'E-COMMERCE NEXUS'];
-        if (complexProjects.includes(project.name)) {
-            baseMetrics.lightHouseScore -= 2;
-            baseMetrics.bundleSize = `${Math.floor(300 + Math.random() * 150)}KB`;
-            baseMetrics.loadTime = `${(1.3 + Math.random() * 0.7).toFixed(1)}s`;
-        }
-
-        return baseMetrics;
-    }
 
     private getGallery(project: Project): ProjectGalleryItem[] {
         const projectGalleries: Record<string, ProjectGalleryItem[]> = {
+            'Sistema de guias de remision remitente': [
+                {
+                    id: `${project.id}-LOGIN-PRINCIPAL`,
+                    type: 'image',
+                    url: 'assets/proyects/sistema-guias/LOGIN-PRINCIPAL.png',
+                    title: 'Login Principal',
+                    description: 'Esta interfaz es para autenticar a los usuarios autorizados para manejar los registros fiscales que se requieren mediante ventas de la empresa',
+                    thumbnail: 'assets/proyects/sistema-guias/LOGIN-PRINCIPAL.png'
+                },
+                {
+                    id: `${project.id}-REGISTRO-VENTA-EMPRESA.png`,
+                    type: 'image',
+                    url: 'assets/proyects/sistema-guias/REGISTRO-VENTA-EMPRESA.png',
+                    title: 'Interfaz principal de registro',
+                    description: 'Esta interfaz tiene la funcionalidad de registrar ventas de clientes detallandao la informacion necesario como la orden de compra adquirida, tipo de contrato, logistica, transportista y la descripcion de producto de la venta junto con la cantidad solicitada. Esta interfaz es el principal responsable para realizar la operacion de guias de remision.',
+                    thumbnail: 'assets/proyects/sistema-guias/REGISTRO-VENTA-EMPRESA.png'
+                },
+                {
+                    id: `${project.id}-VISTA-PREVIA-IMPRESION-GUIA.png`,
+                    type: 'image',
+                    url: 'assets/proyects/sistema-guias/VISTA-PREVIA-IMPRESION-GUIA.png',
+                    title: 'Vista previa de guia',
+                    description: 'Esta vista nos permite corroborar la informacion ingresada para su impresion respectiva de la guia',
+                    thumbnail: 'assets/proyects/sistema-guias/VISTA-PREVIA-IMPRESION-GUIA.png'
+                },
+                {
+                    id: `${project.id}-GESTOR-CLIENTES.png`,
+                    type: 'image',
+                    url: 'assets/proyects/sistema-guias/GESTOR-CLIENTES.png',
+                    title: 'Interfaz de registro de clientes',
+                    description: 'Esta interfaz permite al usuario poder actualizar y registrar datos de los clientes para acceder a toda su informacion y realizar el proceso de impresion de guia',
+                    thumbnail: 'assets/proyects/sistema-guias/GESTOR-CLIENTES.png'
+                },
+
+            ],
             'Sistema de control de asistencia': [
                 {
                     id: `${project.id}-asistente-virtual`,
@@ -259,6 +264,34 @@ El sistema genera reportes automáticos para subdirectores y envía notificacion
                 },
 
 
+
+            ],
+
+            'Gifs App': [
+                {
+                    id: `${project.id}-PRINCIPAL`,
+                    type: 'image',
+                    url: 'assets/proyects/gifs-app/PRINCIPAL.png',
+                    title: 'Interfaz principal de aplicacion de gifs app',
+                    description: 'Interfaz para visualizar los gifs de mayor tendencia',
+                    thumbnail: 'assets/proyects/gifs-app/PRINCIPAL.png',
+                },
+                {
+                    id: `${project.id}-BUSQUEDA`,
+                    type: 'image',
+                    url: 'assets/proyects/gifs-app/BUSQUEDA.png',
+                    title: 'Interfaz de busqueda de gifs de preferencia',
+                    description: 'El usuario puede buscar su gifs preferidos mediante el buscador, tambien puede visualizar el historial de sus busquedas y volver a ver sus gifs ',
+                    thumbnail: 'assets/proyects/gifs-app/BUSQUEDA.png',
+                },
+                {
+                    id: `${project.id}-RESULTADO-BUSQUEDA`,
+                    type: 'image',
+                    url: 'assets/proyects/gifs-app/RESULTADO-BUSQUEDA.png',
+                    title: 'Interfaz de resultado de gifs mediante busqueda',
+                    description: 'El usuario visualizara su gif solicitado para divertirse un poco a lado de familiares y amigos ',
+                    thumbnail: 'assets/proyects/gifs-app/RESULTADO-BUSQUEDA.png',
+                },
 
             ],
             'E-COMMERCE de tienda de comida rapida': [
@@ -416,6 +449,22 @@ El sistema genera reportes automáticos para subdirectores y envía notificacion
                 endDate: '2024-12-01',
                 role: 'Full Stack Developer'
             },
+            'Sistema de guias de remision remitente': {
+                methodology: 'Cascada',
+                duration: '3 meses',
+                teamSize: 1,
+                startDate: '2023-1-01',
+                endDate: '2024-01-19',
+                role: 'Asistente de sistemas'
+            },
+            'Gifs App': {
+                methodology: 'Cascada',
+                duration: '2 semanas',
+                teamSize: 1,
+                startDate: '2025-06-11',
+                endDate: '2025-07-01',
+                role: 'Estudiante'
+            },
 
 
         };
@@ -435,6 +484,20 @@ El sistema genera reportes automáticos para subdirectores y envía notificacion
 
 
         const specificLearnings: Record<string, string[]> = {
+            'Gifs App': [
+                'Integracion de Giphy API para la carga de los gifs',
+                'Manejo de peticiones con Http Client con los operadores de RxJs',
+                'Paginacion y lazy loading',
+                'Manejo de localstorage y caché',
+                'Diseño responsive de la aplicacion'
+            ],
+            'Sistema de guias de remision remitente': [
+                'Comprension de los campos necesarios para guias de remision remitente',
+                'Mapear el flujo completo desde la venta hasta la documentacion fiscal',
+                'Diseñar autocompletado que reduzca la carga cognitiva del usuario',
+                'Poder crear interfaces intuitivas para usuarios puedan usar sin capacitacion exhaustiva',
+                'Validar que el sistema funcione bajo condiciones reales del trabajo'
+            ],
             'Sistema de control de asistencia': [
                 'Desarrollo de notificaciones automaticas con telegram para comunicacion entre institucion y padres de familia',
                 'Desarrollo de API REST para sincronizacion de registros simultaneos de estudiantes con codigos QR',
