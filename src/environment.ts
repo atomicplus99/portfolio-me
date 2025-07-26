@@ -1,4 +1,4 @@
-import 'dotenv/config';
+declare const process: any;
 
 export const environment = {
   production: false,
