@@ -1,4 +1,6 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, computed, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { BehaviorSubject, Observable, timer, map, switchMap, tap, finalize } from 'rxjs';
 
 export interface LoaderState {
   isLoading: boolean;
@@ -8,12 +10,22 @@ export interface LoaderState {
   showProgress: boolean;
 }
 
+export interface LoadingPhase {
+  progress: number;
+  message: string;
+  duration: number;
+}
+
+export type LoadingMode = 'normal' | 'quick' | 'realistic';
+
 @Injectable({
   providedIn: 'root'
 })
 export class LoaderService {
-  
-  private loaderState = signal<LoaderState>({
+  private readonly destroyRef = inject(DestroyRef);
+
+  // ✅ Signal para estado reactivo
+  private readonly loaderState = signal<LoaderState>({
     isLoading: false,
     progress: 0,
     message: 'Inicializando sistema...',
@@ -21,195 +33,177 @@ export class LoaderService {
     showProgress: false
   });
 
+  // ✅ BehaviorSubject para observables
+  private readonly stateSubject = new BehaviorSubject<LoaderState>(this.loaderState());
+
+  // ✅ API pública limpia
   readonly state = this.loaderState.asReadonly();
+  readonly state$ = this.stateSubject.asObservable();
 
-  private loadingPhases = [
-    { progress: 12, message: 'Iniciando portfolio...', duration: 500 },
-    { progress: 25, message: 'Configurando interacciones...', duration: 600 },
-    { progress: 40, message: 'Preparando la presentacion...', duration: 450 },
-    { progress: 55, message: 'Verificando componentes...', duration: 500 },
-    { progress: 70, message: 'Optimizando rendimiento...', duration: 400 },
-    { progress: 85, message: 'Aplicando configuración...', duration: 350 },
-    { progress: 95, message: 'Finalizando carga...', duration: 300 },
-    { progress: 100, message: 'Portfolio cargado', duration: 400 }
-  ];
+  // ✅ Computed signals
+  readonly isLoading = computed(() => this.state().isLoading);
+  readonly progress = computed(() => this.state().progress);
+  readonly message = computed(() => this.state().message);
+  readonly isComplete = computed(() => this.state().progress >= 100);
 
-  private currentPhaseIndex = 0;
-  private loadingTimeout?: number;
+  // ✅ Configuraciones de carga optimizadas
+  private readonly loadingConfigurations: Record<LoadingMode, LoadingPhase[]> = {
+    normal: [
+      { progress: 15, message: 'Iniciando portfolio...', duration: 500 },
+      { progress: 30, message: 'Configurando interacciones...', duration: 400 },
+      { progress: 50, message: 'Preparando presentación...', duration: 450 },
+      { progress: 70, message: 'Verificando componentes...', duration: 350 },
+      { progress: 85, message: 'Optimizando rendimiento...', duration: 300 },
+      { progress: 100, message: 'Portfolio cargado', duration: 400 }
+    ],
+    quick: [
+      { progress: 40, message: 'Carga rápida...', duration: 200 },
+      { progress: 70, message: 'Aplicando configuración...', duration: 150 },
+      { progress: 100, message: 'Sistema listo', duration: 200 }
+    ],
+    realistic: [
+      { progress: 12, message: 'Conectando...', duration: 600 },
+      { progress: 25, message: 'Autenticando...', duration: 800 },
+      { progress: 45, message: 'Cargando configuración...', duration: 500 },
+      { progress: 65, message: 'Inicializando módulos...', duration: 700 },
+      { progress: 80, message: 'Preparando interfaz...', duration: 400 },
+      { progress: 95, message: 'Optimizando...', duration: 300 },
+      { progress: 100, message: 'Completado', duration: 250 }
+    ]
+  };
+
+  private currentMode: LoadingMode = 'normal';
   private isLoadingActive = false;
 
-  startLoading(): void {
-    if (this.isLoadingActive) return;
-    
-    this.isLoadingActive = true;
-    this.currentPhaseIndex = 0;
-    
-    this.loaderState.update(state => ({
-      ...state,
-      isLoading: true,
-      showLogo: true,
-      progress: 0,
-      message: 'Inicializando sistema...'
-    }));
-
-    setTimeout(() => {
-      this.loaderState.update(state => ({
-        ...state,
-        showProgress: true
-      }));
-      
-      this.executeLoadingSequence();
-    }, 1200);
-  }
-
-  private executeLoadingSequence(): void {
-    if (this.currentPhaseIndex >= this.loadingPhases.length) {
-      this.completeLoading();
-      return;
+  // ✅ Método principal simplificado
+  startLoading(mode: LoadingMode = 'normal'): Observable<LoaderState> {
+    if (this.isLoadingActive) {
+      return this.state$;
     }
 
-    const phase = this.loadingPhases[this.currentPhaseIndex];
+    this.currentMode = mode;
+    this.isLoadingActive = true;
+
+    // Inicializar estado
+    this.updateState({
+      isLoading: true,
+      progress: 0,
+      message: 'Inicializando sistema...',
+      showLogo: true,
+      showProgress: false
+    });
+
+    // ✅ Secuencia reactiva con observables
+    return timer(1200).pipe( // Delay inicial para mostrar logo
+      tap(() => this.updateState({ showProgress: true })),
+      switchMap(() => this.executeLoadingSequence()),
+      finalize(() => this.isLoadingActive = false),
+      takeUntilDestroyed(this.destroyRef)
+    );
+  }
+
+  // ✅ Secuencia de carga reactiva
+  private executeLoadingSequence(): Observable<LoaderState> {
+    const phases = this.loadingConfigurations[this.currentMode];
     
-    this.animateProgressTo(phase.progress, phase.message);
+    return new Observable(observer => {
+      let currentPhaseIndex = 0;
 
-    this.loadingTimeout = window.setTimeout(() => {
-      this.currentPhaseIndex++;
-      this.executeLoadingSequence();
-    }, phase.duration);
-  }
+      const processNextPhase = () => {
+        if (currentPhaseIndex >= phases.length) {
+          this.completeLoading();
+          observer.complete();
+          return;
+        }
 
-  private animateProgressTo(targetProgress: number, message: string): void {
-    const currentProgress = this.loaderState().progress;
-    const progressDiff = targetProgress - currentProgress;
-    const steps = 30; // Smoother animation
-    const stepSize = progressDiff / steps;
-    const stepDuration = 12; // 12ms per step = 360ms total
-
-    this.loaderState.update(state => ({
-      ...state,
-      message
-    }));
-
-    let currentStep = 0;
-    const progressInterval = setInterval(() => {
-      currentStep++;
-      const newProgress = Math.min(targetProgress, currentProgress + (stepSize * currentStep));
-      
-      this.loaderState.update(state => ({
-        ...state,
-        progress: Math.round(newProgress)
-      }));
-
-      if (currentStep >= steps || newProgress >= targetProgress) {
-        clearInterval(progressInterval);
-      }
-    }, stepDuration);
-  }
-
-  private completeLoading(): void {
-    setTimeout(() => {
-      this.loaderState.update(state => ({
-        ...state,
-        message: 'Bienvenido!!'
-      }));
-
-      setTimeout(() => {
-        this.loaderState.update(state => ({
-          ...state,
-          isLoading: false,
-          showLogo: false,
-          showProgress: false
-        }));
+        const phase = phases[currentPhaseIndex];
         
-        this.isLoadingActive = false;
-      }, 800);
-    }, 600);
+        // Animar progreso suavemente
+        this.animateProgressTo(phase.progress, phase.message).subscribe({
+          complete: () => {
+            setTimeout(() => {
+              currentPhaseIndex++;
+              processNextPhase();
+            }, phase.duration);
+          }
+        });
+      };
+
+      processNextPhase();
+    });
   }
 
+  // ✅ Animación de progreso reactiva
+  private animateProgressTo(targetProgress: number, message: string): Observable<void> {
+    const currentProgress = this.state().progress;
+    const duration = 300; // Duración fija para consistencia
+    const steps = 20;
+    const stepDuration = duration / steps;
+
+    this.updateState({ message });
+
+    return timer(0, stepDuration).pipe(
+      map(step => {
+        const progress = currentProgress + ((targetProgress - currentProgress) * (step + 1) / steps);
+        return Math.min(targetProgress, Math.round(progress));
+      }),
+      tap(progress => this.updateState({ progress })),
+      finalize(() => this.updateState({ progress: targetProgress })),
+      map(() => void 0),
+      takeUntilDestroyed(this.destroyRef)
+    );
+  }
+
+  // ✅ Finalización limpia
+  private completeLoading(): void {
+    timer(600).pipe(
+      tap(() => this.updateState({ message: 'Bienvenido!!' })),
+      switchMap(() => timer(800)),
+      tap(() => this.updateState({
+        isLoading: false,
+        showLogo: false,
+        showProgress: false
+      })),
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe();
+  }
+
+  // ✅ Actualización de estado centralizada
+  private updateState(updates: Partial<LoaderState>): void {
+    const newState = { ...this.loaderState(), ...updates };
+    this.loaderState.set(newState);
+    this.stateSubject.next(newState);
+  }
+
+  // ✅ Métodos públicos simplificados
   setProgress(progress: number, message?: string): void {
     if (!this.isLoadingActive) return;
     
     const clampedProgress = Math.max(0, Math.min(100, progress));
+    const updates: Partial<LoaderState> = { progress: clampedProgress };
     
-    this.loaderState.update(state => ({
-      ...state,
-      progress: clampedProgress,
-      message: message || state.message
-    }));
-  }
-
-  quickLoad(): void {
-    this.startLoading();
+    if (message) {
+      updates.message = message;
+    }
     
-    const quickSteps = [30, 60, 85, 100];
-    const messages = [
-      'Carga rápida...',
-      'Aplicando configuración...',
-      'Preparando interfaz...',
-      'Sistema listo'
-    ];
-
-    quickSteps.forEach((progress, index) => {
-      setTimeout(() => {
-        this.setProgress(progress, messages[index]);
-        if (progress === 100) {
-          setTimeout(() => this.finishLoading(), 400);
-        }
-      }, (index + 1) * 250);
-    });
-  }
-
-  simulateRealisticLoading(): void {
-    this.startLoading();
-    
-    const realisticSteps = [
-      { progress: 8, message: 'Conectando...', delay: 400 },
-      { progress: 18, message: 'Autenticando...', delay: 600 },
-      { progress: 32, message: 'Cargando configuración...', delay: 500 },
-      { progress: 48, message: 'Inicializando módulos...', delay: 700 },
-      { progress: 65, message: 'Preparando interfaz...', delay: 450 },
-      { progress: 80, message: 'Optimizando...', delay: 350 },
-      { progress: 92, message: 'Finalizando...', delay: 300 },
-      { progress: 100, message: 'Completado', delay: 200 }
-    ];
-
-    let totalDelay = 0;
-    realisticSteps.forEach(step => {
-      totalDelay += step.delay;
-      setTimeout(() => {
-        this.setProgress(step.progress, step.message);
-        if (step.progress === 100) {
-          setTimeout(() => this.finishLoading(), 500);
-        }
-      }, totalDelay);
-    });
+    this.updateState(updates);
   }
 
   finishLoading(): void {
-    if (this.loadingTimeout) {
-      clearTimeout(this.loadingTimeout);
-      this.loadingTimeout = undefined;
-    }
-
-    this.loaderState.update(state => ({
-      ...state,
+    this.updateState({
       progress: 100,
       message: 'Completado'
-    }));
-
-    this.completeLoading();
+    });
+    
+    timer(500).pipe(
+      tap(() => this.completeLoading()),
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe();
   }
 
   resetLoader(): void {
-    if (this.loadingTimeout) {
-      clearTimeout(this.loadingTimeout);
-      this.loadingTimeout = undefined;
-    }
-
     this.isLoadingActive = false;
-    this.currentPhaseIndex = 0;
-    
-    this.loaderState.set({
+    this.updateState({
       isLoading: false,
       progress: 0,
       message: 'Inicializando sistema...',
@@ -218,35 +212,26 @@ export class LoaderService {
     });
   }
 
-  get isLoading(): boolean {
-    return this.loaderState().isLoading;
-  }
-
-  get progress(): number {
-    return this.loaderState().progress;
-  }
-
-  get message(): string {
-    return this.loaderState().message;
-  }
-
-  get isComplete(): boolean {
-    return this.loaderState().progress >= 100;
-  }
-
+  // ✅ Métodos de utilidad
   getLoadingMetrics() {
     return {
-      currentStep: this.currentPhaseIndex,
-      totalSteps: this.loadingPhases.length,
+      currentMode: this.currentMode,
       isActive: this.isLoadingActive,
-      state: this.loaderState()
+      configuration: this.loadingConfigurations[this.currentMode],
+      state: this.state()
     };
   }
 
-  destroy(): void {
-    if (this.loadingTimeout) {
-      clearTimeout(this.loadingTimeout);
-    }
-    this.resetLoader();
+  // ✅ API simplificada para diferentes modos
+  startQuickLoading(): Observable<LoaderState> {
+    return this.startLoading('quick');
+  }
+
+  startRealisticLoading(): Observable<LoaderState> {
+    return this.startLoading('realistic');
+  }
+
+  startNormalLoading(): Observable<LoaderState> {
+    return this.startLoading('normal');
   }
 }

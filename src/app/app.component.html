@@ -1,43 +1,47 @@
 <app-galaxy></app-galaxy>
+
 <div class="portfolio-container">
-  <app-elegant-loader [logoText]="'@duque.dev'" [subtitle]="'Bienvenido! :)'">
+  <!-- Loader solo cuando está cargando -->
+  <app-elegant-loader 
+    *ngIf="loaderService.state().isLoading"
+    [logoText]="'@duque.dev'" 
+    [subtitle]="'Bienvenido! :)'">
   </app-elegant-loader>
-
+  
   <app-particles class="particles-layer"></app-particles>
-
-  <div class="content-wrapper" [class.content-hidden]="loaderService.state().isLoading">
+  
+  <!-- Contenido solo cuando NO está cargando -->
+  <div class="content-wrapper" *ngIf="!loaderService.state().isLoading">
     <app-header class="header-fixed"></app-header>
-
+    
     <main class="main-content">
       <section id="hero" class="section-container hero-section">
         <app-hero></app-hero>
       </section>
-
+      
       <section id="about" class="section-container" *ngIf="loadedSections.about">
         <app-about></app-about>
       </section>
-
-      <!-- ABOUT-ME CON CLASE ESPECÍFICA -->
+      
       <section id="about-me" class="section-container" *ngIf="loadedSections.aboutMe">
         <app-about-me></app-about-me>
       </section>
-
+      
       <section id="projects" class="section-container" *ngIf="loadedSections.projects">
         <app-projects></app-projects>
       </section>
-
+      
       <section id="skills" class="section-container" *ngIf="loadedSections.skills">
         <app-skills></app-skills>
       </section>
-
+      
       <section id="contact" class="section-container" *ngIf="loadedSections.contact">
         <app-contact></app-contact>
       </section>
-
+      
       <div class="section-divider" *ngIf="loadedSections.footer"></div>
-
-      <app-footer *ngIf="loadedSections.footer" class="footer-section">
-      </app-footer>
+      
+      <app-footer *ngIf="loadedSections.footer" class="footer-section"></app-footer>
     </main>
   </div>
 </div>

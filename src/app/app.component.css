@@ -4,7 +4,7 @@
  left: 0;
  width: 100vw;
  height: 100vh;
- z-index: 5;
+ z-index: 5; /* ✅ MANTENER - Necesario para que las partículas estén detrás del contenido */
  pointer-events: none;
  transition: opacity 0.4s ease-out;
  transform: translateZ(0);
@@ -20,11 +20,11 @@
  display: flex;
  align-items: center;
  justify-content: center;
- z-index: 10;
+ /* ❌ ELIMINADO: z-index: 10; - Ya no necesario con *ngIf */
  transition: opacity 0.3s ease-out;
  
- opacity: 1 !important;
- visibility: visible !important;
+ /* ❌ ELIMINADO: opacity: 1 !important; - Ya no necesario */
+ /* ❌ ELIMINADO: visibility: visible !important; - Ya no necesario */
  
  contain: layout style paint;
  isolation: isolate;
@@ -32,9 +32,10 @@
 
 .header-fixed {
  position: relative;
- z-index: 50;
+ z-index: 50; /* ⚠️ EVALUAR - Mantener solo si el header se superpone con partículas */
 }
 
+/* ✅ MANTENER - Estados contextuales para interactividad */
 :host-context(.header-active) .particles-layer {
  opacity: 0.5;
  transition: opacity 0.2s ease-out;
@@ -54,6 +55,7 @@
  contain: layout style;
 }
 
+/* ✅ MANTENER - Responsive design */
 @media (max-width: 768px) {
  .particles-layer {
    opacity: 0.6;
@@ -79,6 +81,7 @@
  }
 }
 
+/* ✅ MANTENER - Accesibilidad crítica */
 @media (prefers-reduced-motion: reduce) {
  .particles-layer {
    display: none !important;
