@@ -1,104 +1,104 @@
 .particles-layer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 5;
-  pointer-events: none;
-  transition: opacity 0.4s ease-out;
-  transform: translateZ(0);
-  will-change: transform, opacity;
-  contain: layout style paint;
-  isolation: isolate;
+ position: fixed;
+ top: 0;
+ left: 0;
+ width: 100vw;
+ height: 100vh;
+ z-index: 5;
+ pointer-events: none;
+ transition: opacity 0.4s ease-out;
+ transform: translateZ(0);
+ will-change: transform, opacity;
+ contain: layout style paint;
+ isolation: isolate;
 }
 
 .section-container {
-  position: relative;
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-  transition: opacity 0.3s ease-out;
-  
-  opacity: 1 !important;
-  visibility: visible !important;
-  
-  contain: layout style paint;
-  isolation: isolate;
+ position: relative;
+ width: 100%;
+ min-height: 100vh;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ z-index: 10;
+ transition: opacity 0.3s ease-out;
+ 
+ opacity: 1 !important;
+ visibility: visible !important;
+ 
+ contain: layout style paint;
+ isolation: isolate;
 }
 
 .header-fixed {
-  position: relative;
-  z-index: 50;
+ position: relative;
+ z-index: 50;
 }
 
 :host-context(.header-active) .particles-layer {
-  opacity: 0.5;
-  transition: opacity 0.2s ease-out;
+ opacity: 0.5;
+ transition: opacity 0.2s ease-out;
 }
 
 :host-context(.cursor-targeting) .particles-layer {
-  opacity: 0.7;
-  transition: opacity 0.1s ease-out;
+ opacity: 0.7;
+ transition: opacity 0.1s ease-out;
 }
 
 :host-context(.scrolling) .particles-layer {
-  opacity: 0.4;
-  transition: opacity 0.1s ease-out;
+ opacity: 0.4;
+ transition: opacity 0.1s ease-out;
 }
 
 :host-context(.scrolling) .section-container {
-  contain: layout style;
+ contain: layout style;
 }
 
 @media (max-width: 768px) {
-  .particles-layer {
-    opacity: 0.6;
-  }
-  
-  .section-container {
-    min-height: 100vh;
-    padding: 1rem;
-    contain: layout style;
-  }
+ .particles-layer {
+   opacity: 0.6;
+ }
+ 
+ .section-container {
+   min-height: 100vh;
+   padding: 1rem;
+   contain: layout style;
+ }
 }
 
 @media (max-width: 480px) {
-  .particles-layer {
-    opacity: 0.4;
-  }
+ .particles-layer {
+   opacity: 0.4;
+ }
 }
 
 @media (max-width: 768px) and (max-height: 1024px) {
-  .particles-layer {
-    opacity: 0.3;
-    transform: scale(0.9);
-  }
+ .particles-layer {
+   opacity: 0.3;
+   transform: scale(0.9);
+ }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .particles-layer {
-    display: none !important;
-  }
-  
-  .content-wrapper,
-  .section-container {
-    transition: none !important;
-    animation: none !important;
-  }
+ .particles-layer {
+   display: none !important;
+ }
+ 
+ .content-wrapper,
+ .section-container {
+   transition: none !important;
+   animation: none !important;
+ }
 }
 
 @media (prefers-contrast: high) {
-  .particles-layer {
-    opacity: 0.2 !important;
-  }
+ .particles-layer {
+   opacity: 0.2 !important;
+ }
 }
 
 @media (prefers-reduced-data: reduce) {
-  .particles-layer {
-    display: none !important;
-  }
+ .particles-layer {
+   display: none !important;
+ }
 }

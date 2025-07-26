@@ -1,16 +1,14 @@
-/* ===== ABOUT ME - CSS COMPLETO SIN IMPORTANT ===== */
-
+/*--- Base Styles ---*/
 .about-me-section {
   opacity: 0;
   transform: translateY(50px);
   transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
-  
-  /* Sin fondo - transparente */
   background: transparent;
   position: relative;
   overflow: hidden;
-  min-height: 100vh;
-  padding: 3rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .about-me-section.visible {
@@ -18,141 +16,21 @@
   transform: translateY(0);
 }
 
-/* ===== LAYOUT HORIZONTAL - ANCHOS CORREGIDOS ===== */
-.horizontal-container {
-  display: flex;
-  gap: 4rem;
-  align-items: start;
-  max-width: 1400px;
-  margin: 0 auto;
-  min-height: 80vh;
-  width: 100%;
+/*--- Galactic Title ---*/
+.galactic-title {
+  background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 50%, #06b6d4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
-.profile-section {
-  width: 400px;
-  flex-shrink: 0;
-  animation: slideInFromLeft 1s ease-out 0.3s both;
-  position: relative;
-}
-
-.content-section {
-  flex: 1;
-  min-width: 0;
-  width: auto;
-  animation: slideInFromRight 1s ease-out 0.5s both;
-  overflow: hidden;
-}
-
-@media (max-width: 1024px) {
-  .horizontal-container {
-    flex-direction: column;
-    gap: 3rem;
-    text-align: center;
-  }
-  
-  .profile-section {
-    width: 100%;
-    flex-shrink: 1;
-  }
-  
-  .content-section {
-    width: 100%;
-    max-width: 100%;
-  }
-  
-  .about-me-section {
-    padding: 2rem 1rem;
-  }
-  
-  .profile-section,
-  .content-section {
-    animation: fadeInUp 1s ease-out both;
-  }
-  
-  .story-card {
-    max-width: 100%;
-    margin: 0 auto;
-  }
-}
-
-/* ===== ANIMACIONES GALÁCTICAS ===== */
-@keyframes starTwinkle {
-  0%, 100% { 
-    opacity: 0.3; 
-    transform: scale(1); 
-  }
-  50% { 
-    opacity: 1; 
-    transform: scale(1.2); 
-  }
-}
-
-@keyframes nebulaPulse {
-  0%, 100% { 
-    opacity: 0.1; 
-    transform: scale(1) rotate(0deg); 
-  }
-  50% { 
-    opacity: 0.3; 
-    transform: scale(1.1) rotate(180deg); 
-  }
-}
-
-@keyframes cosmicGlow {
-  0%, 100% { 
-    text-shadow: 0 0 10px rgba(139, 92, 246, 0.5); 
-  }
-  50% { 
-    text-shadow: 0 0 20px rgba(139, 92, 246, 0.8), 0 0 30px rgba(59, 130, 246, 0.3); 
-  }
-}
-
-@keyframes orbitRotate {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-@keyframes slideInFromLeft {
-  0% { 
-    opacity: 0; 
-    transform: translateX(-100px); 
-  }
-  100% { 
-    opacity: 1; 
-    transform: translateX(0); 
-  }
-}
-
-@keyframes slideInFromRight {
-  0% { 
-    opacity: 0; 
-    transform: translateX(100px); 
-  }
-  100% { 
-    opacity: 1; 
-    transform: translateX(0); 
-  }
-}
-
-/* ===== PROFILE SECTION (IZQUIERDA) ===== */
-.profile-section {
-  animation: slideInFromLeft 1s ease-out 0.3s both;
-  position: relative;
-}
-
+/*--- Profile Frame ---*/
 .profile-frame {
-  background: rgba(15, 23, 42, 0.2);
-  border: 1px solid rgba(139, 92, 246, 0.15);
-  backdrop-filter: blur(15px);
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
-  
-  /* Efecto galáctico más sutil */
-  box-shadow: 
-    0 0 20px rgba(139, 92, 246, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .profile-frame::before {
@@ -166,20 +44,145 @@
 .profile-frame:hover {
   transform: translateY(-2px);
   border-color: rgba(139, 92, 246, 0.3);
-  box-shadow: 
-    0 8px 25px rgba(0, 0, 0, 0.15),
-    0 0 15px rgba(139, 92, 246, 0.1);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15), 0 0 15px rgba(139, 92, 246, 0.1);
 }
 
-.profile-frame img {
+/*--- Layout Container - RESPONSIVE ---*/
+.description-layout-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 600px;
+  margin: 0 auto;
+  width: 100%;
+  gap: 2rem;
+}
+
+.profile-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+/*--- Info Card ---*/
+.info-card {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  position: relative;
+  border-radius: 20px;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 1.5rem;
+  background: rgba(15, 23, 42, 0.3);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.info-card:hover {
+  border-color: rgba(139, 92, 246, 0.4);
+  box-shadow: 0 8px 30px rgba(139, 92, 246, 0.15);
+  transform: translateY(-2px);
+}
+
+.card-header {
+  border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.card-header h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.tech-line {
+  height: 3px;
+  width: 60px;
+  background: linear-gradient(90deg, #8b5cf6, #3b82f6);
+  border-radius: 2px;
+  margin-top: 0.5rem;
+}
+
+/*--- Description Text ---*/
+.description-text {
+  text-align: left;
+  width: 100%;
+}
+
+.description-paragraph {
+  text-align: left;
+  margin: 0 0 1rem 0;
+  width: 100%;
+  line-height: 1.65;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.85);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.description-paragraph:last-child {
+  margin-bottom: 0;
+}
+
+/*--- Tech Stack ---*/
+.tech-stack {
+  border-top: 1px solid rgba(139, 92, 246, 0.2);
+  padding-top: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.tech-stack h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgba(139, 92, 246, 0.9);
+  margin-bottom: 1rem;
+}
+
+.tech-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tech-badge {
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  color: rgba(139, 92, 246, 0.9);
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
   transition: all 0.3s ease;
-  filter: brightness(1.05) contrast(1.02);
+  backdrop-filter: blur(4px);
 }
 
-.profile-frame:hover img {
-  filter: brightness(1.08) contrast(1.03);
+.tech-badge:hover {
+  transform: translateY(-1px);
+  background: rgba(139, 92, 246, 0.2);
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.2);
 }
 
+/*--- Stats ---*/
+.stat-card:hover {
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.1);
+}
+
+.stat-value {
+  text-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
+}
+
+/*--- Particles ---*/
 .cosmic-particle {
   position: absolute;
   width: 4px;
@@ -189,311 +192,267 @@
   animation: starTwinkle 3s ease-in-out infinite;
 }
 
-.particle-1 { top: 20%; right: 10%; animation-delay: 0s; }
-.particle-2 { bottom: 30%; left: 15%; animation-delay: 1s; }
-.particle-3 { top: 60%; right: 20%; animation-delay: 2s; }
-
-/* ===== CONTENT SECTION - CONTENEDOR MÁS ESTRICTO ===== */
-.content-section {
-  animation: slideInFromRight 1s ease-out 0.5s both;
-  max-width: 100%;
-  min-width: 0;
-  overflow: hidden;
+.particle-1 {
+  top: 20%;
+  right: 10%;
+  animation-delay: 0s;
 }
 
-.galactic-title {
-  background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 50%, #06b6d4 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: cosmicGlow 4s ease-in-out infinite;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+.particle-2 {
+  bottom: 30%;
+  left: 15%;
+  animation-delay: 1s;
 }
 
-.story-card {
-  background: rgba(15, 23, 42, 0.15);
-  border: 1px solid rgba(139, 92, 246, 0.1);
-  backdrop-filter: blur(15px);
-  position: relative;
-  overflow: hidden;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  
-  /* Contenedor más estricto */
-  max-width: 100%;
-  width: 100%;
-  min-width: 0;
-  box-sizing: border-box;
-  
-  /* Efecto nebulosa muy sutil */
-  box-shadow: 
-    0 4px 20px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+.particle-3 {
+  top: 60%;
+  right: 20%;
+  animation-delay: 2s;
 }
 
-.story-card::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
-  animation: nebulaPulse 8s ease-in-out infinite;
-  pointer-events: none;
-}
-
-.story-card::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(45deg, transparent, rgba(139, 92, 246, 0.02), transparent);
-  transform: translateX(-100%);
-  transition: transform 1.5s ease;
-  pointer-events: none;
-}
-
-.story-card:hover::after {
-  transform: translateX(100%);
-}
-
-.story-card:hover {
-  border-color: rgba(139, 92, 246, 0.25);
-  box-shadow: 
-    0 6px 20px rgba(0, 0, 0, 0.1),
-    0 0 20px rgba(139, 92, 246, 0.06);
-}
-
-/* ===== CONTENIDO DE LA HISTORIA - SIMPLIFICADO ===== */
-.story-content {
-  width: 100%;
-  max-width: 100%;
-  overflow: hidden;
-}
-
-.story-card {
-  background: rgba(15, 23, 42, 0.15);
-  border: 1px solid rgba(139, 92, 246, 0.1);
-  backdrop-filter: blur(15px);
-  position: relative;
-  overflow: hidden;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  
-  /* Contenedor simple */
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  
-  /* Efecto nebulosa muy sutil */
-  box-shadow: 
-    0 4px 20px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.03);
-}
-
-.story-card .space-y-6 {
-  width: 100%;
-  max-width: 100%;
-  overflow: hidden;
-  box-sizing: border-box;
-}
-
-.story-card p {
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  
-  /* Word wrap simple */
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  hyphens: auto;
-  line-height: 1.7;
-  margin-bottom: 1.5rem;
-}
-
-.story-card p strong {
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-}
-
-/* ===== STATS GALÁCTICAS ===== */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-  margin: 2rem 0;
-}
-
-.stat-card {
-  background: rgba(15, 23, 42, 0.2);
-  border: 1px solid rgba(139, 92, 246, 0.1);
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.stat-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.05), transparent);
-  transition: left 1s ease;
-}
-
-.stat-card:hover::before {
-  left: 100%;
-}
-
-.stat-card:hover {
-  border-color: rgba(139, 92, 246, 0.25);
-  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.05);
-}
-
-.stat-value {
-  color: #8b5cf6;
-  text-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
-}
-
-/* ===== STATUS INDICATOR GALÁCTICO ===== */
-.cosmic-status {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(34, 197, 94, 0.3);
-  border-radius: 2rem;
-  backdrop-filter: blur(10px);
-}
-
-.status-pulse {
-  width: 8px;
-  height: 8px;
-  background: #22c55e;
-  border-radius: 50%;
-  animation: starTwinkle 2s ease-in-out infinite;
-  box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
-}
-
-/* ===== RESPONSIVE MEJORADO ===== */
-@media (max-width: 1024px) {
-  .about-me-section {
-    padding: 2rem 1rem;
+/*--- Animations ---*/
+@keyframes starTwinkle {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
   }
-  
-  .profile-section,
-  .content-section {
-    animation: fadeInUp 1s ease-out both;
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
   }
-  
-  .content-section {
-    max-width: 100%;
-  }
-  
-  .story-card {
-    max-width: 100%;
+}
+
+/*--- DESKTOP - Horizontal Layout ---*/
+@media (min-width: 1024px) {
+  .description-layout-container {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 3rem;
+    max-width: 1200px;
     margin: 0 auto;
+    align-items: start;
+    justify-items: start;
+  }
+
+  .profile-section {
+    max-width: none;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    padding: 0;
+  }
+
+  .info-card {
+    max-width: none;
+    width: 100%;
+    margin: 0;
+    padding: 2rem;
+  }
+
+  .description-paragraph {
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+  }
+
+  .card-header h3 {
+    font-size: 1.75rem;
+  }
+
+  .profile-frame {
+    max-width: 350px;
+    width: 100%;
   }
 }
 
-@media (max-width: 768px) {
-  .stats-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+/*--- TABLET ---*/
+@media (max-width: 1023px) and (min-width: 769px) {
+  .description-layout-container {
+    max-width: 700px;
+    gap: 2.5rem;
   }
-  
+
+  .info-card {
+    max-width: 600px;
+    padding: 2rem 1.5rem;
+  }
+
+  .profile-frame {
+    max-width: 320px;
+  }
+
+  .description-paragraph {
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+}
+
+/*--- MOBILE LARGE ---*/
+@media (max-width: 768px) {
   .galactic-title {
     font-size: 2.5rem;
   }
-  
+
+  .description-layout-container {
+    gap: 1.5rem;
+    max-width: 500px;
+  }
+
   .profile-frame {
-    width: 20rem;
-    height: 22rem;
+    max-width: 300px;
   }
-  
-  .horizontal-container {
-    gap: 2rem;
-    padding: 0 1rem;
+
+  .info-card {
+    max-width: 450px;
+    padding: 1.5rem 1.25rem;
   }
-  
-  .story-card {
-    padding: 1.5rem;
-  }
-  
-  .story-card p {
-    font-size: 1rem;
+
+  .description-paragraph {
+    font-size: 0.9rem;
     line-height: 1.6;
+    margin-bottom: 1rem;
   }
-  
-  .story-card h3 {
+
+  .card-header h3 {
     font-size: 1.5rem;
+  }
+
+  .stats-grid {
+    max-width: 280px;
+    gap: 0.75rem;
+  }
+
+  .stat-card {
+    padding: 0.75rem;
+  }
+
+  .stat-value {
+    font-size: 1.5rem;
+  }
+
+  .tech-badge {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.7rem;
   }
 }
 
+/*--- MOBILE SMALL ---*/
 @media (max-width: 480px) {
-  .about-me-section {
-    padding: 1.5rem 0.5rem;
-  }
-  
-  .horizontal-container {
-    gap: 1.5rem;
-    padding: 0 0.5rem;
-  }
-  
-  .profile-frame {
-    width: 18rem;
-    height: 20rem;
-  }
-  
   .galactic-title {
     font-size: 2rem;
   }
-  
-  .story-card {
-    padding: 1rem;
-    margin: 0;
+
+  .description-layout-container {
+    gap: 1.25rem;
+    max-width: 350px;
   }
-  
-  .story-card p {
-    font-size: 0.9rem;
+
+  .profile-frame {
+    max-width: 280px;
+    padding: 1rem;
+  }
+
+  .info-card {
+    max-width: 320px;
+    padding: 1.25rem 1rem;
+  }
+
+  .description-paragraph {
+    font-size: 0.85rem;
+    line-height: 1.55;
+    margin-bottom: 0.875rem;
+  }
+
+  .card-header h3 {
+    font-size: 1.25rem;
+  }
+
+  .stats-grid {
+    max-width: 250px;
+    gap: 0.5rem;
+  }
+
+  .stat-value {
+    font-size: 1.25rem;
+  }
+
+  .tech-badge {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.6rem;
+  }
+
+  .card-header {
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .tech-stack {
+    padding-top: 1rem;
+    margin-top: 1rem;
+  }
+}
+
+/*--- EXTRA SMALL ---*/
+@media (max-width: 360px) {
+  .description-layout-container {
+    max-width: 300px;
+  }
+
+  .info-card {
+    max-width: 280px;
+    padding: 1rem 0.875rem;
+  }
+
+  .description-paragraph {
+    font-size: 0.8rem;
     line-height: 1.5;
   }
-  
-  .story-card .flex {
-    flex-direction: column;
-    text-align: center;
-    gap: 1rem;
+
+  .tech-badges {
+    gap: 0.375rem;
+  }
+
+  .tech-badge {
+    font-size: 0.65rem;
+    padding: 0.25rem 0.5rem;
   }
 }
 
-/* ===== ACCESIBILIDAD GALÁCTICA ===== */
+/*--- Scroll Indicator ---*/
+.scroll-indicator-container {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+}
+
+/* En mobile, mover el scroll indicator más abajo */
+@media (max-width: 768px) {
+  .scroll-indicator-container {
+    bottom: -2rem;
+  }
+  
+  /* Agregar padding bottom al container principal para dar espacio */
+  .description-layout-container {
+    padding-bottom: 6rem;
+  }
+}
+
+/*--- Accessibility ---*/
 @media (prefers-reduced-motion: reduce) {
   .about-me-section,
-  .about-me-section *,
-  .story-card,
+  .info-card,
   .profile-frame,
-  .star,
-  .cosmic-line {
-    animation: none;
-    transition: opacity 0.3s ease;
+  .tech-badge {
+    animation: none !important;
+    transition: opacity 0.3s ease !important;
+    transform: none !important;
   }
-}
 
-.story-card:focus,
-.stat-card:focus,
-.profile-frame:focus {
-  outline: 2px solid rgba(139, 92, 246, 0.6);
-  outline-offset: 2px;
-}
-
-@media (prefers-contrast: high) {
-  .profile-frame,
-  .story-card,
-  .stat-card {
-    border: 2px solid #8b5cf6;
+  .cosmic-particle {
+    animation: none !important;
   }
 }

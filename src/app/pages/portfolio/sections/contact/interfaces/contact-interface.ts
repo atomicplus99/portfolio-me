@@ -15,10 +15,13 @@ export interface TechParticle {
 }
 
 export interface ContactFormData {
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
+  name: string;        // → {{from_name}}
+  email: string;       // → {{from_email}} y {{reply_to}}
+  subject: string;     // → {{subject}}
+  message: string;     // → {{message}}
+  brand?: string;      // Nueva propiedad opcional → {{brand}}
+  bcc?: string;        // Nueva propiedad opcional → {{bcc}}
+  cc?: string;         // Nueva propiedad opcional → {{cc}}
 }
 
 export interface ContactConfig {
@@ -43,5 +46,8 @@ export interface ContactConfig {
   email: {
     recipient: string;
     subject: string;
+    brand?: string;    // Nueva propiedad opcional para la marca
+    defaultBcc?: string; // Nueva propiedad opcional
+    defaultCc?: string;  // Nueva propiedad opcional
   };
 }

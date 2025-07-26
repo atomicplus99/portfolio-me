@@ -25,12 +25,12 @@ import { ContactMethodsComponent } from './components/contact-methods/contact-me
 })
 export class ContactComponent implements OnInit, OnDestroy {
   @ViewChild('contactForm') contactFormComponent!: ContactFormComponent;
-  
+
   config: ContactConfig;
   isSubmitting = false;
   showSuccess = false;
   techParticles: TechParticle[] = [];
-  
+
   private subscriptions = new Subscription();
 
   constructor(
@@ -65,22 +65,17 @@ export class ContactComponent implements OnInit, OnDestroy {
 
   async onFormSubmit(formData: ContactFormData): Promise<void> {
     this.isSubmitting = true;
-    
+
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      const success = await this.emailService.sendEmail(formData, this.config.email.recipient);
-      
+      const success = await this.emailService.sendEmail(formData);
+
       if (success) {
         this.showSuccess = true;
         this.contactFormComponent.resetForm();
-        
-        setTimeout(() => {
-          this.showSuccess = false;
-        }, 5000);
+        setTimeout(() => this.showSuccess = false, 5000);
       }
     } catch (error) {
-
+      console.error('Error en el componente:', error);
     } finally {
       this.isSubmitting = false;
     }
@@ -88,7 +83,7 @@ export class ContactComponent implements OnInit, OnDestroy {
 
   openContactMethod(method: ContactMethod): void {
     this.createContactEffect();
-    
+
     setTimeout(() => {
       window.open(method.link, '_blank');
     }, 200);

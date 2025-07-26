@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ContactConfig } from '../interfaces/contact-interface';
-
+import { environment } from '../../../../../../environment';
 
 @Injectable({
   providedIn: 'root'
@@ -25,17 +25,17 @@ export class ContactConfigService {
       }
     },
     email: {
-      recipient: 'abel.ariase.soft@gmail.com',
-      subject: 'Consulta desde Portfolio Web'
+      recipient: environment.emailjs.recipient,
+      subject: 'Nuevo mensaje llegado!'
     },
     methods: [
       {
         name: 'Email',
         value: 'abel.ariase.soft@gmail.com',
-        link: 'mailto:abel.ariase.soft@gmail.com?subject=',
+        link: 'mailto:abel.ariase.soft@gmail.com?subject=Dejame un mensaje',
         icon: 'email',
         color: '#3b82f6',
-        description: ''
+        description: 'Estoy a tus servicios'
       },
       {
         name: 'WhatsApp',
@@ -43,24 +43,9 @@ export class ContactConfigService {
         link: 'https://wa.me/51991753149?text=',
         icon: 'whatsapp',
         color: '#10b981',
-        description: 'Mensajería instantánea'
-      },
-      {
-        name: 'LinkedIn',
-        value: '/in/abel-arias-dev',
-        link: 'https://linkedin.com/in/abel-arias-dev',
-        icon: 'linkedin',
-        color: '#0ea5e9',
-        description: 'Red profesional'
-      },
-      {
-        name: 'GitHub',
-        value: '@abelarias-dev',
-        link: 'https://github.com/abelarias-dev',
-        icon: 'github',
-        color: '#64748b',
-        description: 'Repositorio de código'
+        description: ''
       }
+      // ✅ REMOVIDO: LinkedIn y GitHub
     ]
   };
 

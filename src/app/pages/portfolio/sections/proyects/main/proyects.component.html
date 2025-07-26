@@ -1,86 +1,68 @@
-<div class="projects-container">
-  
-  <app-floating-particles [isMobile]="isMobile()"></app-floating-particles>
-  <app-matrix-rain [isMobile]="isMobile()"></app-matrix-rain>
-
-  
-  <app-threejs-canvas #threejsCanvas 
-    [performanceMode]="performanceMode()" 
-    [isMobile]="isMobile()"
-    (projectSelected)="onProjectSelected($event)" 
-    (firstInteraction)="onFirstInteraction()"
-    (cursorChanged)="onCursorChanged($event)">
-  </app-threejs-canvas>
-
-  
-  <app-hero-header [stats]="projectStats()"></app-hero-header>
-
-  
-  <app-loading-overlay [isVisible]="isLoading()"></app-loading-overlay>
-
-  
-  <app-interaction-guide 
-    [isVisible]="showInstructions()" 
-    [isMobile]="isMobile()" 
-    [showMobileHint]="showMobileHint()"
-    (hintDismissed)="onHintDismissed()">
-  </app-interaction-guide>
-
-  
-  <app-project-panel 
-    [project]="selectedProject()" 
-    [isVisible]="showPanel()" 
-    [isMobile]="isMobile()"
-    [currentIndex]="currentProjectIndex()" 
-    [totalProjects]="projects().length" 
-    (detailsRequested)="onOpenDetailModal()"
-    (actionClicked)="onActionClicked($event)" 
-    (navigate)="onNavigate($event)" 
-    (close)="onCloseProject()">
-  </app-project-panel>
-
-  
-  <app-mobile-controls 
-    [isMobile]="isMobile()" 
-    [isProjectSelected]="anyProjectSelected()"
-    [isPerformanceMode]="performanceMode()" 
-    (resetView)="onResetView()"
-    (togglePerformanceMode)="onTogglePerformanceMode()">
-  </app-mobile-controls>
-
-  
-  <app-stats-panel 
-    [isVisible]="showStats()" 
-    [stats]="performanceStats()" 
-    [isMobile]="isMobile()"
-    [isPerformanceMode]="performanceMode()">
-  </app-stats-panel>
-
-  
-  <div class="sr-only" aria-live="polite">
-    <span *ngIf="selectedProject() && !showDetailModal()">
-      Proyecto seleccionado: {{ selectedProject()!.name }}. {{ selectedProject()!.description }}
-      Presiona Enter para ver detalles completos.
-    </span>
-    <span *ngIf="modalProject() && showDetailModal()">
-      Modal abierto: {{ modalProject()!.name }}. Usa las flechas para navegar o Escape para cerrar.
-    </span>
-    <span *ngIf="!selectedProject() && !modalProject() && !isLoading()">
-      Vista 3D de proyectos cargada. {{ isMobile() ? 'Usa gestos táctiles para navegar.' : 'Usa el mouse para navegar.' }}
-    </span>
+<div class="projects-container">      
+  <app-floating-particles [isMobile]="isMobile()"></app-floating-particles>   
+  <app-matrix-rain [isMobile]="isMobile()"></app-matrix-rain>       
+  <app-threejs-canvas #threejsCanvas      
+    [performanceMode]="performanceMode()"      
+    [isMobile]="isMobile()"     
+    (projectSelected)="onProjectSelected($event)"      
+    (firstInteraction)="onFirstInteraction()"     
+    (cursorChanged)="onCursorChanged($event)">   
+  </app-threejs-canvas>       
+  <app-hero-header [stats]="projectStats()"></app-hero-header>       
+  <app-loading-overlay [isVisible]="isLoading()"></app-loading-overlay>       
+  <app-interaction-guide      
+    [isVisible]="showInstructions()"      
+    [isMobile]="isMobile()"      
+    [showMobileHint]="showMobileHint()"     
+    (hintDismissed)="onHintDismissed()">   
+  </app-interaction-guide>       
+  <app-project-panel      
+    [project]="selectedProject()"      
+    [isVisible]="showPanel()"      
+    [isMobile]="isMobile()"     
+    [currentIndex]="currentProjectIndex()"      
+    [totalProjects]="projects().length"      
+    (detailsRequested)="onOpenDetailModal()"     
+    (actionClicked)="onActionClicked($event)"      
+    (navigate)="onNavigate($event)"      
+    (close)="onCloseProject()">   
+  </app-project-panel>       
+  <app-mobile-controls      
+    [isMobile]="isMobile()"      
+    [isProjectSelected]="anyProjectSelected()"     
+    [isPerformanceMode]="performanceMode()"      
+    (resetView)="onResetView()"     
+    (togglePerformanceMode)="onTogglePerformanceMode()">   
+  </app-mobile-controls>       
+  <app-stats-panel      
+    [isVisible]="showStats()"      
+    [stats]="performanceStats()"      
+    [isMobile]="isMobile()"     
+    [isPerformanceMode]="performanceMode()">   
+  </app-stats-panel>       
+  <div class="sr-only" aria-live="polite">     
+    <span *ngIf="selectedProject() && !showDetailModal()">       
+      Proyecto seleccionado: {{ selectedProject()!.name }}. {{ selectedProject()!.description }}       
+      Presiona Enter para ver detalles completos.     
+    </span>     
+    <span *ngIf="modalProject() && showDetailModal()">       
+      Modal abierto: {{ modalProject()!.name }}. Usa las flechas para navegar o Escape para cerrar.     
+    </span>     
+    <span *ngIf="!selectedProject() && !modalProject() && !isLoading()">       
+      Vista 3D de proyectos cargada. {{ isMobile() ? 'Usa gestos táctiles para navegar.' : 'Usa el mouse para navegar.' }}     
+    </span>   
   </div>
+</div>   
 
-  <app-scroll-indicator></app-scroll-indicator>
+<app-project-details-modal    
+  [isVisible]="showDetailModal()"    
+  [project]="modalProject()"    
+  [projects]="projects()"   
+  [isMobile]="isMobile()"    
+  (closed)="onModalClosed()"    
+  (projectChanged)="onModalProjectChanged($event)"   
+  (actionClicked)="onModalActionClicked($event)"> 
+</app-project-details-modal> 
 
-</div>
-
-
-<app-project-details-modal 
-  [isVisible]="showDetailModal()" 
-  [project]="modalProject()" 
-  [projects]="projects()"
-  [isMobile]="isMobile()" 
-  (closed)="onModalClosed()" 
-  (projectChanged)="onModalProjectChanged($event)"
-  (actionClicked)="onModalActionClicked($event)">
-</app-project-details-modal>
+<!-- ✅ SCROLL INDICATOR MOVIDO AL FINAL -->
+<app-scroll-indicator></app-scroll-indicator>

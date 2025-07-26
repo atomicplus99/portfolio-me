@@ -41,7 +41,7 @@ export class ProjectsService {
    },
    {
      id: 4,
-     name: 'Gifs App (Proyecto Estudiantil)',
+     name: 'Gifs App',
      description: 'Esta aplicacion consta de una vista de gifs, donde el usuario puede pasar el rato buscando gifs divertidos junto con familiares y amigos.',
      type: 'web',
      techStack: ['Angular', 'Tailwind'],

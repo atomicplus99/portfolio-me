@@ -15,6 +15,15 @@ export class CtaButtonComponent {
   @Output() hoverChange = new EventEmitter<boolean>();
 
   handleClick(): void {
-    window.open(`mailto:${this.email}?subject=${this.subject}`, '_blank');
+    // Buscar la sección #contact
+    const contactSection = document.getElementById('contact');
+    
+    if (contactSection) {
+      // Scroll suave a la sección
+      contactSection.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
   }
 }

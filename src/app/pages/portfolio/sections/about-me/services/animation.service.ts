@@ -8,29 +8,24 @@ export class AnimationService {
   private visibleElementsSubject = new BehaviorSubject<boolean[]>([]);
   public visibleElements$ = this.visibleElementsSubject.asObservable();
 
-  initializeStaggeredAnimation(elementCount: number, delay: number = 200): void {
-    const visibleElements = new Array(elementCount).fill(false);
-    this.visibleElementsSubject.next(visibleElements);
+ initializeStaggeredAnimation(elementCount: number, delay: number = 200): void {
+  const visibleElements = new Array(elementCount).fill(false);
+  this.visibleElementsSubject.next(visibleElements);
 
-    // Secuencia de animación galáctica
-    setTimeout(() => {
-      // 1. Header título (inmediato)
-      this.setElementVisible(0);
-      
-      // 2. Profile section (300ms)
-      setTimeout(() => this.setElementVisible(1), 300);
-      
-      // 3. Stats grid (600ms)
-      setTimeout(() => this.setElementVisible(2), 600);
-      
-      // 4. Story card (900ms)
-      setTimeout(() => this.setElementVisible(3), 900);
-      
-      // 5. Story paragraphs (1200ms)
-      setTimeout(() => this.setElementVisible(4), 1200);
-      
-    }, 500);
-  }
+  setTimeout(() => {
+    // 1. Header título (inmediato)
+    this.setElementVisible(0);
+    
+    // 2. Stats grid (300ms) - CAMBIÉ DE 1 A 2
+    setTimeout(() => this.setElementVisible(2), 300);
+    
+    // 3. Story card (600ms) - CAMBIÉ DE 2 A 3  
+    setTimeout(() => this.setElementVisible(3), 600);
+    
+    // 4. Story paragraphs (900ms) - CAMBIÉ DE 3 A 4
+    setTimeout(() => this.setElementVisible(4), 900);
+  }, 500);
+}
 
   private setElementVisible(index: number): void {
     const current = this.visibleElementsSubject.value;

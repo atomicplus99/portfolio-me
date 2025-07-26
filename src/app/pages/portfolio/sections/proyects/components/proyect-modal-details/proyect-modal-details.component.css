@@ -20,8 +20,11 @@
 }
 
 .modal-overlay.modal-mobile {
-  padding: 0;
-  align-items: flex-start;
+  padding: 12px;
+  align-items: center; /* CAMBIADO: de flex-start a center - CENTRAR VERTICALMENTE */
+  justify-content: center; /* AGREGADO: para centrar completamente */
+  overflow-y: auto; /* Permitir scroll en el overlay */
+  -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
 }
 
 /* Modal Content */
@@ -48,12 +51,15 @@
 }
 
 .modal-content.mobile {
-  width: 100vw;
-  height: 100vh;
-  max-width: 100vw;
-  max-height: 100vh;
-  border-radius: 0;
-  transform: translateY(100%);
+  width: 85vw; /* CAMBIADO: de 92vw a 85vw */
+  height: auto; /* Auto height para permitir contenido dinámico */
+  min-height: 50vh; /* CAMBIADO: de 60vh a 50vh - MÁS PEQUEÑO VERTICALMENTE */
+  max-height: none; /* Sin límite máximo para permitir scroll */
+  max-width: 85vw; /* CAMBIADO: de 92vw a 85vw */
+  border-radius: 16px;
+  transform: translateY(20px);
+  margin: 12px auto; /* Más margen para crear espacio visible */
+  overflow: visible; /* Permitir scroll */
 }
 
 .modal-overlay.modal-visible .modal-content.mobile {
@@ -252,12 +258,35 @@
   font-size: 0.875rem;
 }
 
-/* Body */
+/* Body con scroll mejorado */
 .modal-body {
   flex: 1;
-  overflow-y: scroll;
+  overflow-y: auto; /* Scroll vertical habilitado */
+  overflow-x: hidden; /* Evitar scroll horizontal */
   position: relative;
   min-height: 0;
+  -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
+  scrollbar-width: thin; /* Firefox scroll delgado */
+  scrollbar-color: rgba(139, 92, 246, 0.5) rgba(55, 65, 81, 0.3); /* Firefox colores */
+}
+
+/* Webkit scrollbar styling */
+.modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background: rgba(55, 65, 81, 0.3);
+  border-radius: 3px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.5);
+  border-radius: 3px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.7);
 }
 
 .tab-content {
@@ -1371,15 +1400,36 @@
   }
 }
 
-/* Mobile Responsive */
+/* Mobile Responsive - ARREGLADO */
 @media (max-width: 768px) {
-  .modal-content {
-    width: 100vw;
-    height: 100vh;
-    max-width: 100vw;
-    max-height: 100vh;
-    border-radius: 0;
-    transform: scale(1);
+  .modal-overlay.modal-mobile {
+    padding: 16px; /* CAMBIADO: de 8px a 16px para más espacio */
+    align-items: center; /* CAMBIADO: de flex-start a center - CENTRAR MODAL */
+    justify-content: center; /* AGREGADO: centrar completamente */
+    overflow-y: auto; 
+    -webkit-overflow-scrolling: touch; 
+  }
+  
+  .modal-content.mobile {
+    width: 85vw; /* CAMBIADO: de 96vw a 85vw - MÁS PEQUEÑO */
+    height: auto; 
+    min-height: 55vh; /* CAMBIADO: de 70vh a 55vh - MÁS PEQUEÑO VERTICALMENTE */
+    max-height: none; 
+    max-width: 85vw; /* CAMBIADO: de 96vw a 85vw */
+    border-radius: 12px;
+    margin: 8px auto 20px auto; 
+    overflow: visible; 
+  }
+  
+  .modal-body {
+    max-height: 40vh; /* CAMBIADO: de 50vh a 40vh - FORZAR SCROLL INTERNO */
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    /* AGREGADO: Asegurar que el scroll funcione */
+    position: relative;
+    min-height: 0;
+    scrollbar-width: thin;
   }
   
   .modal-header {
@@ -1388,6 +1438,7 @@
     gap: 12px;
     padding: 16px 20px;
     position: relative;
+    flex-shrink: 0;
   }
   
   .project-info {
@@ -1425,6 +1476,7 @@
     scrollbar-width: none;
     -ms-overflow-style: none;
     padding: 0 4px;
+    flex-shrink: 0;
   }
   
   .tabs-nav::-webkit-scrollbar {
@@ -1516,6 +1568,7 @@
     flex-direction: column;
     padding: 16px;
     gap: 10px;
+    flex-shrink: 0;
   }
   
   .action-btn {
@@ -1546,6 +1599,36 @@
 }
 
 @media (max-width: 480px) {
+  .modal-overlay.modal-mobile {
+    padding: 20px; /* CAMBIADO: de 6px a 20px para MÁS espacio */
+    align-items: center; /* CAMBIADO: centrar verticalmente */
+    justify-content: center; /* AGREGADO: centrar completamente */
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .modal-content.mobile {
+    width: 80vw; /* CAMBIADO: de 97vw a 80vw - MUCHO MÁS PEQUEÑO */
+    height: auto;
+    min-height: 50vh; /* CAMBIADO: de 65vh a 50vh - MÁS PEQUEÑO VERTICALMENTE */
+    max-height: none;
+    max-width: 80vw; /* CAMBIADO: de 97vw a 80vw */
+    border-radius: 10px;
+    margin: 10px auto 30px auto; /* CAMBIADO: más margen */
+  }
+  
+  .modal-body {
+    max-height: 35vh; /* CAMBIADO: de 45vh a 35vh - FORZAR MÁS SCROLL */
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    /* AGREGADO: Propiedades para asegurar scroll */
+    position: relative;
+    min-height: 0;
+    scrollbar-width: thin;
+    scroll-behavior: smooth;
+  }
+  
   .modal-header {
     padding: 12px 16px;
   }
@@ -1619,4 +1702,108 @@
     animation: none !important;
     transition: none !important;
   }
+}
+
+
+/* AGREGAR AL FINAL DE TU CSS */
+
+/* Controles de scroll manual */
+.scroll-controls {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.scroll-button {
+  width: 44px;
+  height: 44px;
+  background: rgba(30, 41, 59, 0.9);
+  border: 1px solid rgba(71, 85, 105, 0.5);
+  border-radius: 50%;
+  color: #d1d5db;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.scroll-button:hover:not(:disabled) {
+  background: rgba(59, 130, 246, 0.8);
+  border-color: rgba(59, 130, 246, 0.8);
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.scroll-button:active:not(:disabled),
+.scroll-button.active {
+  background: rgba(59, 130, 246, 1);
+  border-color: rgba(59, 130, 246, 1);
+  color: white;
+  transform: scale(0.95);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+}
+
+.scroll-button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  background: rgba(30, 41, 59, 0.5);
+  border-color: rgba(71, 85, 105, 0.3);
+}
+
+.scroll-button svg {
+  transition: transform 0.2s ease;
+}
+
+.scroll-button:hover:not(:disabled) svg {
+  transform: scale(1.1);
+}
+
+.scroll-button.active svg {
+  transform: scale(0.9);
+}
+
+/* Responsive para botones */
+@media (max-width: 480px) {
+  .scroll-controls {
+    right: 8px;
+  }
+  
+  .scroll-button {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .scroll-button svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* Ocultar en desktop */
+@media (min-width: 769px) {
+  .scroll-controls {
+    display: none;
+  }
+}
+
+/* Animación suave para scroll */
+.modal-body {
+  scroll-behavior: smooth;
+}
+
+/* Asegurar que los botones estén encima del contenido */
+.modal-content {
+  position: relative;
 }

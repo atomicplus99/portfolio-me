@@ -1,19 +1,49 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { AboutMeConfig } from './interfaces/about.interface';
+
 import { AboutMeConfigService } from './services/about-me-config.service';
 import { AnimationService } from './services/animation.service';
 import { ScrollIndicatorComponent } from "../hero/components/hero-scroll-indicator/hero-scroll-indicator.component";
 
+
+export interface AboutMeHeader {
+  title: string;
+  subtitle?: string;
+}
+
+export interface AboutMeProfile {
+  name: string;
+  title: string;
+  location: string;
+  image: string;
+  fallbackText: string;
+}
+
+export interface AboutMeStat {
+  value: string;
+  label: string;
+}
+
+export interface AboutMeStory {
+  title: string;
+  paragraphs: string[];
+}
+
+export interface AboutMeConfig {
+  header: AboutMeHeader;
+  profile: AboutMeProfile;
+  stats: AboutMeStat[];
+  story: AboutMeStory;
+  techStack?: string[]; // Opcional para mostrar tecnologías
+}
 @Component({
   selector: 'app-about-me',
   standalone: true,
   imports: [
-    CommonModule // Solo necesitas CommonModule
-    ,
+    CommonModule,
     ScrollIndicatorComponent
-],
+  ],
   templateUrl: './about-me.component.html',
   styleUrls: ['./about-me.component.css']
 })
@@ -21,7 +51,9 @@ export class AboutMeComponent implements OnInit, OnDestroy {
   isVisible = false;
   visibleElements: boolean[] = [];
   config: AboutMeConfig;
-  
+  isModalOpen = false; // Conservado para funcionalidad futura
+  imageLoaded = false; // Para controlar la visibilidad del fallback
+
   private subscriptions = new Subscription();
 
   constructor(
@@ -53,15 +85,29 @@ export class AboutMeComponent implements OnInit, OnDestroy {
   }
 
   private initializeAnimations(): void {
-    this.animationService.initializeStaggeredAnimation(5, 200); // Cambié a 5 elementos
+    // Ahora tenemos 4 elementos: header, profile-section, stats-grid, info-card
+    this.animationService.initializeStaggeredAnimation(4, 200);
   }
 
   onImageError(event: Event): void {
     const target = event.target as HTMLImageElement;
     target.style.display = 'none';
-    const fallback = target.nextElementSibling as HTMLElement;
-    if (fallback) {
-      fallback.classList.remove('hidden');
-    }
+    this.imageLoaded = false;
+  }
+
+  onImageLoad(event: Event): void {
+    const target = event.target as HTMLImageElement;
+    this.imageLoaded = true;
+  }
+
+  // Métodos del modal conservados para funcionalidad futura
+  openModal(): void {
+    this.isModalOpen = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeModal(): void {
+    this.isModalOpen = false;
+    document.body.style.overflow = 'auto';
   }
 }

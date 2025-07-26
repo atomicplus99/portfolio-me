@@ -1,7 +1,5 @@
-  <app-galaxy></app-galaxy>
+<app-galaxy></app-galaxy>
 <div class="portfolio-container">
-
-
   <app-elegant-loader [logoText]="'@duque.dev'" [subtitle]="'Bienvenido! :)'">
   </app-elegant-loader>
 
@@ -19,6 +17,7 @@
         <app-about></app-about>
       </section>
 
+      <!-- ABOUT-ME CON CLASE ESPECÍFICA -->
       <section id="about-me" class="section-container" *ngIf="loadedSections.aboutMe">
         <app-about-me></app-about-me>
       </section>
@@ -28,7 +27,7 @@
       </section>
 
       <section id="skills" class="section-container" *ngIf="loadedSections.skills">
-        <app-skills ></app-skills>
+        <app-skills></app-skills>
       </section>
 
       <section id="contact" class="section-container" *ngIf="loadedSections.contact">
@@ -40,7 +39,5 @@
       <app-footer *ngIf="loadedSections.footer" class="footer-section">
       </app-footer>
     </main>
-
-
   </div>
 </div>
