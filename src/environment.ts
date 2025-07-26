@@ -1,9 +1,11 @@
+import 'dotenv/config';
+
 export const environment = {
-  production: true,
+  production: false,
   emailjs: {
-    serviceId: 'service_bx354hx',     
-    templateId: 'template_gl43dtj',    
-    userId: 'VsWjgCXXXUzC8IMYR',           
-    recipient: 'abel.ariase.soft@gmail.com' 
+    serviceId: process.env['EMAILJS_SERVICE_ID'],
+    templateId: process.env['EMAILJS_TEMPLATE_ID'],
+    userId: process.env['EMAILJS_USER_ID'],
+    recipient: process.env['EMAILJS_RECIPIENT']
   }
 };
