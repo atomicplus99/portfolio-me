@@ -195,7 +195,7 @@ export class ProjectDetailsModalComponent implements OnDestroy {
   private scrollContent(direction: 'up' | 'down'): void {
     const modalBody = document.querySelector('.modal-body') as HTMLElement;
     if (modalBody) {
-      const scrollAmount = direction === 'up' ? -8 : 8; // ✅ AUMENTADO: de 4 a 8 píxeles por frame
+      const scrollAmount = direction === 'up' ? -15 : 15; // ✅ AUMENTADO: de 4 a 8 píxeles por frame
       modalBody.scrollTop += scrollAmount;
       this.checkScrollability();
     }
