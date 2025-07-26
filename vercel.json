@@ -1,12 +1,8 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "dist/portfolio-web-arias/browser/**/*",  
-      "use": "@vercel/static"
-    }
-  ],
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }
