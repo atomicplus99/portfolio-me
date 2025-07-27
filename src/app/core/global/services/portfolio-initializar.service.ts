@@ -2,6 +2,7 @@ import { Injectable, ChangeDetectorRef, Renderer2 } from '@angular/core';
 import { LoaderService } from '../../../shared/components/loader/services/loader.service';
 import { AppPerformanceService } from './portfolio-perfomance.service';
 import { SectionLoadingService } from './portfolio-loading.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,6 @@ export class AppInitializationService {
 
   initializeApp(cdr: ChangeDetectorRef, renderer: Renderer2): void {
     this.startLoader();
-    this.setupSectionLoading(cdr);
     this.scheduleProgressiveLoading();
     this.setupPerformanceOptimizations(renderer);
   }
@@ -28,11 +28,20 @@ export class AppInitializationService {
   }
 
   private startLoader(): void {
-    this.loaderService.startLoading();
-  }
-
-  private setupSectionLoading(cdr: ChangeDetectorRef): void {
-    this.sectionLoadingService.setCdr(cdr);
+    // ✅ Usar el modo 'normal' por defecto, pero también soporta 'quick' y 'realistic'
+    this.loaderService.startNormalLoading().subscribe({
+      next: (state) => {
+        console.log('📊 Loader state update:', state);
+      },
+      complete: () => {
+        console.log('✅ Loader completado desde AppInitializationService');
+      },
+      error: (error) => {
+        console.error('❌ Error en loader:', error);
+        // Fallback: terminar loader manualmente si hay error
+        this.loaderService.finishLoading();
+      }
+    });
   }
 
   private scheduleProgressiveLoading(): void {
@@ -47,15 +56,41 @@ export class AppInitializationService {
     this.performanceService.setupPerformanceOptimizations(renderer);
   }
 
+  // ✅ Compatible con ambas versiones del LoaderService
   isAppReady(): boolean {
-    return !this.loaderService.state().isLoading;
+    const state = this.loaderService.state();
+    return !state.isLoading;
   }
 
   getInitializationStatus() {
+    const loaderState = this.loaderService.state();
+    
     return {
-      loaderStarted: !this.loaderService.state().isLoading,
+      loaderStarted: !loaderState.isLoading,
+      loaderProgress: loaderState.progress,
       sectionsSetup: this.sectionLoadingService.getLoadingMetrics().hasObserver,
-      performanceSetup: true // Siempre true después de setup
+      performanceSetup: true,
+      // ✅ Información adicional para debugging
+      loaderComplete: loaderState.progress >= 100
     };
+  }
+
+  // ✅ Método de utilidad para diferentes modos de carga
+  startQuickLoading(): void {
+    this.loaderService.startQuickLoading().subscribe({
+      complete: () => console.log('✅ Quick loading completado')
+    });
+  }
+
+  startRealisticLoading(): void {
+    this.loaderService.startRealisticLoading().subscribe({
+      complete: () => console.log('✅ Realistic loading completado')
+    });
+  }
+
+  // ✅ Método de emergencia
+  forceCompleteLoader(): void {
+    console.warn('🚨 Forzando completar loader...');
+    this.loaderService.finishLoading();
   }
 }

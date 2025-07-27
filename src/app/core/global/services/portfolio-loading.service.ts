@@ -1,5 +1,19 @@
-import { ChangeDetectorRef, Injectable, signal } from "@angular/core";
-import { LoadedSections, LoadingScheduleItem } from "../interfaces/global-loading.interface";
+import { Injectable, signal } from "@angular/core";
+
+// ✅ Interfaces necesarias
+export interface LoadedSections {
+  about: boolean;
+  aboutMe: boolean;
+  projects: boolean;
+  skills: boolean;
+  contact: boolean;
+  footer: boolean;
+}
+
+export interface LoadingScheduleItem {
+  section: keyof LoadedSections;
+  delay: number;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -17,14 +31,10 @@ export class SectionLoadingService {
 
   private intersectionObserver?: IntersectionObserver;
   private loadingTimeouts: number[] = [];
-  private cdr?: ChangeDetectorRef;
 
+  // ✅ Signal readonly para acceso público
   get loadedSections() {
     return this.loadedSectionsSignal.asReadonly();
-  }
-
-  setCdr(cdr: ChangeDetectorRef): void {
-    this.cdr = cdr;
   }
 
   scheduleProgressiveLoading(): void {
@@ -93,13 +103,14 @@ export class SectionLoadingService {
         [section]: true
       }));
       
-      if (this.cdr) {
-        this.cdr.markForCheck();
-      }
+      // ✅ Log para debugging
+      console.log(`✅ Sección cargada: ${section}`);
     }
   }
 
   loadAllSections(): void {
+    console.log('🚀 Cargando todas las secciones...');
+    
     this.loadedSectionsSignal.set({
       about: true,
       aboutMe: true,
@@ -109,9 +120,7 @@ export class SectionLoadingService {
       footer: true
     });
     
-    if (this.cdr) {
-      this.cdr.markForCheck();
-    }
+    console.log('✅ Todas las secciones cargadas:', this.loadedSectionsSignal());
   }
 
   resetSections(): void {
@@ -123,10 +132,6 @@ export class SectionLoadingService {
       contact: false,
       footer: false
     });
-    
-    if (this.cdr) {
-      this.cdr.markForCheck();
-    }
   }
 
   isSectionLoaded(section: keyof LoadedSections): boolean {

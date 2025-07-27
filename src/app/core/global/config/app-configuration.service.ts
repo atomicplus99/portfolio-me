@@ -20,7 +20,7 @@ export class AppConfigurationService {
     return { ...baseConfig, ...overrides.cursor };
   });
 
-
+  // ✅ Computed limpio - los signals se actualizan automáticamente
   readonly loadedSections = computed(() => {
     return this.sectionLoadingService.loadedSections();
   });
@@ -39,7 +39,6 @@ export class AppConfigurationService {
       cursor: { ...current.cursor, ...config }
     }));
   }
-
 
   setPerformanceMode(mode: 'high' | 'medium' | 'low'): void {
     const configs = {

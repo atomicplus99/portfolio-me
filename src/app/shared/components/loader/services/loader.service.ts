@@ -1,6 +1,6 @@
 import { Injectable, signal, computed, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { BehaviorSubject, Observable, timer, map, switchMap, tap, finalize } from 'rxjs';
+import { BehaviorSubject, Observable, timer, map, switchMap, tap, finalize, of, take } from 'rxjs';
 
 export interface LoaderState {
   isLoading: boolean;
@@ -84,6 +84,8 @@ export class LoaderService {
     this.currentMode = mode;
     this.isLoadingActive = true;
 
+    console.log(`🚀 Iniciando loader en modo: ${mode}`);
+
     // Inicializar estado
     this.updateState({
       isLoading: true,
@@ -95,9 +97,15 @@ export class LoaderService {
 
     // ✅ Secuencia reactiva con observables
     return timer(1200).pipe( // Delay inicial para mostrar logo
-      tap(() => this.updateState({ showProgress: true })),
+      tap(() => {
+        console.log('✅ Mostrando barra de progreso');
+        this.updateState({ showProgress: true });
+      }),
       switchMap(() => this.executeLoadingSequence()),
-      finalize(() => this.isLoadingActive = false),
+      finalize(() => {
+        this.isLoadingActive = false;
+        console.log('🏁 Loader finalizado');
+      }),
       takeUntilDestroyed(this.destroyRef)
     );
   }
@@ -117,6 +125,7 @@ export class LoaderService {
         }
 
         const phase = phases[currentPhaseIndex];
+        console.log(`📊 Fase ${currentPhaseIndex + 1}/${phases.length}: ${phase.message}`);
         
         // Animar progreso suavemente
         this.animateProgressTo(phase.progress, phase.message).subscribe({
@@ -133,7 +142,7 @@ export class LoaderService {
     });
   }
 
-  // ✅ Animación de progreso reactiva
+  // ✅ Animación de progreso reactiva - CORREGIDA
   private animateProgressTo(targetProgress: number, message: string): Observable<void> {
     const currentProgress = this.state().progress;
     const duration = 300; // Duración fija para consistencia
@@ -148,6 +157,8 @@ export class LoaderService {
         return Math.min(targetProgress, Math.round(progress));
       }),
       tap(progress => this.updateState({ progress })),
+      // ✅ AGREGAR: take() para detener el timer
+      take(steps), // Solo emitir 'steps' veces
       finalize(() => this.updateState({ progress: targetProgress })),
       map(() => void 0),
       takeUntilDestroyed(this.destroyRef)
@@ -156,14 +167,22 @@ export class LoaderService {
 
   // ✅ Finalización limpia
   private completeLoading(): void {
+    console.log('🎉 Completando carga...');
+    
     timer(600).pipe(
-      tap(() => this.updateState({ message: 'Bienvenido!!' })),
+      tap(() => {
+        console.log('👋 Mostrando mensaje de bienvenida');
+        this.updateState({ message: 'Bienvenido!!' });
+      }),
       switchMap(() => timer(800)),
-      tap(() => this.updateState({
-        isLoading: false,
-        showLogo: false,
-        showProgress: false
-      })),
+      tap(() => {
+        console.log('✅ Ocultando loader');
+        this.updateState({
+          isLoading: false,
+          showLogo: false,
+          showProgress: false
+        });
+      }),
       takeUntilDestroyed(this.destroyRef)
     ).subscribe();
   }
@@ -190,6 +209,7 @@ export class LoaderService {
   }
 
   finishLoading(): void {
+    console.log('🔚 Forzando finalización del loader');
     this.updateState({
       progress: 100,
       message: 'Completado'
@@ -202,6 +222,7 @@ export class LoaderService {
   }
 
   resetLoader(): void {
+    console.log('🔄 Reseteando loader');
     this.isLoadingActive = false;
     this.updateState({
       isLoading: false,
@@ -233,5 +254,18 @@ export class LoaderService {
 
   startNormalLoading(): Observable<LoaderState> {
     return this.startLoading('normal');
+  }
+
+  // ✅ Compatibilidad con versión anterior
+  quickLoad(): void {
+    this.startQuickLoading().subscribe();
+  }
+
+  simulateRealisticLoading(): void {
+    this.startRealisticLoading().subscribe();
+  }
+
+  destroy(): void {
+    this.resetLoader();
   }
 }

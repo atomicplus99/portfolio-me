@@ -126,12 +126,13 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // ✅ Métodos privados optimizados
   private async initializeApp(): Promise<void> {
+    
     await this.lifecycleManager.initializeApp(this.cdr, this.renderer);
     this.loadAllSections();
   }
 
   private setupLoadingWatcher(): void {
-    // ✅ Usar observables en lugar de polling
+    // ✅ Ahora funciona con LoaderService optimizado
     this.loaderService.state$.pipe(
       filter(state => !state.isLoading), // Esperar a que termine de cargar
       take(1), // Solo la primera vez
