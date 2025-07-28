@@ -1,27 +1,63 @@
+/* ✅ Base styles */
 .name-hero {
   text-shadow: 0 8px 24px rgba(0, 0, 0, 0.5),
     0 4px 12px rgba(59, 130, 246, 0.2);
   color: var(--color-slate-100, #f1f5f9);
   font-weight: 900;
   letter-spacing: -0.02em;
-
 }
 
 .font-inter {
-  font-family: sans-serif;
+  font-family: 'Inter', sans-serif;
 }
-
 
 .font-black {
   font-weight: 900;
 }
 
 .profile-container {
-  transform-origin: left center;
-  will-change: transform;
+  position: absolute;
+  left: 4rem;
+  top: 50%;                    /* ✅ CORREGIDO: Centrado vertical */
+  transform: translateY(-50%); /* ✅ CORREGIDO: Transform correcto */
+  width: 480px;
+  z-index: 30;
 }
 
-@media (max-width: 1023px) {
+/* ✅ DESKTOP LAYOUT - Default y tablets */
+.desktop-profile-layout {
+  position: relative;
+  text-align: left;
+  width: 100%;
+  max-width: 420px;
+}
+
+.desktop-profile-layout .name-hero {
+  font-size: clamp(3rem, 6vw, 6rem);
+  line-height: 0.8;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.desktop-profile-layout .profile-title {
+  text-align: left;
+}
+
+.desktop-profile-layout .profile-description {
+  text-align: left;
+  margin: 0; /* Sin centrado automático */
+}
+
+.desktop-profile-layout .status-indicator {
+  justify-content: flex-start; /* Alineado a la izquierda */
+}
+
+.desktop-profile-layout .profile-actions {
+  align-items: flex-start; /* Botón alineado a la izquierda */
+}
+
+/* ✅ MOBILE LAYOUT - Solo pantallas pequeñas */
+@media (max-width: 768px) {
   .mobile-profile-layout {
     position: relative;
     left: auto;
@@ -39,7 +75,7 @@
     min-height: 80vh;
   }
 
-  .name-hero {
+  .mobile-profile-layout .name-hero {
     text-align: center;
     font-size: 3.5rem;
     line-height: 0.85;
@@ -53,15 +89,27 @@
   .mobile-profile-layout .hidden {
     text-align: initial;
   }
+
+  .mobile-profile-layout .profile-description {
+    margin: 0 auto; /* Centrado en móvil */
+  }
+
+  .mobile-profile-layout .status-indicator {
+    justify-content: center; /* Centrado en móvil */
+  }
+
+  .mobile-profile-layout .profile-actions {
+    align-items: center; /* Centrado en móvil */
+  }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 640px) {
   .mobile-profile-layout {
     padding: 1.5rem 1rem;
     min-height: 75vh;
   }
 
-  .name-hero {
+  .mobile-profile-layout .name-hero {
     font-size: 3rem;
     line-height: 0.85;
     margin-bottom: 1.25rem;
@@ -74,9 +122,66 @@
     min-height: 70vh;
   }
 
-  .name-hero {
+  .mobile-profile-layout .name-hero {
     font-size: 2.5rem;
     line-height: 0.85;
     margin-bottom: 1rem;
+  }
+}
+
+/* ✅ TABLET Y DESKTOP - Mantener layout lateral */
+@media (min-width: 769px) {
+  .profile-container {
+    position: absolute;
+    left: 2rem;
+    top: 50%;                  /* ✅ CORREGIDO: Siempre centrado */
+    transform: translateY(-50%);
+    width: 420px;
+    z-index: 30;
+  }
+  
+  .desktop-profile-layout .name-hero {
+    font-size: clamp(3.5rem, 5vw, 6rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .profile-container {
+    left: 3rem;
+    top: 50%;                  /* ✅ CORREGIDO: Siempre centrado */
+    transform: translateY(-50%);
+    width: 480px;
+  }
+  
+  .desktop-profile-layout .name-hero {
+    font-size: clamp(4rem, 6vw, 7rem);
+  }
+}
+
+@media (min-width: 1280px) {
+  .profile-container {
+    left: 4rem;
+    top: 50%;                  /* ✅ CORREGIDO: Siempre centrado */
+    transform: translateY(-50%);
+    width: 520px;
+  }
+  
+  .desktop-profile-layout .name-hero {
+    font-size: clamp(5rem, 7vw, 8rem);
+  }
+}
+
+/* ✅ Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .profile-container {
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .name-hero {
+    text-shadow: none;
+    color: white;
   }
 }

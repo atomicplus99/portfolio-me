@@ -105,3 +105,56 @@
    display: none !important;
  }
 }
+
+app-galaxy {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1; /* ✅ Muy bajo, detrás del contenido */
+  pointer-events: none;
+}
+
+/* ✅ Content wrapper encima de galaxy */
+.content-wrapper {
+  position: relative;
+  z-index: 10; /* ✅ Encima de galaxy */
+  background: transparent; /* Para que se vea galaxy detrás */
+}
+
+/* ✅ Asegurar que las secciones estén encima */
+.section-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 15; /* ✅ Encima del content-wrapper */
+  transition: opacity 0.3s ease-out;
+  contain: layout style paint;
+  isolation: isolate;
+}
+
+/* ✅ Header encima de todo */
+.header-fixed {
+  position: relative;
+  z-index: 50; /* ✅ Encima de todo para navegación */
+}
+
+/* ✅ Particles layer ajustado */
+.particles-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 5; /* ✅ Entre galaxy y contenido */
+  pointer-events: none;
+  transition: opacity 0.4s ease-out;
+  transform: translateZ(0);
+  will-change: transform, opacity;
+  contain: layout style paint;
+  isolation: isolate;
+}
