@@ -13,12 +13,6 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "define": {
-              "process.env.EMAILJS_SERVICE_ID": "process.env.EMAILJS_SERVICE_ID",
-              "process.env.EMAILJS_TEMPLATE_ID": "process.env.EMAILJS_TEMPLATE_ID",
-              "process.env.EMAILJS_USER_ID": "process.env.EMAILJS_USER_ID",
-              "process.env.EMAILJS_RECIPIENT": "process.env.EMAILJS_RECIPIENT"
-            },
             "outputPath": "dist/portfolio-web-arias",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -39,6 +33,12 @@
           },
           "configurations": {
             "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
               "budgets": [
                 {
                   "type": "initial",

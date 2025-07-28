@@ -2,9 +2,11 @@
   "name": "portfolio-web-arias",
   "version": "0.0.0",
   "scripts": {
+    
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "node scripts/set-env.js && ng build",
+    "build:prod": "node scripts/set-env.js && ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
