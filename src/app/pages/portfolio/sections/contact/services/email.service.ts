@@ -13,6 +13,9 @@ export class EmailService {
   }
 
   async sendEmail(formData: ContactFormData): Promise<boolean> {
+    console.log(formData);
+    console.log(environment.emailjs.serviceId);
+    console.log(environment.emailjs.templateId);
     try {
       const templateParams = {
         from_name: formData.name,
@@ -27,8 +30,10 @@ export class EmailService {
         environment.emailjs.templateId,
         templateParams
       );
+      console.log(response);
       return true;
     } catch (error) {
+      console.log(error);
       return false;
     }
   }

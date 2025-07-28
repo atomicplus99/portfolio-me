@@ -9,3 +9,7 @@ export const environment = {
     recipient: process.env['EMAILJS_RECIPIENT']
   }
 };
+
+console.log('🔥 Variables cargadas:', environment.emailjs);
+console.log('🔥 ServiceId:', environment.emailjs.serviceId);
+console.log('🔥 TemplateId:', environment.emailjs.templateId);
