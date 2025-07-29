@@ -198,3 +198,191 @@ app-elegant-loader.loader-hidden {
     opacity: 0.2; /* Mucho menos intenso */
   }
 }
+
+.section-skeleton {
+  width: 100%;
+  max-width: 1200px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  opacity: 0.8;
+}
+
+/* Base skeleton animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* ✅ Base skeleton class - SIN @extend */
+.skeleton-header,
+.skeleton-line,
+.skeleton-avatar,
+.skeleton-card,
+.skeleton-skill,
+.skeleton-input,
+.skeleton-textarea,
+.skeleton-button {
+  background: linear-gradient(
+    90deg,
+    rgba(31, 41, 55, 0.6) 25%,
+    rgba(55, 65, 81, 0.8) 50%,
+    rgba(31, 41, 55, 0.6) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite ease-in-out;
+  border-radius: 8px;
+}
+
+/* Header skeleton */
+.skeleton-header {
+  width: 300px;
+  height: 60px;
+  margin-bottom: 2rem;
+}
+
+/* Content skeletons */
+.skeleton-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-width: 600px;
+}
+
+.skeleton-line {
+  height: 20px;
+  width: 100%;
+}
+
+.skeleton-line.medium {
+  width: 75%;
+}
+
+.skeleton-line.short {
+  width: 50%;
+}
+
+/* Avatar skeleton */
+.skeleton-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+}
+
+/* Projects grid skeleton */
+.projects-skeleton {
+  gap: 3rem;
+}
+
+.skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  width: 100%;
+}
+
+.skeleton-card {
+  height: 250px;
+  border-radius: 12px;
+}
+
+/* Skills skeleton */
+.skeleton-skills {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  width: 100%;
+  max-width: 800px;
+}
+
+.skeleton-skill {
+  height: 80px;
+  border-radius: 8px;
+}
+
+/* Form skeleton */
+.skeleton-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 500px;
+}
+
+.skeleton-input {
+  height: 50px;
+}
+
+.skeleton-textarea {
+  height: 120px;
+}
+
+.skeleton-button {
+  height: 50px;
+  width: 150px;
+  align-self: center;
+}
+
+/* Footer skeleton */
+.footer-skeleton {
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.skeleton-footer-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* ✅ MÓVIL: Skeletons más simples */
+@media (max-width: 768px) {
+  .section-skeleton {
+    padding: 1rem;
+    gap: 1.5rem;
+  }
+  
+  .skeleton-header {
+    width: 250px;
+    height: 40px;
+  }
+  
+  .skeleton-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .skeleton-skills {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ✅ PERFORMANCE: Reducir animación en móvil */
+@media (max-width: 480px) {
+  @keyframes shimmer {
+    0% { opacity: 0.6; }
+    50% { opacity: 0.8; }
+    100% { opacity: 0.6; }
+  }
+  
+  .skeleton-base {
+    animation: shimmer 3s infinite ease-in-out;
+  }
+}
+
+/* ✅ ACCESSIBILITY */
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-base {
+    animation: none;
+    background: rgba(31, 41, 55, 0.7);
+  }
+}

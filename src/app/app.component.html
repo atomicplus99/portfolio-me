@@ -1,7 +1,6 @@
 <app-galaxy></app-galaxy>
 
 <div class="portfolio-container">
-  <!-- ✅ CAMBIO: Quitar *ngIf, usar clase condicional -->
   <app-elegant-loader 
     [class.loader-hidden]="!loaderService.state().isLoading"
     [logoText]="'@duque.dev'" 
@@ -10,7 +9,6 @@
   
   <app-particles class="particles-layer"></app-particles>
   
-<!-- ✅ SIMPLIFICADO: Solo cambiar el loader, content normal -->
   <div class="content-wrapper">
     <app-header class="header-fixed"></app-header>
     
@@ -19,29 +17,83 @@
         <app-hero></app-hero>
       </section>
       
-      <section id="about" class="section-container" *ngIf="loadedSections.about">
-        <app-about></app-about>
+      <!-- ✅ ABOUT: Skeleton mientras carga -->
+      <section id="about" class="section-container">
+        <app-about *ngIf="loadedSections.about"></app-about>
+        <div class="section-skeleton" *ngIf="!loadedSections.about">
+          <div class="skeleton-header"></div>
+          <div class="skeleton-content">
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line short"></div>
+          </div>
+        </div>
       </section>
       
-      <section id="about-me" class="section-container" *ngIf="loadedSections.aboutMe">
-        <app-about-me></app-about-me>
+      <!-- ✅ ABOUT-ME: Skeleton mientras carga -->
+      <section id="about-me" class="section-container">
+        <app-about-me *ngIf="loadedSections.aboutMe"></app-about-me>
+        <div class="section-skeleton" *ngIf="!loadedSections.aboutMe">
+          <div class="skeleton-avatar"></div>
+          <div class="skeleton-content">
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line medium"></div>
+          </div>
+        </div>
       </section>
       
-      <section id="projects" class="section-container" *ngIf="loadedSections.projects">
-        <app-projects></app-projects>
+      <!-- ✅ PROJECTS: Skeleton mientras carga -->
+      <section id="projects" class="section-container">
+        <app-projects *ngIf="loadedSections.projects"></app-projects>
+        <div class="section-skeleton projects-skeleton" *ngIf="!loadedSections.projects">
+          <div class="skeleton-header"></div>
+          <div class="skeleton-grid">
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+          </div>
+        </div>
       </section>
       
-      <section id="skills" class="section-container" *ngIf="loadedSections.skills">
-        <app-skills></app-skills>
+      <!-- ✅ SKILLS: Skeleton mientras carga -->
+      <section id="skills" class="section-container">
+        <app-skills *ngIf="loadedSections.skills"></app-skills>
+        <div class="section-skeleton" *ngIf="!loadedSections.skills">
+          <div class="skeleton-header"></div>
+          <div class="skeleton-skills">
+            <div class="skeleton-skill"></div>
+            <div class="skeleton-skill"></div>
+            <div class="skeleton-skill"></div>
+            <div class="skeleton-skill"></div>
+          </div>
+        </div>
       </section>
       
-      <section id="contact" class="section-container" *ngIf="loadedSections.contact">
-        <app-contact></app-contact>
+      <!-- ✅ CONTACT: Skeleton mientras carga -->
+      <section id="contact" class="section-container">
+        <app-contact *ngIf="loadedSections.contact"></app-contact>
+        <div class="section-skeleton" *ngIf="!loadedSections.contact">
+          <div class="skeleton-header"></div>
+          <div class="skeleton-form">
+            <div class="skeleton-input"></div>
+            <div class="skeleton-input"></div>
+            <div class="skeleton-textarea"></div>
+            <div class="skeleton-button"></div>
+          </div>
+        </div>
       </section>
       
       <div class="section-divider" *ngIf="loadedSections.footer"></div>
       
+      <!-- ✅ FOOTER: Skeleton mientras carga -->
       <app-footer *ngIf="loadedSections.footer" class="footer-section"></app-footer>
+      <div class="footer-skeleton" *ngIf="!loadedSections.footer">
+        <div class="skeleton-footer-content">
+          <div class="skeleton-line short"></div>
+          <div class="skeleton-line medium"></div>
+        </div>
+      </div>
     </main>
   </div>
 </div>
