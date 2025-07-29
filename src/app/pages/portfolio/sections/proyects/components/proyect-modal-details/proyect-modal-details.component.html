@@ -314,45 +314,6 @@
 
     </main>
 
-    <!-- ✅ BOTONES DE SCROLL - POSICIÓN CORRECTA: DENTRO DE modal-content PERO FUERA DE modal-body -->
-    @if (showScrollButtons()) {
-      <div class="scroll-controls">
-        <!-- Botón Scroll Up -->
-        <button
-          class="scroll-button scroll-up"
-          [class.active]="isScrollingUpState()"
-          [disabled]="!canScrollUpState()"
-          (mousedown)="onScrollStart('up')"
-          (mouseup)="onScrollStop()"
-          (mouseleave)="onScrollStop()"
-          (touchstart)="$event.preventDefault(); onScrollStart('up')"
-          (touchend)="$event.preventDefault(); onScrollStop()"
-          [attr.aria-label]="getAriaLabel('scroll-up')"
-          type="button">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="m18 15-6-6-6 6"/>
-          </svg>
-        </button>
-
-        <!-- Botón Scroll Down -->
-        <button
-          class="scroll-button scroll-down"
-          [class.active]="isScrollingDownState()"
-          [disabled]="!canScrollDownState()"
-          (mousedown)="onScrollStart('down')"
-          (mouseup)="onScrollStop()"
-          (mouseleave)="onScrollStop()"
-          (touchstart)="$event.preventDefault(); onScrollStart('down')"
-          (touchend)="$event.preventDefault(); onScrollStop()"
-          [attr.aria-label]="getAriaLabel('scroll-down')"
-          type="button">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="m6 9 6 6 6-6"/>
-          </svg>
-        </button>
-      </div>
-    }
-
     
     <footer class="modal-footer" [class.mobile]="isMobile">
       <!-- <button class="action-btn secondary" 
@@ -460,3 +421,4 @@
     {{ activeTab() === 'gallery' ? 'Imagen ' + (currentGalleryIndex() + 1) + ' de ' + currentProjectDetails()!.gallery.length : '' }}
   </span>
 </div>
+

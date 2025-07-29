@@ -15,7 +15,7 @@ export class LenisScrollService implements OnDestroy {
         duration: 1.2,
         easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smooth: true,
-        smoothTouch: false,
+        smoothTouch: true, // ← CAMBIAR A TRUE para interceptar touch
         direction: 'vertical'
       } as any);
 
@@ -27,17 +27,23 @@ export class LenisScrollService implements OnDestroy {
       this.animationId = requestAnimationFrame(raf);
 
     } catch (error) {
+      console.error('Error initializing Lenis:', error);
     }
   }
 
-  scrollTo(target: string | HTMLElement | number, options: any = {}): void {
-    if (this.lenis) {
-      this.lenis.scrollTo(target, {
-        duration: 1.5,
-        easing: (t: number) => t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1,
-        ...options
-      });
-    }
+  scrollTo(target: string | HTMLElement | number, options: any = {}): Promise<void> {
+    return new Promise((resolve) => {
+      if (this.lenis) {
+        this.lenis.scrollTo(target, {
+          duration: 1.5,
+          easing: (t: number) => t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1,
+          onComplete: () => resolve(),
+          ...options
+        });
+      } else {
+        resolve();
+      }
+    });
   }
 
   scrollToTop(): void {
@@ -60,7 +66,6 @@ export class LenisScrollService implements OnDestroy {
     
     this.lenis?.destroy();
     this.lenis = null;
-    
   }
 
   onScroll(callback: (lenis: any) => void): void {

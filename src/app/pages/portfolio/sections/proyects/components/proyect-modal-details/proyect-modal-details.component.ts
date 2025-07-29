@@ -40,13 +40,6 @@ export class ProjectDetailsModalComponent implements OnDestroy {
   private readonly touchX = signal(0);
   private readonly touchY = signal(0);
 
-  // NUEVAS PROPIEDADES PARA SCROLL MANUAL
-  private readonly isScrollingUp = signal(false);
-  private readonly isScrollingDown = signal(false);
-  private readonly canScrollUp = signal(false);
-  private readonly canScrollDown = signal(true);
-  private scrollInterval: any = null;
-
   protected readonly isModalVisible = computed(() => this.modalVisible());
   protected readonly currentProject = computed(() => this.selectedProject());
   protected readonly allProjects = computed(() => this.projectsList());
@@ -57,13 +50,6 @@ export class ProjectDetailsModalComponent implements OnDestroy {
   protected readonly isVideoPlaying = computed(() => this.videoPlaying());
   protected readonly isLoading = computed(() => this.loadingState());
   protected readonly viewportSize = computed(() => this.screenSize());
-
-  // COMPUTED PARA BOTONES DE SCROLL
-  protected readonly isScrollingUpState = computed(() => this.isScrollingUp());
-  protected readonly isScrollingDownState = computed(() => this.isScrollingDown());
-  protected readonly canScrollUpState = computed(() => this.canScrollUp());
-  protected readonly canScrollDownState = computed(() => this.canScrollDown());
-  protected readonly showScrollButtons = computed(() => this.isMobileDevice() && this.isModalVisible());
 
   protected readonly currentProjectDetails = computed(() => {
     const project = this.currentProject();
@@ -151,9 +137,9 @@ export class ProjectDetailsModalComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.onScrollStop();
-    if (this.scrollInterval) {
-      clearInterval(this.scrollInterval);
+    const modalBody = document.querySelector('.modal-body') as HTMLElement;
+    if (modalBody) {
+      modalBody.removeEventListener('wheel', this.handleWheel);
     }
   }
 
@@ -162,93 +148,16 @@ export class ProjectDetailsModalComponent implements OnDestroy {
     this.galleryIndex.set(0);
     this.lightboxVisible.set(false);
     this.videoPlaying.set(false);
-    this.onScrollStop();
   }
 
-  private enableModalWheelScroll(): void {
-    if (typeof document === 'undefined') return;
-
-    setTimeout(() => {
-      const modalBody = document.querySelector('.modal-body') as HTMLElement;
-      if (modalBody) {
-        modalBody.addEventListener('wheel', (e) => {
-          e.preventDefault();
-          modalBody.scrollTop += e.deltaY;
-          this.checkScrollability();
-        }, { passive: false });
-      }
-    }, 1);
-  }
-
-  // MÉTODOS PARA SCROLL MANUAL
-  private checkScrollability(): void {
-    setTimeout(() => {
-      const modalBody = document.querySelector('.modal-body') as HTMLElement;
-      if (modalBody) {
-        const { scrollTop, scrollHeight, clientHeight } = modalBody;
-        this.canScrollUp.set(scrollTop > 0);
-        this.canScrollDown.set(scrollTop < scrollHeight - clientHeight - 1);
-      }
-    }, 50);
-  }
-
-  private scrollContent(direction: 'up' | 'down'): void {
-    const modalBody = document.querySelector('.modal-body') as HTMLElement;
-    if (modalBody) {
-      const scrollAmount = direction === 'up' ? -15 : 15; // ✅ AUMENTADO: de 4 a 8 píxeles por frame
-      modalBody.scrollTop += scrollAmount;
-      this.checkScrollability();
-    }
-  }
-
-  onScrollStart(direction: 'up' | 'down'): void {
-    if (direction === 'up' && !this.canScrollUpState()) return;
-    if (direction === 'down' && !this.canScrollDownState()) return;
-
-    // Marcar como scrolling
-    if (direction === 'up') {
-      this.isScrollingUp.set(true);
-    } else {
-      this.isScrollingDown.set(true);
-    }
-
-    // Scroll inmediato
-    this.scrollContent(direction);
-
-    // Scroll continuo cada 12ms (~83fps) - MÁS RÁPIDO
-    this.scrollInterval = setInterval(() => {
-      this.scrollContent(direction);
-      
-      // Verificar si aún se puede hacer scroll
-      if (direction === 'up' && !this.canScrollUpState()) {
-        this.onScrollStop();
-      }
-      if (direction === 'down' && !this.canScrollDownState()) {
-        this.onScrollStop();
-      }
-    }, 12); // ✅ REDUCIDO: de 16ms a 12ms = más frames por segundo
-  }
-
-  onScrollStop(): void {
-    this.isScrollingUp.set(false);
-    this.isScrollingDown.set(false);
-    
-    if (this.scrollInterval) {
-      clearInterval(this.scrollInterval);
-      this.scrollInterval = null;
-    }
-  }
 
   private setupEffects(): void {
     effect(() => {
       if (this.isModalVisible()) {
-        document.body.style.overflow = 'hidden';
-        this.enableModalWheelScroll();
-        // Verificar scroll después de que se renderice el contenido
-        setTimeout(() => this.checkScrollability(), 100);
+         document.body.style.overflow = 'hidden';
+         this.enableModalWheelScroll(); 
       } else {
         document.body.style.overflow = '';
-        this.onScrollStop(); // Limpiar scroll al cerrar
       }
     });
 
@@ -257,22 +166,11 @@ export class ProjectDetailsModalComponent implements OnDestroy {
       if (tab !== 'gallery') {
         this.videoPlaying.set(false);
       }
-      // Verificar scroll cuando cambie de tab
-      setTimeout(() => this.checkScrollability(), 100);
     });
 
     effect(() => {
       if (this.isMobileDevice()) {
         this.screenSize.set('mobile');
-      }
-    });
-
-    effect(() => {
-      const project = this.currentProject();
-      const visible = this.isModalVisible();
-      if (project && visible) {
-        // Verificar scroll cuando cambie proyecto
-        setTimeout(() => this.checkScrollability(), 100);
       }
     });
   }
@@ -334,17 +232,11 @@ export class ProjectDetailsModalComponent implements OnDestroy {
   onTouchStart(event: TouchEvent): void {
     if (!this.isMobileDevice()) return;
 
-    // Solo capturar touch en header o footer (no en modal-body)
+    // Solo capturar touch en header para navegación entre proyectos
     const target = event.target as HTMLElement;
     const isInHeader = target.closest('.modal-header');
-    const isInFooter = target.closest('.modal-footer');
-    const isInModalBody = target.closest('.modal-body');
-    const isScrollButton = target.closest('.scroll-button');
-    
-    // Si está en modal-body o es botón de scroll, no interceptar
-    if ((isInModalBody && !isInHeader && !isInFooter) || isScrollButton) {
-      return;
-    }
+
+    if (!isInHeader) return;
 
     const touch = event.touches[0];
     this.touchX.set(touch.clientX);
@@ -355,17 +247,11 @@ export class ProjectDetailsModalComponent implements OnDestroy {
   onTouchEnd(event: TouchEvent): void {
     if (!this.isMobileDevice()) return;
 
-    // Solo procesar touch en header o footer
+    // Solo procesar touch en header para navegación entre proyectos
     const target = event.target as HTMLElement;
     const isInHeader = target.closest('.modal-header');
-    const isInFooter = target.closest('.modal-footer');
-    const isInModalBody = target.closest('.modal-body');
-    const isScrollButton = target.closest('.scroll-button');
-    
-    // Si está en modal-body o es botón de scroll, no interceptar
-    if ((isInModalBody && !isInHeader && !isInFooter) || isScrollButton) {
-      return;
-    }
+
+    if (!isInHeader) return;
 
     const touch = event.changedTouches[0];
     const deltaX = touch.clientX - this.touchX();
@@ -381,9 +267,46 @@ export class ProjectDetailsModalComponent implements OnDestroy {
     }
   }
 
+  private enableModalWheelScroll(): void {
+  setTimeout(() => {
+    const modalBody = document.querySelector('.modal-body') as HTMLElement;
+    if (modalBody) {
+      // Desktop: wheel scroll
+      modalBody.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        modalBody.scrollTop += e.deltaY;
+      }, { passive: false });
+
+      // Mobile: touch scroll MEJORADO
+      let startY = 0;
+      let isScrolling = false;
+
+      modalBody.addEventListener('touchstart', (e) => {
+        startY = e.touches[0].clientY;
+        isScrolling = false;
+      }, { passive: true });
+
+      modalBody.addEventListener('touchmove', (e) => {
+        if (!isScrolling) {
+          isScrolling = true;
+        }
+        
+        const currentY = e.touches[0].clientY;
+        const deltaY = startY - currentY;
+        
+        modalBody.scrollTop += deltaY * 100.5; // Multiplicador para suavidad
+        startY = currentY;
+      }, { passive: true });
+
+      modalBody.addEventListener('touchend', () => {
+        isScrolling = false;
+      }, { passive: true });
+    }
+  }, 100);
+}
+
   onClose(): void {
     this.modalVisible.set(false);
-    this.onScrollStop(); // Limpiar scroll
     this.closed.emit();
 
     const modalBody = document.querySelector('.modal-body') as HTMLElement;
@@ -396,7 +319,6 @@ export class ProjectDetailsModalComponent implements OnDestroy {
     e.preventDefault();
     const target = e.currentTarget as HTMLElement;
     target.scrollTop += e.deltaY;
-    this.checkScrollability();
   };
 
   onNextProject(): void {
@@ -430,7 +352,6 @@ export class ProjectDetailsModalComponent implements OnDestroy {
       const modalBody = document.querySelector('.modal-body');
       if (modalBody) {
         modalBody.scrollTop = 0;
-        this.checkScrollability();
       }
     }, 100);
   }
@@ -593,10 +514,6 @@ export class ProjectDetailsModalComponent implements OnDestroy {
         return `Imagen anterior. ${this.hasGalleryPrevious() ? 'Disponible' : 'No disponible'}`;
       case 'tab':
         return `Pestaña ${data}. ${this.activeTab() === data ? 'Activa' : 'Inactiva'}`;
-      case 'scroll-up':
-        return 'Desplazar hacia arriba';
-      case 'scroll-down':
-        return 'Desplazar hacia abajo';
       default:
         return '';
     }

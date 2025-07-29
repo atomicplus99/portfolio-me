@@ -224,16 +224,14 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     if (!project) return;
 
     try {
-      // ✅ SIEMPRE hacer scroll a la sección (sin verificar posición)
       await this.scrollToProjectsSection();
 
-      // ✅ DESPUÉS: Abrir modal instantáneamente
+      // Ahora SÍ funciona porque Lenis intercepta touch
       this.lenisService.stop();
+
       this.modalProject.set(project);
       this.showDetailModal.set(true);
-
     } catch (error) {
-      // En caso de error, abrir modal de todas formas
       this.lenisService.stop();
       this.modalProject.set(project);
       this.showDetailModal.set(true);
@@ -251,18 +249,15 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   }
 
   onModalClosed(): void {
-    // Cerrar modal
-    this.showDetailModal.set(false);
-    this.modalProject.set(null);
+  this.showDetailModal.set(false);
+  this.modalProject.set(null);
 
-    // Restaurar scroll (mantener posición actual)
-    this.lenisService.start();
+  this.lenisService.start();
 
-    // Vibración en móvil
-    if (this.isMobile() && this.mobileService.getVibrationSupported()) {
-      this.mobileService.vibrate(20);
-    }
+  if (this.isMobile() && this.mobileService.getVibrationSupported()) {
+    this.mobileService.vibrate(20);
   }
+}
 
   onModalProjectChanged(project: Project): void {
     // Solo cambiar proyecto, NO afectar el scroll

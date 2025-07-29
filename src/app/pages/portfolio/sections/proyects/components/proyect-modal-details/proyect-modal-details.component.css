@@ -20,11 +20,11 @@
 }
 
 .modal-overlay.modal-mobile {
-  padding: 12px;
-  align-items: center; /* CAMBIADO: de flex-start a center - CENTRAR VERTICALMENTE */
-  justify-content: center; /* AGREGADO: para centrar completamente */
-  overflow-y: auto; /* Permitir scroll en el overlay */
-  -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
+  padding: 16px;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Modal Content */
@@ -44,6 +44,7 @@
   transition: transform 0.3s ease;
   overflow: hidden;
   margin: auto;
+  position: relative;
 }
 
 .modal-overlay.modal-visible .modal-content {
@@ -51,15 +52,15 @@
 }
 
 .modal-content.mobile {
-  width: 85vw; /* CAMBIADO: de 92vw a 85vw */
-  height: auto; /* Auto height para permitir contenido dinámico */
-  min-height: 50vh; /* CAMBIADO: de 60vh a 50vh - MÁS PEQUEÑO VERTICALMENTE */
-  max-height: none; /* Sin límite máximo para permitir scroll */
-  max-width: 85vw; /* CAMBIADO: de 92vw a 85vw */
+  width: 85vw;
+  height: auto;
+  min-height: 50vh;
+  max-height: none;
+  max-width: 85vw;
   border-radius: 16px;
   transform: translateY(20px);
-  margin: 12px auto; /* Más margen para crear espacio visible */
-  overflow: visible; /* Permitir scroll */
+  margin: 12px auto;
+  overflow: visible;
 }
 
 .modal-overlay.modal-visible .modal-content.mobile {
@@ -258,16 +259,17 @@
   font-size: 0.875rem;
 }
 
-/* Body con scroll mejorado */
+/* Modal Body - Scroll Natural */
 .modal-body {
   flex: 1;
-  overflow-y: auto; /* Scroll vertical habilitado */
-  overflow-x: hidden; /* Evitar scroll horizontal */
+  overflow-y: auto;
+  overflow-x: hidden;
   position: relative;
   min-height: 0;
-  -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
-  scrollbar-width: thin; /* Firefox scroll delgado */
-  scrollbar-color: rgba(139, 92, 246, 0.5) rgba(55, 65, 81, 0.3); /* Firefox colores */
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(139, 92, 246, 0.5) rgba(55, 65, 81, 0.3);
+  scroll-behavior: smooth;
 }
 
 /* Webkit scrollbar styling */
@@ -415,7 +417,7 @@
   transform: translateY(-1px);
 }
 
-/* Tech Stack with Colors */
+/* Tech Stack */
 .tech-stack-section {
   margin-bottom: 24px;
 }
@@ -442,7 +444,7 @@
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
-/* Frontend Frameworks */
+/* Tech Colors - Solo algunos principales */
 .tech-item.tech-angular { 
   background: linear-gradient(135deg, rgba(221, 0, 49, 0.1), rgba(221, 0, 49, 0.05));
   border-color: rgba(221, 0, 49, 0.3);
@@ -455,31 +457,6 @@
   color: #61dafb;
 }
 
-.tech-item.tech-vue { 
-  background: linear-gradient(135deg, rgba(79, 192, 141, 0.1), rgba(79, 192, 141, 0.05));
-  border-color: rgba(79, 192, 141, 0.3);
-  color: #4fc08d;
-}
-
-.tech-item.tech-svelte { 
-  background: linear-gradient(135deg, rgba(255, 62, 0, 0.1), rgba(255, 62, 0, 0.05));
-  border-color: rgba(255, 62, 0, 0.3);
-  color: #ff3e00;
-}
-
-.tech-item.tech-nextjs { 
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.05));
-  border-color: rgba(0, 0, 0, 0.3);
-  color: #000000;
-}
-
-.tech-item.tech-nuxt { 
-  background: linear-gradient(135deg, rgba(0, 196, 154, 0.1), rgba(0, 196, 154, 0.05));
-  border-color: rgba(0, 196, 154, 0.3);
-  color: #00c49a;
-}
-
-/* Languages */
 .tech-item.tech-typescript { 
   background: linear-gradient(135deg, rgba(49, 120, 198, 0.1), rgba(49, 120, 198, 0.05));
   border-color: rgba(49, 120, 198, 0.3);
@@ -492,443 +469,12 @@
   color: #f7df1e;
 }
 
-.tech-item.tech-python { 
-  background: linear-gradient(135deg, rgba(55, 118, 171, 0.1), rgba(55, 118, 171, 0.05));
-  border-color: rgba(55, 118, 171, 0.3);
-  color: #3776ab;
-}
-
-.tech-item.tech-java { 
-  background: linear-gradient(135deg, rgba(237, 139, 0, 0.1), rgba(237, 139, 0, 0.05));
-  border-color: rgba(237, 139, 0, 0.3);
-  color: #ed8b00;
-}
-
-.tech-item.tech-php { 
-  background: linear-gradient(135deg, rgba(119, 123, 180, 0.1), rgba(119, 123, 180, 0.05));
-  border-color: rgba(119, 123, 180, 0.3);
-  color: #777bb4;
-}
-
-.tech-item.tech-dart { 
-  background: linear-gradient(135deg, rgba(0, 180, 216, 0.1), rgba(0, 180, 216, 0.05));
-  border-color: rgba(0, 180, 216, 0.3);
-  color: #00b4d8;
-}
-
-.tech-item.tech-csharp { 
-  background: linear-gradient(135deg, rgba(93, 44, 137, 0.1), rgba(93, 44, 137, 0.05));
-  border-color: rgba(93, 44, 137, 0.3);
-  color: #5d2c89;
-}
-
-.tech-item.tech-kotlin { 
-  background: linear-gradient(135deg, rgba(124, 98, 238, 0.1), rgba(124, 98, 238, 0.05));
-  border-color: rgba(124, 98, 238, 0.3);
-  color: #7c62ee;
-}
-
-.tech-item.tech-swift { 
-  background: linear-gradient(135deg, rgba(250, 95, 55, 0.1), rgba(250, 95, 55, 0.05));
-  border-color: rgba(250, 95, 55, 0.3);
-  color: #fa5f37;
-}
-
-.tech-item.tech-go { 
-  background: linear-gradient(135deg, rgba(0, 173, 216, 0.1), rgba(0, 173, 216, 0.05));
-  border-color: rgba(0, 173, 216, 0.3);
-  color: #00add8;
-}
-
-.tech-item.tech-rust { 
-  background: linear-gradient(135deg, rgba(206, 61, 0, 0.1), rgba(206, 61, 0, 0.05));
-  border-color: rgba(206, 61, 0, 0.3);
-  color: #ce3d00;
-}
-
-/* Backend Frameworks */
 .tech-item.tech-nodejs { 
   background: linear-gradient(135deg, rgba(104, 160, 99, 0.1), rgba(104, 160, 99, 0.05));
   border-color: rgba(104, 160, 99, 0.3);
   color: #68a063;
 }
 
-.tech-item.tech-nestjs { 
-  background: linear-gradient(135deg, rgba(224, 35, 78, 0.1), rgba(224, 35, 78, 0.05));
-  border-color: rgba(224, 35, 78, 0.3);
-  color: #e0234e;
-}
-
-.tech-item.tech-express { 
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.05));
-  border-color: rgba(0, 0, 0, 0.3);
-  color: #000000;
-}
-
-.tech-item.tech-laravel { 
-  background: linear-gradient(135deg, rgba(255, 45, 32, 0.1), rgba(255, 45, 32, 0.05));
-  border-color: rgba(255, 45, 32, 0.3);
-  color: #ff2d20;
-}
-
-.tech-item.tech-django { 
-  background: linear-gradient(135deg, rgba(9, 46, 32, 0.1), rgba(9, 46, 32, 0.05));
-  border-color: rgba(9, 46, 32, 0.3);
-  color: #092e20;
-}
-
-.tech-item.tech-flask { 
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.05));
-  border-color: rgba(0, 0, 0, 0.3);
-  color: #000000;
-}
-
-.tech-item.tech-spring { 
-  background: linear-gradient(135deg, rgba(109, 179, 63, 0.1), rgba(109, 179, 63, 0.05));
-  border-color: rgba(109, 179, 63, 0.3);
-  color: #6db33f;
-}
-
-.tech-item.tech-dotnet { 
-  background: linear-gradient(135deg, rgba(93, 44, 137, 0.1), rgba(93, 44, 137, 0.05));
-  border-color: rgba(93, 44, 137, 0.3);
-  color: #5d2c89;
-}
-
-.tech-item.tech-fastapi { 
-  background: linear-gradient(135deg, rgba(0, 150, 136, 0.1), rgba(0, 150, 136, 0.05));
-  border-color: rgba(0, 150, 136, 0.3);
-  color: #009688;
-}
-
-.tech-item.tech-backend { 
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
-  border-color: rgba(16, 185, 129, 0.3);
-  color: #10b981;
-}
-
-/* Databases */
-.tech-item.tech-mysql { 
-  background: linear-gradient(135deg, rgba(68, 121, 161, 0.1), rgba(68, 121, 161, 0.05));
-  border-color: rgba(68, 121, 161, 0.3);
-  color: #4479a1;
-}
-
-.tech-item.tech-postgresql { 
-  background: linear-gradient(135deg, rgba(51, 103, 145, 0.1), rgba(51, 103, 145, 0.05));
-  border-color: rgba(51, 103, 145, 0.3);
-  color: #336791;
-}
-
-.tech-item.tech-mongodb { 
-  background: linear-gradient(135deg, rgba(71, 162, 72, 0.1), rgba(71, 162, 72, 0.05));
-  border-color: rgba(71, 162, 72, 0.3);
-  color: #47a248;
-}
-
-.tech-item.tech-firebase { 
-  background: linear-gradient(135deg, rgba(255, 202, 40, 0.1), rgba(255, 202, 40, 0.05));
-  border-color: rgba(255, 202, 40, 0.3);
-  color: #ffca28;
-}
-
-.tech-item.tech-redis { 
-  background: linear-gradient(135deg, rgba(220, 47, 2, 0.1), rgba(220, 47, 2, 0.05));
-  border-color: rgba(220, 47, 2, 0.3);
-  color: #dc2f02;
-}
-
-.tech-item.tech-sqlite { 
-  background: linear-gradient(135deg, rgba(3, 57, 108, 0.1), rgba(3, 57, 108, 0.05));
-  border-color: rgba(3, 57, 108, 0.3);
-  color: #03396c;
-}
-
-.tech-item.tech-oracle { 
-  background: linear-gradient(135deg, rgba(242, 103, 34, 0.1), rgba(242, 103, 34, 0.05));
-  border-color: rgba(242, 103, 34, 0.3);
-  color: #f26722;
-}
-
-.tech-item.tech-supabase { 
-  background: linear-gradient(135deg, rgba(62, 207, 142, 0.1), rgba(62, 207, 142, 0.05));
-  border-color: rgba(62, 207, 142, 0.3);
-  color: #3ecf8e;
-}
-
-/* Office & Automation */
-.tech-item.tech-excel { 
-  background: linear-gradient(135deg, rgba(16, 124, 65, 0.1), rgba(16, 124, 65, 0.05));
-  border-color: rgba(16, 124, 65, 0.3);
-  color: #107c41;
-}
-
-.tech-item.tech-vba { 
-  background: linear-gradient(135deg, rgba(68, 114, 196, 0.1), rgba(68, 114, 196, 0.05));
-  border-color: rgba(68, 114, 196, 0.3);
-  color: #4472c4;
-}
-
-.tech-item.tech-powerbi { 
-  background: linear-gradient(135deg, rgba(242, 201, 76, 0.1), rgba(242, 201, 76, 0.05));
-  border-color: rgba(242, 201, 76, 0.3);
-  color: #f2c94c;
-}
-
-.tech-item.tech-office { 
-  background: linear-gradient(135deg, rgba(217, 83, 79, 0.1), rgba(217, 83, 79, 0.05));
-  border-color: rgba(217, 83, 79, 0.3);
-  color: #d9534f;
-}
-
-.tech-item.tech-sharepoint { 
-  background: linear-gradient(135deg, rgba(3, 120, 124, 0.1), rgba(3, 120, 124, 0.05));
-  border-color: rgba(3, 120, 124, 0.3);
-  color: #03787c;
-}
-
-/* Styling & CSS */
-.tech-item.tech-tailwind { 
-  background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(6, 182, 212, 0.05));
-  border-color: rgba(6, 182, 212, 0.3);
-  color: #06b6d4;
-}
-
-.tech-item.tech-bootstrap { 
-  background: linear-gradient(135deg, rgba(121, 82, 179, 0.1), rgba(121, 82, 179, 0.05));
-  border-color: rgba(121, 82, 179, 0.3);
-  color: #7952b3;
-}
-
-.tech-item.tech-scss { 
-  background: linear-gradient(135deg, rgba(207, 100, 154, 0.1), rgba(207, 100, 154, 0.05));
-  border-color: rgba(207, 100, 154, 0.3);
-  color: #cf649a;
-}
-
-.tech-item.tech-css { 
-  background: linear-gradient(135deg, rgba(21, 114, 182, 0.1), rgba(21, 114, 182, 0.05));
-  border-color: rgba(21, 114, 182, 0.3);
-  color: #1572b6;
-}
-
-.tech-item.tech-styled-components { 
-  background: linear-gradient(135deg, rgba(219, 112, 147, 0.1), rgba(219, 112, 147, 0.05));
-  border-color: rgba(219, 112, 147, 0.3);
-  color: #db7093;
-}
-
-.tech-item.tech-chakra { 
-  background: linear-gradient(135deg, rgba(56, 178, 172, 0.1), rgba(56, 178, 172, 0.05));
-  border-color: rgba(56, 178, 172, 0.3);
-  color: #38b2ac;
-}
-
-.tech-item.tech-material { 
-  background: linear-gradient(135deg, rgba(33, 150, 243, 0.1), rgba(33, 150, 243, 0.05));
-  border-color: rgba(33, 150, 243, 0.3);
-  color: #2196f3;
-}
-
-/* Cloud & DevOps */
-.tech-item.tech-docker { 
-  background: linear-gradient(135deg, rgba(36, 150, 237, 0.1), rgba(36, 150, 237, 0.05));
-  border-color: rgba(36, 150, 237, 0.3);
-  color: #2496ed;
-}
-
-.tech-item.tech-kubernetes { 
-  background: linear-gradient(135deg, rgba(50, 108, 229, 0.1), rgba(50, 108, 229, 0.05));
-  border-color: rgba(50, 108, 229, 0.3);
-  color: #326ce5;
-}
-
-.tech-item.tech-aws { 
-  background: linear-gradient(135deg, rgba(255, 153, 0, 0.1), rgba(255, 153, 0, 0.05));
-  border-color: rgba(255, 153, 0, 0.3);
-  color: #ff9900;
-}
-
-.tech-item.tech-azure { 
-  background: linear-gradient(135deg, rgba(0, 120, 215, 0.1), rgba(0, 120, 215, 0.05));
-  border-color: rgba(0, 120, 215, 0.3);
-  color: #0078d7;
-}
-
-.tech-item.tech-gcp { 
-  background: linear-gradient(135deg, rgba(66, 133, 244, 0.1), rgba(66, 133, 244, 0.05));
-  border-color: rgba(66, 133, 244, 0.3);
-  color: #4285f4;
-}
-
-.tech-item.tech-vercel { 
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.05));
-  border-color: rgba(0, 0, 0, 0.3);
-  color: #000000;
-}
-
-.tech-item.tech-netlify { 
-  background: linear-gradient(135deg, rgba(0, 173, 181, 0.1), rgba(0, 173, 181, 0.05));
-  border-color: rgba(0, 173, 181, 0.3);
-  color: #00adb5;
-}
-
-.tech-item.tech-heroku { 
-  background: linear-gradient(135deg, rgba(121, 62, 181, 0.1), rgba(121, 62, 181, 0.05));
-  border-color: rgba(121, 62, 181, 0.3);
-  color: #793eb5;
-}
-
-/* Version Control & Tools */
-.tech-item.tech-git { 
-  background: linear-gradient(135deg, rgba(240, 80, 50, 0.1), rgba(240, 80, 50, 0.05));
-  border-color: rgba(240, 80, 50, 0.3);
-  color: #f05032;
-}
-
-.tech-item.tech-github { 
-  background: linear-gradient(135deg, rgba(36, 41, 47, 0.1), rgba(36, 41, 47, 0.05));
-  border-color: rgba(36, 41, 47, 0.3);
-  color: #24292f;
-}
-
-.tech-item.tech-gitlab { 
-  background: linear-gradient(135deg, rgba(252, 109, 38, 0.1), rgba(252, 109, 38, 0.05));
-  border-color: rgba(252, 109, 38, 0.3);
-  color: #fc6d26;
-}
-
-.tech-item.tech-jenkins { 
-  background: linear-gradient(135deg, rgba(213, 85, 85, 0.1), rgba(213, 85, 85, 0.05));
-  border-color: rgba(213, 85, 85, 0.3);
-  color: #d55555;
-}
-
-.tech-item.tech-webpack { 
-  background: linear-gradient(135deg, rgba(139, 205, 251, 0.1), rgba(139, 205, 251, 0.05));
-  border-color: rgba(139, 205, 251, 0.3);
-  color: #8bcdfb;
-}
-
-.tech-item.tech-vite { 
-  background: linear-gradient(135deg, rgba(100, 108, 255, 0.1), rgba(100, 108, 255, 0.05));
-  border-color: rgba(100, 108, 255, 0.3);
-  color: #646cff;
-}
-
-/* Mobile Development */
-.tech-item.tech-flutter { 
-  background: linear-gradient(135deg, rgba(2, 125, 247, 0.1), rgba(2, 125, 247, 0.05));
-  border-color: rgba(2, 125, 247, 0.3);
-  color: #027df7;
-}
-
-.tech-item.tech-react-native { 
-  background: linear-gradient(135deg, rgba(97, 218, 251, 0.1), rgba(97, 218, 251, 0.05));
-  border-color: rgba(97, 218, 251, 0.3);
-  color: #61dafb;
-}
-
-.tech-item.tech-ionic { 
-  background: linear-gradient(135deg, rgba(70, 144, 251, 0.1), rgba(70, 144, 251, 0.05));
-  border-color: rgba(70, 144, 251, 0.3);
-  color: #4690fb;
-}
-
-.tech-item.tech-android { 
-  background: linear-gradient(135deg, rgba(164, 198, 57, 0.1), rgba(164, 198, 57, 0.05));
-  border-color: rgba(164, 198, 57, 0.3);
-  color: #a4c639;
-}
-
-.tech-item.tech-ios { 
-  background: linear-gradient(135deg, rgba(0, 122, 255, 0.1), rgba(0, 122, 255, 0.05));
-  border-color: rgba(0, 122, 255, 0.3);
-  color: #007aff;
-}
-
-/* Testing */
-.tech-item.tech-jest { 
-  background: linear-gradient(135deg, rgba(196, 84, 75, 0.1), rgba(196, 84, 75, 0.05));
-  border-color: rgba(196, 84, 75, 0.3);
-  color: #c4544b;
-}
-
-.tech-item.tech-cypress { 
-  background: linear-gradient(135deg, rgba(23, 23, 23, 0.1), rgba(23, 23, 23, 0.05));
-  border-color: rgba(23, 23, 23, 0.3);
-  color: #171717;
-}
-
-.tech-item.tech-selenium { 
-  background: linear-gradient(135deg, rgba(67, 176, 42, 0.1), rgba(67, 176, 42, 0.05));
-  border-color: rgba(67, 176, 42, 0.3);
-  color: #43b02a;
-}
-
-.tech-item.tech-testing { 
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(139, 92, 246, 0.05));
-  border-color: rgba(139, 92, 246, 0.3);
-  color: #8b5cf6;
-}
-
-/* Data & Analytics */
-.tech-item.tech-tableau { 
-  background: linear-gradient(135deg, rgba(232, 123, 13, 0.1), rgba(232, 123, 13, 0.05));
-  border-color: rgba(232, 123, 13, 0.3);
-  color: #e87b0d;
-}
-
-.tech-item.tech-pandas { 
-  background: linear-gradient(135deg, rgba(21, 25, 53, 0.1), rgba(21, 25, 53, 0.05));
-  border-color: rgba(21, 25, 53, 0.3);
-  color: #151935;
-}
-
-.tech-item.tech-numpy { 
-  background: linear-gradient(135deg, rgba(19, 80, 140, 0.1), rgba(19, 80, 140, 0.05));
-  border-color: rgba(19, 80, 140, 0.3);
-  color: #13508c;
-}
-
-.tech-item.tech-jupyter { 
-  background: linear-gradient(135deg, rgba(243, 126, 28, 0.1), rgba(243, 126, 28, 0.05));
-  border-color: rgba(243, 126, 28, 0.3);
-  color: #f37e1c;
-}
-
-.tech-item.tech-r { 
-  background: linear-gradient(135deg, rgba(39, 109, 195, 0.1), rgba(39, 109, 195, 0.05));
-  border-color: rgba(39, 109, 195, 0.3);
-  color: #276dc3;
-}
-
-/* CMS & E-commerce */
-.tech-item.tech-wordpress { 
-  background: linear-gradient(135deg, rgba(33, 117, 155, 0.1), rgba(33, 117, 155, 0.05));
-  border-color: rgba(33, 117, 155, 0.3);
-  color: #21759b;
-}
-
-.tech-item.tech-shopify { 
-  background: linear-gradient(135deg, rgba(149, 189, 66, 0.1), rgba(149, 189, 66, 0.05));
-  border-color: rgba(149, 189, 66, 0.3);
-  color: #95bd42;
-}
-
-.tech-item.tech-magento { 
-  background: linear-gradient(135deg, rgba(238, 99, 26, 0.1), rgba(238, 99, 26, 0.05));
-  border-color: rgba(238, 99, 26, 0.3);
-  color: #ee631a;
-}
-
-.tech-item.tech-strapi { 
-  background: linear-gradient(135deg, rgba(78, 93, 220, 0.1), rgba(78, 93, 220, 0.05));
-  border-color: rgba(78, 93, 220, 0.3);
-  color: #4e5ddc;
-}
-
-/* Default */
 .tech-item.tech-default { 
   background: linear-gradient(135deg, rgba(107, 114, 128, 0.1), rgba(107, 114, 128, 0.05));
   border-color: rgba(107, 114, 128, 0.3);
@@ -1400,33 +946,32 @@
   }
 }
 
-/* Mobile Responsive - ARREGLADO */
+/* Mobile Responsive */
 @media (max-width: 768px) {
   .modal-overlay.modal-mobile {
-    padding: 16px; /* CAMBIADO: de 8px a 16px para más espacio */
-    align-items: center; /* CAMBIADO: de flex-start a center - CENTRAR MODAL */
-    justify-content: center; /* AGREGADO: centrar completamente */
+    padding: 16px;
+    align-items: center;
+    justify-content: center;
     overflow-y: auto; 
     -webkit-overflow-scrolling: touch; 
   }
   
   .modal-content.mobile {
-    width: 85vw; /* CAMBIADO: de 96vw a 85vw - MÁS PEQUEÑO */
+    width: 85vw;
     height: auto; 
-    min-height: 55vh; /* CAMBIADO: de 70vh a 55vh - MÁS PEQUEÑO VERTICALMENTE */
+    min-height: 55vh;
     max-height: none; 
-    max-width: 85vw; /* CAMBIADO: de 96vw a 85vw */
+    max-width: 85vw;
     border-radius: 12px;
     margin: 8px auto 20px auto; 
     overflow: visible; 
   }
   
   .modal-body {
-    max-height: 40vh; /* CAMBIADO: de 50vh a 40vh - FORZAR SCROLL INTERNO */
+    max-height: 40vh;
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
-    /* AGREGADO: Asegurar que el scroll funcione */
     position: relative;
     min-height: 0;
     scrollbar-width: thin;
@@ -1600,29 +1145,28 @@
 
 @media (max-width: 480px) {
   .modal-overlay.modal-mobile {
-    padding: 20px; /* CAMBIADO: de 6px a 20px para MÁS espacio */
-    align-items: center; /* CAMBIADO: centrar verticalmente */
-    justify-content: center; /* AGREGADO: centrar completamente */
+    padding: 20px;
+    align-items: center;
+    justify-content: center;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
   }
   
   .modal-content.mobile {
-    width: 80vw; /* CAMBIADO: de 97vw a 80vw - MUCHO MÁS PEQUEÑO */
+    width: 80vw;
     height: auto;
-    min-height: 50vh; /* CAMBIADO: de 65vh a 50vh - MÁS PEQUEÑO VERTICALMENTE */
+    min-height: 50vh;
     max-height: none;
-    max-width: 80vw; /* CAMBIADO: de 97vw a 80vw */
+    max-width: 80vw;
     border-radius: 10px;
-    margin: 10px auto 30px auto; /* CAMBIADO: más margen */
+    margin: 10px auto 30px auto;
   }
   
   .modal-body {
-    max-height: 35vh; /* CAMBIADO: de 45vh a 35vh - FORZAR MÁS SCROLL */
+    max-height: 35vh;
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
-    /* AGREGADO: Propiedades para asegurar scroll */
     position: relative;
     min-height: 0;
     scrollbar-width: thin;
@@ -1702,108 +1246,4 @@
     animation: none !important;
     transition: none !important;
   }
-}
-
-
-/* AGREGAR AL FINAL DE TU CSS */
-
-/* Controles de scroll manual */
-.scroll-controls {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  z-index: 10;
-  pointer-events: auto;
-}
-
-.scroll-button {
-  width: 44px;
-  height: 44px;
-  background: rgba(30, 41, 59, 0.9);
-  border: 1px solid rgba(71, 85, 105, 0.5);
-  border-radius: 50%;
-  color: #d1d5db;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(8px);
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-}
-
-.scroll-button:hover:not(:disabled) {
-  background: rgba(59, 130, 246, 0.8);
-  border-color: rgba(59, 130, 246, 0.8);
-  color: white;
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-}
-
-.scroll-button:active:not(:disabled),
-.scroll-button.active {
-  background: rgba(59, 130, 246, 1);
-  border-color: rgba(59, 130, 246, 1);
-  color: white;
-  transform: scale(0.95);
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
-}
-
-.scroll-button:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-  background: rgba(30, 41, 59, 0.5);
-  border-color: rgba(71, 85, 105, 0.3);
-}
-
-.scroll-button svg {
-  transition: transform 0.2s ease;
-}
-
-.scroll-button:hover:not(:disabled) svg {
-  transform: scale(1.1);
-}
-
-.scroll-button.active svg {
-  transform: scale(0.9);
-}
-
-/* Responsive para botones */
-@media (max-width: 480px) {
-  .scroll-controls {
-    right: 8px;
-  }
-  
-  .scroll-button {
-    width: 40px;
-    height: 40px;
-  }
-  
-  .scroll-button svg {
-    width: 18px;
-    height: 18px;
-  }
-}
-
-/* Ocultar en desktop */
-@media (min-width: 769px) {
-  .scroll-controls {
-    display: none;
-  }
-}
-
-/* Animación suave para scroll */
-.modal-body {
-  scroll-behavior: smooth;
-}
-
-/* Asegurar que los botones estén encima del contenido */
-.modal-content {
-  position: relative;
 }
