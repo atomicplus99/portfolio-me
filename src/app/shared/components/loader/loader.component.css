@@ -1,36 +1,27 @@
+/* ELEGANT LOADER CONTAINER */
 .elegant-loader {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
   z-index: 9999;
+  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
   
-  /* ✅ CRÍTICO: Opacity inicial explícita */
-  opacity: 1;
-  visibility: visible;
-  
-  /* ✅ Background simple inicialmente */
-  background: #0f0f23;
-  
-  /* ✅ Transición optimizada */
-  transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
-  
-  /* ✅ Performance optimizada */
-  transform: translate3d(0, 0, 0);
-  will-change: opacity, visibility;
+  /* Performance */
+  transform: translateZ(0);
+  will-change: opacity;
   contain: layout style paint;
-  backface-visibility: hidden;
 }
 
 .elegant-loader.fade-out {
   opacity: 0;
-  visibility: hidden;
   pointer-events: none;
 }
 
-/* BACKGROUND DIFERIDO - Carga después */
+/* PORTFOLIO-STYLE BACKGROUND - OPTIMIZADO */
 .elegant-background {
   position: absolute;
   top: 0;
@@ -38,30 +29,12 @@
   width: 100%;
   height: 100%;
   z-index: 1;
-  
-  /* ✅ Sin background inicial para evitar delay */
-  background: transparent;
-  opacity: 0;
-  
-  /* ✅ Animación diferida */
-  animation: backgroundFadeIn 1s ease-out 0.3s forwards,
-             portfolioGlow 15s ease-in-out 1s infinite alternate;
-}
-
-/* Animación diferida del background */
-@keyframes backgroundFadeIn {
-  0% { 
-    opacity: 0;
-    background: transparent;
-  }
-  100% { 
-    opacity: 1;
-    background: 
-      radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.12) 0%, transparent 60%),
-      radial-gradient(circle at 75% 10%, rgba(96, 165, 250, 0.08) 0%, transparent 50%),
-      radial-gradient(circle at 20% 80%, rgba(147, 197, 253, 0.06) 0%, transparent 40%),
-      radial-gradient(circle at 80% 70%, rgba(59, 130, 246, 0.05) 0%, transparent 45%);
-  }
+  background: 
+    radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.12) 0%, transparent 60%),
+    radial-gradient(circle at 75% 10%, rgba(96, 165, 250, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 20% 80%, rgba(147, 197, 253, 0.06) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(59, 130, 246, 0.05) 0%, transparent 45%);
+  animation: portfolioGlow 15s ease-in-out infinite alternate;
 }
 
 @keyframes portfolioGlow {
@@ -182,28 +155,34 @@
   display: none;
 }
 
-/* MÓVIL: Optimizaciones específicas */
+/* ✅ MÓVIL: SÚPER LIGERO - Casi sin efectos */
 @media (max-width: 1023px) {
   .elegant-loader {
-    background: #0f0f23;
-    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+    /* ✅ Background plano sin gradiente */
+    background: #0f0f23 !important;
+    transition: opacity 0.4s ease-out !important; /* Más rápido */
   }
   
   .elegant-background {
-    /* ✅ Sin gradientes complejos en móvil */
-    animation: mobileBackgroundFadeIn 0.8s ease-out 0.5s forwards;
+    /* ✅ Completamente transparente en móvil */
+    background: transparent !important;
+    animation: none !important;
+    display: none; /* ✅ Ni siquiera renderizar */
   }
   
-  @keyframes mobileBackgroundFadeIn {
-    0% { 
-      opacity: 0;
-      background: transparent;
-    }
-    100% { 
-      opacity: 0.6;
-      background: 
-        radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 70%);
-    }
+  .indicator-dot {
+    animation: none !important; /* ✅ Sin animación del dot */
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  
+  .elegant-content {
+    gap: 2rem; /* ✅ Menos espaciado */
+  }
+  
+  /* ✅ Eliminar transiciones innecesarias */
+  .message-display {
+    transition: none !important;
   }
 }
 
@@ -228,15 +207,23 @@
   }
 }
 
-/* ACCESSIBILITY */
+/* ACCESSIBILITY - Más agresivo */
 @media (prefers-reduced-motion: reduce) {
-  .elegant-background,
-  .indicator-dot {
+  .gradient-overlay,
+  .indicator-dot,
+  .elegant-background {
     animation: none !important;
   }
   
   .elegant-loader {
-    transition: opacity 0.3s ease-out !important;
+    transition: opacity 0.2s ease-out !important;
+  }
+  
+  /* ✅ En móvil + reduced motion = modo ultra simple */
+  @media (max-width: 1023px) {
+    .elegant-background {
+      display: none !important;
+    }
   }
 }
 
@@ -246,7 +233,7 @@
     background: #0f0f23;
   }
   
-  .elegant-background {
+  .gradient-overlay {
     display: none;
   }
   
@@ -257,7 +244,7 @@
 }
 
 /* PERFORMANCE */
-.elegant-background {
+.gradient-overlay {
   transform: translateZ(0);
   backface-visibility: hidden;
 }
