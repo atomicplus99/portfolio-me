@@ -39,6 +39,5 @@ export class SkillsGridComponent {
   @Input() visibleCards: boolean[] = [];
 
   onImageError(event: Event) {
-    console.warn('Skill icon failed to load:', event);
   }
 }

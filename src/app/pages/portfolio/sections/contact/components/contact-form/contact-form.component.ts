@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ContactFormData } from '../../interfaces/contact-interface';
 
-
 @Component({
   selector: 'app-contact-form',
   standalone: true,
@@ -11,13 +10,19 @@ import { ContactFormData } from '../../interfaces/contact-interface';
   templateUrl: './contact-form.component.html'
 })
 export class ContactFormComponent implements OnInit {
+  // Props del formulario
   @Input() formTitle: string = 'Enviar Mensaje';
   @Input() formSubtitle: string = 'Te responderé en menos de 24 horas';
   @Input() submitText: string = 'Enviar Mensaje';
   @Input() successMessage = { title: '¡Éxito!', description: 'Mensaje enviado correctamente' };
+  
+  // Estados
   @Input() isSubmitting: boolean = false;
   @Input() showSuccess: boolean = false;
+  @Input() showError: boolean = false;
+  @Input() errorMessage: string = '';
   
+  // Eventos
   @Output() formSubmit = new EventEmitter<ContactFormData>();
   @Output() inputFocus = new EventEmitter<string>();
   @Output() inputBlur = new EventEmitter<string>();
@@ -33,7 +38,9 @@ export class ContactFormComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // Configuración adicional si es necesaria
+  }
 
   onSubmit(): void {
     if (this.contactForm.valid) {
@@ -45,6 +52,15 @@ export class ContactFormComponent implements OnInit {
 
   resetForm(): void {
     this.contactForm.reset();
+    this.clearValidationErrors();
+  }
+
+  private clearValidationErrors(): void {
+    Object.keys(this.contactForm.controls).forEach(key => {
+      const control = this.contactForm.get(key);
+      control?.markAsUntouched();
+      control?.markAsPristine();
+    });
   }
 
   private markFormGroupTouched(): void {
@@ -78,5 +94,15 @@ export class ContactFormComponent implements OnInit {
 
   onInputBlur(fieldName: string): void {
     this.inputBlur.emit(fieldName);
+  }
+
+  // Método público para obtener el estado del formulario
+  isFormValid(): boolean {
+    return this.contactForm.valid;
+  }
+
+  // Método para obtener los datos del formulario
+  getFormData(): ContactFormData | null {
+    return this.contactForm.valid ? this.contactForm.value : null;
   }
 }

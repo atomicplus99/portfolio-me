@@ -7,6 +7,3 @@ export const environment = {
     recipient: 'abel.ariase.soft@gmail.com'
   }
 };
-
-// Para desarrollo, puedes poner valores de prueba o los reales
-console.log('🔧 Environment DEV cargado:', environment.emailjs);

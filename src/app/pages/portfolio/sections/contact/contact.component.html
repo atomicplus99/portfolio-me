@@ -22,6 +22,8 @@
           [successMessage]="config.form.successMessage"
           [isSubmitting]="isSubmitting"
           [showSuccess]="showSuccess"
+          [showError]="showError"
+          [errorMessage]="statusMessage"
           (formSubmit)="onFormSubmit($event)"
           (inputFocus)="onInputFocus($event)"
           (inputBlur)="onInputBlur($event)">

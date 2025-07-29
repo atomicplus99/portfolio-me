@@ -84,7 +84,7 @@ export class LoaderService {
     this.currentMode = mode;
     this.isLoadingActive = true;
 
-    console.log(`🚀 Iniciando loader en modo: ${mode}`);
+
 
     // Inicializar estado
     this.updateState({
@@ -98,13 +98,11 @@ export class LoaderService {
     // ✅ Secuencia reactiva con observables
     return timer(1200).pipe( // Delay inicial para mostrar logo
       tap(() => {
-        console.log('✅ Mostrando barra de progreso');
         this.updateState({ showProgress: true });
       }),
       switchMap(() => this.executeLoadingSequence()),
       finalize(() => {
         this.isLoadingActive = false;
-        console.log('🏁 Loader finalizado');
       }),
       takeUntilDestroyed(this.destroyRef)
     );
@@ -125,7 +123,6 @@ export class LoaderService {
         }
 
         const phase = phases[currentPhaseIndex];
-        console.log(`📊 Fase ${currentPhaseIndex + 1}/${phases.length}: ${phase.message}`);
         
         // Animar progreso suavemente
         this.animateProgressTo(phase.progress, phase.message).subscribe({
@@ -167,16 +164,13 @@ export class LoaderService {
 
   // ✅ Finalización limpia
   private completeLoading(): void {
-    console.log('🎉 Completando carga...');
     
     timer(600).pipe(
       tap(() => {
-        console.log('👋 Mostrando mensaje de bienvenida');
         this.updateState({ message: 'Bienvenido!!' });
       }),
       switchMap(() => timer(800)),
       tap(() => {
-        console.log('✅ Ocultando loader');
         this.updateState({
           isLoading: false,
           showLogo: false,
@@ -209,7 +203,6 @@ export class LoaderService {
   }
 
   finishLoading(): void {
-    console.log('🔚 Forzando finalización del loader');
     this.updateState({
       progress: 100,
       message: 'Completado'
@@ -222,7 +215,6 @@ export class LoaderService {
   }
 
   resetLoader(): void {
-    console.log('🔄 Reseteando loader');
     this.isLoadingActive = false;
     this.updateState({
       isLoading: false,

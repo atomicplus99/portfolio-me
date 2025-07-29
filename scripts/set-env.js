@@ -18,5 +18,4 @@ fs.writeFile(targetPath, envConfigFile, (err) => {
     if (err) {
         console.log(err);
     }
-    console.log(`✅ Variables escritas en ${targetPath}`);
 });

@@ -103,13 +103,13 @@ export class SectionLoadingService {
         [section]: true
       }));
       
-      // ✅ Log para debugging
-      console.log(`✅ Sección cargada: ${section}`);
+
+
     }
   }
 
   loadAllSections(): void {
-    console.log('🚀 Cargando todas las secciones...');
+
     
     this.loadedSectionsSignal.set({
       about: true,
@@ -120,7 +120,6 @@ export class SectionLoadingService {
       footer: true
     });
     
-    console.log('✅ Todas las secciones cargadas:', this.loadedSectionsSignal());
   }
 
   resetSections(): void {

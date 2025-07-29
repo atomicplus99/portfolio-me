@@ -30,15 +30,11 @@ export class AppInitializationService {
   private startLoader(): void {
     // ✅ Usar el modo 'normal' por defecto, pero también soporta 'quick' y 'realistic'
     this.loaderService.startNormalLoading().subscribe({
-      next: (state) => {
-        console.log('📊 Loader state update:', state);
-      },
+      next: (state) => {},
       complete: () => {
-        console.log('✅ Loader completado desde AppInitializationService');
+        console.log();
       },
       error: (error) => {
-        console.error('❌ Error en loader:', error);
-        // Fallback: terminar loader manualmente si hay error
         this.loaderService.finishLoading();
       }
     });
@@ -78,19 +74,18 @@ export class AppInitializationService {
   // ✅ Método de utilidad para diferentes modos de carga
   startQuickLoading(): void {
     this.loaderService.startQuickLoading().subscribe({
-      complete: () => console.log('✅ Quick loading completado')
+      complete: () => console.log()
     });
   }
 
   startRealisticLoading(): void {
     this.loaderService.startRealisticLoading().subscribe({
-      complete: () => console.log('✅ Realistic loading completado')
+      complete: () => console.log()
     });
   }
 
   // ✅ Método de emergencia
   forceCompleteLoader(): void {
-    console.warn('🚨 Forzando completar loader...');
     this.loaderService.finishLoading();
   }
 }

@@ -84,7 +84,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       await this.initializeApp();
       this.setupLoadingWatcher();
     } catch (error) {
-      console.error('Error durante la inicialización:', error);
       // ✅ Fallback en caso de error
       this.handleInitializationError();
     }
@@ -132,16 +131,15 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private setupLoadingWatcher(): void {
-    // ✅ Ahora funciona con LoaderService optimizado
     this.loaderService.state$.pipe(
-      filter(state => !state.isLoading), // Esperar a que termine de cargar
+      filter(state => !state.isLoading),
       take(1), // Solo la primera vez
       delay(100), // Pequeño delay para estabilidad
       switchMap(() => this.initializeLenis()),
       takeUntilDestroyed(this.destroyRef) // ✅ Auto cleanup
     ).subscribe({
-      next: () => console.log('✅ Lenis inicializado correctamente'),
-      error: (error) => console.error('❌ Error inicializando Lenis:', error)
+      next: () => console.log(''),
+      error: (error) => console.error()
     });
   }
 
@@ -166,14 +164,12 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     );
 
     if (missingSections.length > 0) {
-      console.warn('⚠️ Secciones faltantes:', missingSections);
       this.loadAllSections(); // Intentar cargar las faltantes
     }
   }
 
   private handleInitializationError(): void {
     // ✅ Fallback robusto
-    console.warn('🔄 Intentando recuperación de inicialización...');
     
     timer(1000).pipe(
       tap(() => this.loadAllSections()),
@@ -183,7 +179,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // ✅ Método de emergencia simplificado (solo si es necesario)
   emergencyReload(): void {
-    console.warn('🚨 Recarga de emergencia activada');
     this.loadAllSections();
   }
 }
