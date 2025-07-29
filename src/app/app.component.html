@@ -1,17 +1,17 @@
 <app-galaxy></app-galaxy>
 
 <div class="portfolio-container">
-  <!-- Loader solo cuando está cargando -->
+  <!-- ✅ CAMBIO: Quitar *ngIf, usar clase condicional -->
   <app-elegant-loader 
-    *ngIf="loaderService.state().isLoading"
+    [class.loader-hidden]="!loaderService.state().isLoading"
     [logoText]="'@duque.dev'" 
     [subtitle]="'Bienvenido! :)'">
   </app-elegant-loader>
   
   <app-particles class="particles-layer"></app-particles>
   
-
-  <div class="content-wrapper" *ngIf="!loaderService.state().isLoading">
+<!-- ✅ SIMPLIFICADO: Solo cambiar el loader, content normal -->
+  <div class="content-wrapper">
     <app-header class="header-fixed"></app-header>
     
     <main class="main-content">

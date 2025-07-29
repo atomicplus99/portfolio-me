@@ -249,15 +249,15 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   }
 
   onModalClosed(): void {
-  this.showDetailModal.set(false);
-  this.modalProject.set(null);
+    this.showDetailModal.set(false);
+    this.modalProject.set(null);
 
-  this.lenisService.start();
+    this.lenisService.start();
 
-  if (this.isMobile() && this.mobileService.getVibrationSupported()) {
-    this.mobileService.vibrate(20);
+    if (this.isMobile() && this.mobileService.getVibrationSupported()) {
+      this.mobileService.vibrate(20);
+    }
   }
-}
 
   onModalProjectChanged(project: Project): void {
     // Solo cambiar proyecto, NO afectar el scroll
@@ -364,6 +364,14 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         }
 
       });
+    }
+  }
+
+
+  // ✅ NUEVO: Resetear cursor al salir
+  onCanvasMouseLeave(): void {
+    if (!this.isMobile()) {
+      document.body.style.cursor = 'default'; // o 'auto'
     }
   }
 

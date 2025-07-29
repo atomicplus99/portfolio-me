@@ -10,7 +10,7 @@
   <app-matrix-rain [isMobile]="isMobile()"></app-matrix-rain>
   <app-threejs-canvas #threejsCanvas [performanceMode]="performanceMode()" [isMobile]="isMobile()"
     (projectSelected)="onProjectSelected($event)" (firstInteraction)="onFirstInteraction()"
-    (cursorChanged)="onCursorChanged($event)">
+    (cursorChanged)="onCursorChanged($event)" (mouseleave)="onCanvasMouseLeave()"> <!-- 👈 NUEVO -->
   </app-threejs-canvas>
   <app-hero-header [stats]="projectStats()"></app-hero-header>
   <app-loading-overlay [isVisible]="isLoading()"></app-loading-overlay>

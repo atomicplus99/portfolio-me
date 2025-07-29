@@ -21,43 +21,37 @@
 @media (min-width: 1920px) { .massive-text { font-size: clamp(12rem, 18vw, 16rem); } }
 @media (min-width: 2560px) { .massive-text { font-size: clamp(16rem, 20vw, 18rem); } }
 
-/* ✅ Glow effect optimizado - reducido para mejor performance */
+/* ✅ Glow effect OPTIMIZADO - menos intenso para BUILD */
 .craft-glow {
   color: #3b82f6;
   text-shadow: 
-    0 0 8px rgba(59, 130, 246, 0.8),
-    0 0 16px rgba(59, 130, 246, 0.6),
-    0 0 32px rgba(59, 130, 246, 0.4);
-  /* ✅ Performance optimizations */
-  filter: brightness(1.2);
-  animation: craftPulse 3s ease-in-out infinite;
+    0 0 6px rgba(59, 130, 246, 0.6),
+    0 0 12px rgba(59, 130, 246, 0.4);
+  filter: brightness(1.1);
+  animation: craftPulseOptimized 4s ease-in-out infinite;
   transform: translateZ(0);
   will-change: text-shadow;
   backface-visibility: hidden;
   contain: layout style paint;
 }
 
-/* ✅ Animación de glow optimizada */
-@keyframes craftPulse {
+/* ✅ Animación de glow OPTIMIZADA - menos pesada */
+@keyframes craftPulseOptimized {
   0%, 100% {
     text-shadow: 
-      0 0 8px rgba(59, 130, 246, 0.8),
-      0 0 16px rgba(59, 130, 246, 0.6),
-      0 0 32px rgba(59, 130, 246, 0.4);
+      0 0 6px rgba(59, 130, 246, 0.6),
+      0 0 12px rgba(59, 130, 246, 0.4);
   }
   50% {
     text-shadow: 
-      0 0 12px rgba(59, 130, 246, 1),
-      0 0 24px rgba(59, 130, 246, 0.8),
-      0 0 48px rgba(59, 130, 246, 0.6);
+      0 0 8px rgba(59, 130, 246, 0.8),
+      0 0 16px rgba(59, 130, 246, 0.6);
   }
 }
 
-
-
 .massive-text-container {
   position: absolute;
-  right: 1rem;            /* ✅ Posición absoluta derecha */
+  right: 1rem;
   top: 50%;
   transform: translateY(-50%);
   z-index: 20;
@@ -68,22 +62,22 @@
   .craft-glow {
     /* ✅ Glow reducido en móvil */
     text-shadow: 
-      0 0 4px rgba(59, 130, 246, 0.6),
-      0 0 8px rgba(59, 130, 246, 0.4);
-    filter: brightness(1.1);
-    animation-duration: 4s; /* Más lento para ahorrar batería */
+      0 0 3px rgba(59, 130, 246, 0.5),
+      0 0 6px rgba(59, 130, 246, 0.3);
+    filter: brightness(1.05);
+    animation-duration: 5s; /* Más lento para ahorrar batería */
   }
   
-  @keyframes craftPulse {
+  @keyframes craftPulseOptimized {
     0%, 100% {
       text-shadow: 
-        0 0 4px rgba(59, 130, 246, 0.6),
-        0 0 8px rgba(59, 130, 246, 0.4);
+        0 0 3px rgba(59, 130, 246, 0.5),
+        0 0 6px rgba(59, 130, 246, 0.3);
     }
     50% {
       text-shadow: 
-        0 0 6px rgba(59, 130, 246, 0.8),
-        0 0 12px rgba(59, 130, 246, 0.6);
+        0 0 4px rgba(59, 130, 246, 0.7),
+        0 0 8px rgba(59, 130, 246, 0.5);
     }
   }
 }

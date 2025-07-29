@@ -13,6 +13,6 @@ export class MassiveTextComponent {
   private readonly viewportService = inject(ViewportService);
   
   readonly showDesktopElements = this.viewportService.showDesktopElements;
-
+  
   constructor() {}
 }

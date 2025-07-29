@@ -158,3 +158,47 @@ app-galaxy {
   contain: layout style paint;
   isolation: isolate;
 }
+
+/* Loader siempre visible inicialmente */
+app-elegant-loader {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 10000 !important;
+  
+  /* ✅ CRÍTICO: Visible por defecto */
+  opacity: 1 !important;
+  visibility: visible !important;
+  
+  /* ✅ Transición suave */
+  transition: opacity 0.8s ease-out, visibility 0.8s ease-out !important;
+  
+  /* ✅ Performance móvil */
+  transform: translate3d(0, 0, 0) !important;
+  will-change: opacity, visibility !important;
+  contain: layout style paint !important;
+  backface-visibility: hidden !important;
+}
+
+/* Estado oculto del loader */
+app-elegant-loader.loader-hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* ✅ CORREGIDO: Content wrapper normal por defecto */
+.content-wrapper {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.6s ease-in, visibility 0.6s ease-in;
+}
+
+/* MÓVIL: Solo transiciones del loader más rápidas */
+@media (max-width: 1023px) {
+  app-elegant-loader {
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out !important;
+  }
+}
