@@ -1,99 +1,157 @@
-<app-galaxy></app-galaxy>
+<app-galaxy *ngIf="isDesktop()" 
+            class="fixed inset-0 z-[1] pointer-events-none transform-gpu"></app-galaxy>
 
 <div class="portfolio-container">
+  
+  <!-- Loader optimizado -->
   <app-elegant-loader 
-    [class.loader-hidden]="!loaderService.state().isLoading"
+    [class.opacity-0]="!loaderService.state().isLoading"
+    [class.invisible]="!loaderService.state().isLoading"
+    [class.pointer-events-none]="!loaderService.state().isLoading"
     [logoText]="'@duque.dev'" 
-    [subtitle]="'Bienvenido! :)'">
+    [subtitle]="'Bienvenido! :)'"
+    class="fixed inset-0 z-[10000] transition-opacity duration-500 ease-out transform-gpu">
   </app-elegant-loader>
   
-  <app-particles class="particles-layer"></app-particles>
+  <!-- Particles optimizadas -->
+  <app-particles class="fixed inset-0 z-[5] pointer-events-none
+                        opacity-40 md:opacity-45 lg:opacity-50
+                        transition-opacity duration-300 transform-gpu scale-100"></app-particles>
   
-  <div class="content-wrapper">
-    <app-header class="header-fixed"></app-header>
+  <!-- Content wrapper con transición -->
+  <div class="content-wrapper relative z-10 pt-20 lg:pt-0 transform-gpu
+              transition-opacity duration-800 ease-out"
+       [class.opacity-0]="loaderService.state().isLoading"
+       [class.fade-in-content]="!loaderService.state().isLoading">
+    
+    <!-- Header fijo móvil -->
+    <app-header class="fixed lg:relative top-0 left-0 right-0 z-[1000]
+                       h-20 lg:h-auto bg-slate-900/95 lg:bg-transparent
+                       backdrop-blur-sm lg:backdrop-blur-none transform-gpu"></app-header>
     
     <main class="main-content">
-      <section id="hero" class="section-container hero-section">
+      
+      <!-- HERO -->
+      <section id="hero" class="section-hero min-h-screen flex items-center justify-center
+                                relative w-full z-[15] transform-gpu
+                                bg-slate-900/5 lg:bg-transparent">
         <app-hero></app-hero>
       </section>
       
-      <!-- ✅ ABOUT: Skeleton mientras carga -->
-      <section id="about" class="section-container">
-        <app-about *ngIf="loadedSections.about"></app-about>
-        <div class="section-skeleton" *ngIf="!loadedSections.about">
-          <div class="skeleton-header"></div>
-          <div class="skeleton-content">
-            <div class="skeleton-line"></div>
-            <div class="skeleton-line"></div>
-            <div class="skeleton-line short"></div>
+      <!-- ABOUT -->
+      <section id="about" class="section-item min-h-screen flex items-center justify-center
+                                 relative w-full z-[15] transform-gpu
+                                 bg-slate-900/5 lg:bg-transparent px-4 lg:px-0"
+               style="animation-delay: 0.2s">
+        
+        <app-about *ngIf="loadedSections().about"></app-about>
+        
+        <div *ngIf="!loadedSections().about" 
+             class="w-full max-w-4xl flex flex-col items-center gap-8">
+          <div class="w-72 h-12 bg-slate-700/30 rounded-lg animate-pulse lg:animate-none"></div>
+          <div class="w-full max-w-2xl flex flex-col gap-4">
+            <div class="h-5 bg-slate-700/30 rounded w-full animate-pulse lg:animate-none"></div>
+            <div class="h-5 bg-slate-700/30 rounded w-3/4 animate-pulse lg:animate-none"></div>
+            <div class="h-5 bg-slate-700/30 rounded w-1/2 animate-pulse lg:animate-none"></div>
           </div>
         </div>
       </section>
       
-      <!-- ✅ ABOUT-ME: Skeleton mientras carga -->
-      <section id="about-me" class="section-container">
-        <app-about-me *ngIf="loadedSections.aboutMe"></app-about-me>
-        <div class="section-skeleton" *ngIf="!loadedSections.aboutMe">
-          <div class="skeleton-avatar"></div>
-          <div class="skeleton-content">
-            <div class="skeleton-line"></div>
-            <div class="skeleton-line"></div>
-            <div class="skeleton-line medium"></div>
+      <!-- ABOUT-ME -->
+      <section id="about-me" class="section-item min-h-screen flex items-center justify-center
+                                   relative w-full z-[15] transform-gpu
+                                   bg-slate-900/5 lg:bg-transparent px-4 lg:px-0"
+               style="animation-delay: 0.4s">
+        
+        <app-about-me *ngIf="loadedSections().aboutMe"></app-about-me>
+        
+        <div *ngIf="!loadedSections().aboutMe" 
+             class="w-full max-w-4xl flex flex-col items-center gap-8">
+          <div class="w-32 h-32 bg-slate-700/30 rounded-full animate-pulse lg:animate-none"></div>
+          <div class="w-full max-w-2xl flex flex-col gap-4">
+            <div class="h-5 bg-slate-700/30 rounded w-full animate-pulse lg:animate-none"></div>
+            <div class="h-5 bg-slate-700/30 rounded w-2/3 animate-pulse lg:animate-none"></div>
+            <div class="h-5 bg-slate-700/30 rounded w-3/4 animate-pulse lg:animate-none"></div>
           </div>
         </div>
       </section>
       
-      <!-- ✅ PROJECTS: Skeleton mientras carga -->
-      <section id="projects" class="section-container">
-        <app-projects *ngIf="loadedSections.projects"></app-projects>
-        <div class="section-skeleton projects-skeleton" *ngIf="!loadedSections.projects">
-          <div class="skeleton-header"></div>
-          <div class="skeleton-grid">
-            <div class="skeleton-card"></div>
-            <div class="skeleton-card"></div>
-            <div class="skeleton-card"></div>
+      <!-- PROJECTS -->
+      <section id="projects" class="section-item section-container 
+                                   min-h-screen flex items-center justify-center
+                                   relative w-full z-[15]
+                                   bg-slate-900/5 lg:bg-transparent px-4 lg:px-0"
+               style="animation-delay: 0.6s">
+        
+        <app-projects *ngIf="loadedSections().projects"></app-projects>
+        
+        <div *ngIf="!loadedSections().projects" 
+             class="w-full max-w-6xl flex flex-col items-center gap-12">
+          <div class="w-72 h-12 bg-slate-700/30 rounded-lg animate-pulse lg:animate-none"></div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+            <div class="h-64 bg-slate-700/30 rounded-xl animate-pulse lg:animate-none"></div>
+            <div class="h-64 bg-slate-700/30 rounded-xl animate-pulse lg:animate-none"></div>
+            <div class="h-64 bg-slate-700/30 rounded-xl animate-pulse lg:animate-none"></div>
           </div>
         </div>
       </section>
       
-      <!-- ✅ SKILLS: Skeleton mientras carga -->
-      <section id="skills" class="section-container">
-        <app-skills *ngIf="loadedSections.skills"></app-skills>
-        <div class="section-skeleton" *ngIf="!loadedSections.skills">
-          <div class="skeleton-header"></div>
-          <div class="skeleton-skills">
-            <div class="skeleton-skill"></div>
-            <div class="skeleton-skill"></div>
-            <div class="skeleton-skill"></div>
-            <div class="skeleton-skill"></div>
+      <!-- SKILLS -->
+      <section id="skills" class="section-item min-h-screen flex items-center justify-center
+                                 relative w-full z-[15] transform-gpu
+                                 bg-slate-900/5 lg:bg-transparent px-4 lg:px-0"
+               style="animation-delay: 0.8s">
+        
+        <app-skills *ngIf="loadedSections().skills"></app-skills>
+        
+        <div *ngIf="!loadedSections().skills" 
+             class="w-full max-w-4xl flex flex-col items-center gap-8">
+          <div class="w-72 h-12 bg-slate-700/30 rounded-lg animate-pulse lg:animate-none"></div>
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
+            <div class="h-20 bg-slate-700/30 rounded-lg animate-pulse lg:animate-none"></div>
+            <div class="h-20 bg-slate-700/30 rounded-lg animate-pulse lg:animate-none"></div>
+            <div class="h-20 bg-slate-700/30 rounded-lg animate-pulse lg:animate-none"></div>
+            <div class="h-20 bg-slate-700/30 rounded-lg animate-pulse lg:animate-none"></div>
           </div>
         </div>
       </section>
       
-      <!-- ✅ CONTACT: Skeleton mientras carga -->
-      <section id="contact" class="section-container">
-        <app-contact *ngIf="loadedSections.contact"></app-contact>
-        <div class="section-skeleton" *ngIf="!loadedSections.contact">
-          <div class="skeleton-header"></div>
-          <div class="skeleton-form">
-            <div class="skeleton-input"></div>
-            <div class="skeleton-input"></div>
-            <div class="skeleton-textarea"></div>
-            <div class="skeleton-button"></div>
+      <!-- CONTACT -->
+      <section id="contact" class="section-item min-h-screen flex items-center justify-center
+                                  relative w-full z-[15] transform-gpu
+                                  bg-slate-900/5 lg:bg-transparent px-4 lg:px-0"
+               style="animation-delay: 1s">
+        
+        <app-contact *ngIf="loadedSections().contact"></app-contact>
+        
+        <div *ngIf="!loadedSections().contact" 
+             class="w-full max-w-2xl flex flex-col items-center gap-8">
+          <div class="w-72 h-12 bg-slate-700/30 rounded-lg animate-pulse lg:animate-none"></div>
+          <div class="w-full flex flex-col gap-6">
+            <div class="h-12 bg-slate-700/30 rounded-lg animate-pulse lg:animate-none"></div>
+            <div class="h-12 bg-slate-700/30 rounded-lg animate-pulse lg:animate-none"></div>
+            <div class="h-32 bg-slate-700/30 rounded-lg animate-pulse lg:animate-none"></div>
+            <div class="h-12 w-32 bg-slate-700/30 rounded-lg mx-auto animate-pulse lg:animate-none"></div>
           </div>
         </div>
       </section>
       
-      <div class="section-divider" *ngIf="loadedSections.footer"></div>
+      <div class="section-divider" *ngIf="loadedSections().footer"></div>
       
-      <!-- ✅ FOOTER: Skeleton mientras carga -->
-      <app-footer *ngIf="loadedSections.footer" class="footer-section"></app-footer>
-      <div class="footer-skeleton" *ngIf="!loadedSections.footer">
-        <div class="skeleton-footer-content">
-          <div class="skeleton-line short"></div>
-          <div class="skeleton-line medium"></div>
+      <!-- FOOTER -->
+      <app-footer *ngIf="loadedSections().footer" 
+                  class="footer-section section-item"
+                  style="animation-delay: 1.2s"></app-footer>
+      
+      <div *ngIf="!loadedSections().footer" 
+           class="p-8 flex justify-center section-item"
+           style="animation-delay: 1.2s">
+        <div class="flex flex-col gap-4 items-center">
+          <div class="w-48 h-5 bg-slate-700/30 rounded animate-pulse lg:animate-none"></div>
+          <div class="w-32 h-5 bg-slate-700/30 rounded animate-pulse lg:animate-none"></div>
         </div>
       </div>
+      
     </main>
   </div>
 </div>
