@@ -4,7 +4,6 @@ import { HologramObject, PerformanceStats } from '../interfaces/hologram.interfa
 import { ProjectsService } from './proyect.service';
 import { Project } from '../interfaces/proyect.interface';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -30,32 +29,120 @@ export class ThreejsService {
 
   constructor(private projectsService: ProjectsService) { }
 
-  initializeScene(canvas: HTMLCanvasElement, performanceMode: boolean, isMobile: boolean): void {
-    // LIMPIAR ESCENA ANTERIOR COMPLETAMENTE
+  // 🌌 SHADER GALÁCTICO ÉPICO
+  private createGalacticHologramShader(baseColor: THREE.Color): THREE.ShaderMaterial {
+    return new THREE.ShaderMaterial({
+      vertexShader: `
+        varying vec3 vNormal;
+        varying vec3 vPosition;
+        varying vec3 vWorldPosition;
+        varying vec2 vUv;
+        uniform float uTime;
+        uniform float uHover;
+        uniform float uSelected;
+        
+        void main() {
+          vUv = uv;
+          vNormal = normalize(normalMatrix * normal);
+          vPosition = position;
+          
+          vec4 worldPos = modelMatrix * vec4(position, 1.0);
+          vWorldPosition = worldPos.xyz;
+          
+          // Distorsión espacial sutil
+          vec3 pos = position;
+          float warp = sin(uTime * 0.8 + length(position) * 2.0) * 0.02 * (uHover + uSelected);
+          pos += normal * warp;
+          
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+        }
+      `,
+      fragmentShader: `
+        varying vec3 vNormal;
+        varying vec3 vPosition;
+        varying vec3 vWorldPosition;
+        varying vec2 vUv;
+        uniform float uTime;
+        uniform vec3 uBaseColor;
+        uniform float uOpacity;
+        uniform float uHover;
+        uniform float uSelected;
+        
+        void main() {
+          vec3 viewDirection = normalize(cameraPosition - vWorldPosition);
+          vec3 normal = normalize(vNormal);
+          
+          // 🌟 FRESNEL GALÁCTICO
+          float fresnel = pow(1.0 - dot(viewDirection, normal), 2.2);
+          
+          // ⚡ LÍNEAS DE ENERGÍA HEXAGONALES
+          vec2 hexUV = vWorldPosition.xy * 1.5;
+          float hexPattern = abs(sin(hexUV.x * 3.14159)) * abs(sin(hexUV.y * 3.14159));
+          hexPattern = step(0.7, hexPattern);
+          
+          // 🔮 PULSO ENERGÉTICO
+          float pulse = sin(uTime * 3.0 + length(vWorldPosition) * 0.5) * 0.5 + 0.5;
+          pulse = smoothstep(0.2, 0.8, pulse);
+          
+          // 🔥 COLOR ESPACIAL ÉPICO
+          vec3 baseColor = uBaseColor * 0.9; // Reducir intensidad base
+          
+          // NO saturar tanto - mantener los colores reales
+          vec3 energyColor = baseColor * 1.1; // Apenas incrementar
+          vec3 pulseColor = mix(baseColor, energyColor, pulse * 0.5); // Pulso más sutil
+          
+          // Estados interactivos MÁS SUTILES
+          vec3 hoverColor = mix(pulseColor, pulseColor * 1.15, uHover); // Menos dramático
+          vec3 selectedColor = mix(hoverColor, hoverColor * 1.25, uSelected); // Menos dramático
+          
+          vec3 finalColor = selectedColor;
+          
+          // Aplicar efectos MÁS CONTROLADOS
+          finalColor += fresnel * finalColor * 0.4; // Muy reducido
+          finalColor += hexPattern * finalColor * 0.2; // Muy reducido  
+          finalColor += pulse * finalColor * 0.15; // Muy sutil
+          
+          // Transparencia
+          float alpha = uOpacity * (0.8 + fresnel * 0.2);
+          
+          gl_FragColor = vec4(finalColor, alpha);
+        }
+      `,
+      uniforms: {
+        uTime: { value: 0.0 },
+        uBaseColor: { value: baseColor },
+        uOpacity: { value: 0.75 }, // Menos opaco
+        uHover: { value: 0.0 },
+        uSelected: { value: 0.0 }
+      },
+      transparent: true,
+      side: THREE.DoubleSide,
+      depthWrite: false,
+      blending: THREE.NormalBlending
+    });
+  }
+
+  initializeScene(canvas: HTMLCanvasElement, performanceMode: boolean, isMobile: boolean, mobileCompactMode: boolean = false): void {
     if (this.scene) {
-      // Remover todos los objetos de la escena
       while (this.scene.children.length > 0) {
         this.scene.remove(this.scene.children[0]);
       }
     }
 
-    // Limpiar arrays
     this.hologramObjects = [];
     this.pointLights = [];
 
-    // Cancelar animación anterior
     if (this.animationId) {
       cancelAnimationFrame(this.animationId);
       this.animationId = 0;
     }
 
-    // Continuar con la configuración normal
     this.setupRenderer(canvas, performanceMode, isMobile);
     this.setupScene(isMobile);
     this.setupCamera(canvas, isMobile);
     this.setupRaycaster();
-    this.setupLighting(performanceMode);
-    this.createHologramProjects(performanceMode, isMobile);
+    this.setupGalacticLighting(performanceMode);
+    this.createGalacticHologramProjects(performanceMode, isMobile, mobileCompactMode);
 
     this.isInitialized.set(true);
     this.startAnimation();
@@ -67,20 +154,16 @@ export class ThreejsService {
     if (!this.renderer) {
       this.renderer = new THREE.WebGLRenderer({
         canvas,
-        antialias: !performanceMode,
+        antialias: true,
         alpha: true,
         powerPreference: isMobile ? "low-power" : "high-performance"
       });
     }
 
-    // FORZAR REDIMENSIONAMIENTO COMPLETO
     const rect = canvas.getBoundingClientRect();
-
-    // Forzar que el canvas tome el tamaño del contenedor
     canvas.style.width = '100%';
     canvas.style.height = '100%';
 
-    // Esperar un frame para que el CSS se aplique
     requestAnimationFrame(() => {
       const newRect = canvas.getBoundingClientRect();
       this.renderer.setSize(newRect.width, newRect.height);
@@ -89,58 +172,69 @@ export class ThreejsService {
 
     this.renderer.shadowMap.enabled = !performanceMode;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    this.renderer.toneMappingExposure = 1.0;
+    this.renderer.outputColorSpace = THREE.SRGBColorSpace;
   }
 
   private setupScene(isMobile: boolean): void {
     this.scene = new THREE.Scene();
-    this.scene.fog = new THREE.Fog(0x0f172a, 10, 100);
+    this.scene.fog = new THREE.Fog(0x0a0a0a, 20, 60);
   }
 
   private setupCamera(canvas: HTMLCanvasElement, isMobile: boolean): void {
     const rect = canvas.getBoundingClientRect();
-    const fov = isMobile ? 65 : 75;
+    const fov = isMobile ? 60 : 70;
 
     this.camera = new THREE.PerspectiveCamera(fov, rect.width / rect.height, 0.1, 1000);
-    const initialDistance = isMobile ? 25 : 20;
+    
+    // ✅ DISTANCIA AJUSTADA SEGÚN DISPOSITIVO
+    const initialDistance = isMobile ? 16 : 25; // Desktop más lejos para ver hologramas grandes
 
-    // RESETEAR COMPLETAMENTE LA CÁMARA
     this.camera.position.set(0, 0, initialDistance);
     this.camera.rotation.set(0, 0, 0);
     this.camera.lookAt(0, 0, 0);
     this.camera.updateProjectionMatrix();
-
-
   }
 
   private setupRaycaster(): void {
     this.raycaster = new THREE.Raycaster();
   }
 
-  private setupLighting(performanceMode: boolean): void {
-    this.ambientLight = new THREE.AmbientLight(0x404040, performanceMode ? 0.4 : 0.3);
+  private setupGalacticLighting(performanceMode: boolean): void {
+    this.ambientLight = new THREE.AmbientLight(0x0a0a1a, 0.2); // Muy oscuro
     this.scene.add(this.ambientLight);
 
-    const lightCount = performanceMode ? 3 : 6;
-    const colors = [0x22d3ee, 0xa855f7, 0x10b981, 0xf59e0b, 0xef4444, 0x3b82f6];
+    // 🔥 COLORES ÉPICOS ESPACIALES REALES
+    const colors = [
+      0x00ccff,  // Azul neón espacial
+      0xff3366,  // Rojo vibrante 
+      0x33ff99,  // Verde esmeralda
+      0xffaa00,  // Naranja fuego
+      0xcc66ff,  // Púrpura galáctico
+      0x66ffff   // Cyan brillante
+    ];
+    const lightCount = performanceMode ? 4 : 6;
 
     for (let i = 0; i < lightCount; i++) {
-      const light = new THREE.PointLight(colors[i], performanceMode ? 0.8 : 1, 20);
+      const light = new THREE.PointLight(colors[i], 1.5, 35); // Intensidad muy reducida
+      const angle = (i / lightCount) * Math.PI * 2;
       light.position.set(
-        (i - (lightCount / 2)) * 8,
-        Math.sin(i) * 3,
-        Math.cos(i) * 3
+        Math.cos(angle) * 25,
+        Math.sin(i * 2.5) * 8,
+        Math.sin(angle) * 25
       );
-      light.castShadow = !performanceMode;
+      light.castShadow = false;
       this.pointLights.push(light);
       this.scene.add(light);
     }
   }
 
-  private createHologramProjects(performanceMode: boolean, isMobile: boolean): void {
+  private createGalacticHologramProjects(performanceMode: boolean, isMobile: boolean, mobileCompactMode: boolean = false): void {
     const projects = this.projectsService.getProjects();
 
     projects.forEach((project, index) => {
-      const hologram = this.createProjectHologram(project, index, performanceMode, isMobile);
+      const hologram = this.createGalacticProjectHologram(project, index, performanceMode, isMobile, mobileCompactMode);
       this.hologramObjects.push(hologram);
       this.scene.add(hologram.mesh);
     });
@@ -148,98 +242,89 @@ export class ThreejsService {
     this.updatePerformanceStats();
   }
 
-  private createProjectHologram(project: Project, index: number, performanceMode: boolean, isMobile: boolean): HologramObject {
+  private createGalacticProjectHologram(project: Project, index: number, performanceMode: boolean, isMobile: boolean, mobileCompactMode: boolean = false): HologramObject {
     const group = new THREE.Group();
 
     const angle = (index / this.projectsService.getProjects().length) * Math.PI * 2;
-    const radius = isMobile ? 12 : 10;
+    const radius = isMobile ? 8 : 6;
     const x = Math.cos(angle) * radius;
     const z = Math.sin(angle) * radius;
-    const y = (Math.random() - 0.5) * (isMobile ? 1 : 2);
+    const y = (Math.random() - 0.5) * 1.0;
 
     group.position.set(x, y, z);
 
-
-    const sides = performanceMode ? 6 : 8;
-    const shape = new THREE.Shape();
-    const size = isMobile ? 3 : 3.5;
-
-    for (let i = 0; i <= sides; i++) {
-      const angle = (i / sides) * Math.PI * 2;
-      const shapeX = Math.cos(angle) * size;
-      const shapeY = Math.sin(angle) * size;
-      if (i === 0) {
-        shape.moveTo(shapeX, shapeY);
-      } else {
-        shape.lineTo(shapeX, shapeY);
-      }
+    // 🛸 GEOMETRÍA GALÁCTICA REDUCIDA
+    let geometry: THREE.BufferGeometry;
+    
+    if (performanceMode) {
+      geometry = new THREE.OctahedronGeometry(1.2, 2); // REDUCIDO de 2.0 a 1.2
+    } else {
+      geometry = new THREE.DodecahedronGeometry(1.0, 1); // REDUCIDO de 1.8 a 1.0
     }
 
-    const extrudeSettings = {
-      depth: 0.5,
-      bevelEnabled: !performanceMode,
-      bevelSegments: performanceMode ? 1 : 2,
-      steps: performanceMode ? 1 : 2,
-      bevelSize: 0.1,
-      bevelThickness: 0.1
-    };
-
-    const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
-    const color = this.projectsService.getProjectColor(project.type);
-
-    const material = new THREE.MeshPhongMaterial({
-      color,
-      transparent: true,
-      opacity: 0.7,
-      shininess: 100,
-      emissive: color,
-      emissiveIntensity: 0.2
-    });
-
-    const mainMesh = new THREE.Mesh(geometry, material);
-    mainMesh.castShadow = !performanceMode;
-    mainMesh.receiveShadow = !performanceMode;
+    const color = new THREE.Color(this.projectsService.getProjectColor(project.type));
+    
+    // 🌌 MATERIAL SHADER GALÁCTICO
+    const hologramMaterial = this.createGalacticHologramShader(color);
+    const mainMesh = new THREE.Mesh(geometry, hologramMaterial);
     group.add(mainMesh);
 
+    // 🌟 NÚCLEO INTERNO REDUCIDO
     if (!performanceMode) {
-      const wireframeMaterial = new THREE.MeshBasicMaterial({
-        color,
-        wireframe: true,
+      const coreGeometry = new THREE.SphereGeometry(0.5, 16, 12); // REDUCIDO de 0.8 a 0.5
+      const coreMaterial = new THREE.MeshBasicMaterial({
+        color: color,
         transparent: true,
-        opacity: 0.3
+        opacity: 0.6,
+        blending: THREE.AdditiveBlending
       });
-
-      const wireframeMesh = new THREE.Mesh(geometry, wireframeMaterial);
-      wireframeMesh.scale.setScalar(1.01);
-      group.add(wireframeMesh);
+      const coreMesh = new THREE.Mesh(coreGeometry, coreMaterial);
+      group.add(coreMesh);
     }
 
-    const iconGeometry = new THREE.PlaneGeometry(2.2, 2.2);
-    const iconMaterial = new THREE.MeshBasicMaterial({
-      color: 0xffffff,
-      transparent: true,
-      opacity: 0.9
-    });
-
-    const iconMesh = new THREE.Mesh(iconGeometry, iconMaterial);
-    iconMesh.position.z = 0.3;
-    group.add(iconMesh);
-
-    const ringCount = performanceMode ? 2 : 3;
+    // ⚡ ANILLOS ORBITALES REDUCIDOS
+    const ringCount = performanceMode ? 1 : 3;
     for (let i = 0; i < ringCount; i++) {
-      const ringGeometry = new THREE.RingGeometry(3 + i * 0.8, 3.2 + i * 0.8, 16);
+      const ringRadius = 1.8 + i * 0.4; // REDUCIDO de 2.8 + 0.6 a 1.8 + 0.4
+      const ringGeometry = new THREE.TorusGeometry(ringRadius, 0.04, 8, 32); // Grosor reducido de 0.06 a 0.04
       const ringMaterial = new THREE.MeshBasicMaterial({
-        color,
+        color: color,
         transparent: true,
-        opacity: 0.2,
-        side: THREE.DoubleSide
+        opacity: 0.8,
+        blending: THREE.AdditiveBlending
       });
 
       const ring = new THREE.Mesh(ringGeometry, ringMaterial);
-      ring.rotation.x = Math.random() * Math.PI;
-      ring.rotation.y = Math.random() * Math.PI;
+      ring.rotation.x = (Math.random() - 0.5) * Math.PI;
+      ring.rotation.y = (Math.random() - 0.5) * Math.PI;
+      ring.rotation.z = (Math.random() - 0.5) * Math.PI;
       group.add(ring);
     }
+
+    // 🌌 CAMPO DE ENERGÍA REDUCIDO
+    const fieldGeometry = new THREE.SphereGeometry(2.2, 12, 8); // REDUCIDO de 3.5 a 2.2
+    const fieldMaterial = new THREE.MeshBasicMaterial({
+      color: color,
+      transparent: true,
+      opacity: 0.05,
+      side: THREE.BackSide,
+      blending: THREE.AdditiveBlending
+    });
+    const fieldMesh = new THREE.Mesh(fieldGeometry, fieldMaterial);
+    group.add(fieldMesh);
+
+    // 📡 INTERFAZ HOLOGRÁFICA REDUCIDA
+    const interfaceGeometry = new THREE.PlaneGeometry(0.6, 0.6); // REDUCIDO de 0.8 a 0.6
+    const interfaceMaterial = new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.95,
+      blending: THREE.AdditiveBlending
+    });
+
+    const interfaceMesh = new THREE.Mesh(interfaceGeometry, interfaceMaterial);
+    interfaceMesh.position.set(0, 0, 0.6); // Ajustado por menor tamaño
+    group.add(interfaceMesh);
 
     return {
       mesh: group,
@@ -263,8 +348,8 @@ export class ThreejsService {
     const elapsedTime = this.clock.getElapsedTime();
     const deltaTime = this.clock.getDelta();
 
-    this.animateHolograms(elapsedTime);
-    this.animateLights(elapsedTime);
+    this.animateGalacticHolograms(elapsedTime);
+    this.animateGalacticLights(elapsedTime);
 
     this.renderer.render(this.scene, this.camera);
 
@@ -276,36 +361,87 @@ export class ThreejsService {
     }));
   }
 
-  private animateHolograms(elapsedTime: number): void {
+  private animateGalacticHolograms(elapsedTime: number): void {
     this.hologramObjects.forEach((hologram, index) => {
-      hologram.mesh.rotation.y = elapsedTime * 0.5 + index;
-      hologram.mesh.rotation.x = Math.sin(elapsedTime + index) * 0.1;
+      const group = hologram.mesh;
+      
+      // 🌀 ROTACIÓN GALÁCTICA ÉPICA
+      group.rotation.y = elapsedTime * 0.3 + index * 0.8;
+      group.rotation.x = Math.sin(elapsedTime * 0.5 + index) * 0.15;
+      group.rotation.z = Math.cos(elapsedTime * 0.4 + index) * 0.1;
+      
+      // 🌊 FLOTACIÓN ESPACIAL
+      const floatOffset = Math.sin(elapsedTime * 1.0 + index * 2.0) * 0.4;
+      group.position.y = hologram.originalPosition.y + floatOffset;
 
-      const floatOffset = Math.sin(elapsedTime * 2 + index) * 0.5;
-      hologram.mesh.position.y = hologram.originalPosition.y + floatOffset;
+      // 🌌 ACTUALIZAR SHADER GALÁCTICO
+      const mainMesh = group.children[0] as THREE.Mesh;
+      const material = mainMesh.material as THREE.ShaderMaterial;
+      
+      material.uniforms['uTime'].value = elapsedTime;
+      material.uniforms['uHover'].value = THREE.MathUtils.lerp(
+        material.uniforms['uHover'].value, 
+        hologram.isHovered ? 1.0 : 0.0, 
+        0.08
+      );
+      material.uniforms['uSelected'].value = THREE.MathUtils.lerp(
+        material.uniforms['uSelected'].value, 
+        hologram.isSelected ? 1.0 : 0.0, 
+        0.08
+      );
 
-      if (hologram.isHovered || hologram.isSelected) {
-        const scale = hologram.isSelected ? 1.3 : 1.1;
-        hologram.mesh.scale.lerp(new THREE.Vector3(scale, scale, scale), 0.1);
+      // 🎯 ESCALA REDUCIDA
+      const targetScale = hologram.isSelected ? 1.15 : hologram.isHovered ? 1.05 : 1.0; // REDUCIDO de 1.35/1.12
+      group.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.1);
 
-        const material = (hologram.mesh.children[0] as THREE.Mesh).material as THREE.MeshPhongMaterial;
-        material.emissiveIntensity = hologram.isSelected ? 0.5 : 0.3;
-      } else {
-        hologram.mesh.scale.lerp(new THREE.Vector3(1, 1, 1), 0.1);
-        const material = (hologram.mesh.children[0] as THREE.Mesh).material as THREE.MeshPhongMaterial;
-        material.emissiveIntensity = 0.2;
+      // ⚡ ANIMAR ANILLOS ORBITALES GALÁCTICOS
+      group.children.forEach((child, childIndex) => {
+        if (childIndex > 1 && child instanceof THREE.Mesh && child.geometry instanceof THREE.TorusGeometry) {
+          const rotationSpeed = 0.01 * (childIndex + 1);
+          child.rotation.x += rotationSpeed;
+          child.rotation.y += rotationSpeed * 0.7;
+          child.rotation.z += rotationSpeed * 0.5;
+        }
+      });
+
+      // 🌟 NÚCLEO PULSANTE
+      if (group.children[1]) {
+        const coreMesh = group.children[1] as THREE.Mesh;
+        if (coreMesh && coreMesh.material instanceof THREE.MeshBasicMaterial) {
+          const coreMaterial = coreMesh.material;
+          const pulse = Math.sin(elapsedTime * 4.0 + index) * 0.3 + 0.7;
+          coreMaterial.opacity = pulse * (hologram.isSelected ? 0.8 : hologram.isHovered ? 0.7 : 0.6);
+          
+          coreMesh.rotation.x += 0.02;
+          coreMesh.rotation.y += 0.015;
+        }
+      }
+
+      // 🌌 CAMPO ESTELAR DINÁMICO
+      const fieldIndex = group.children.length - 2;
+      if (group.children[fieldIndex]) {
+        const fieldMesh = group.children[fieldIndex] as THREE.Mesh;
+        const fieldMaterial = fieldMesh.material as THREE.MeshBasicMaterial;
+        const intensity = hologram.isSelected ? 0.12 : hologram.isHovered ? 0.08 : 0.05;
+        fieldMaterial.opacity = THREE.MathUtils.lerp(fieldMaterial.opacity, intensity, 0.05);
+        
+        fieldMesh.rotation.x += 0.002;
+        fieldMesh.rotation.y += 0.003;
       }
     });
   }
 
-  private animateLights(elapsedTime: number): void {
+  private animateGalacticLights(elapsedTime: number): void {
     this.pointLights.forEach((light, index) => {
-      const angle = elapsedTime * 0.5 + index * (Math.PI * 2 / this.pointLights.length);
-      light.position.x = Math.cos(angle) * 15;
-      light.position.z = Math.sin(angle) * 15;
-      light.position.y = Math.sin(elapsedTime + index) * 3;
+      const angle = elapsedTime * 0.2 + index * (Math.PI * 2 / this.pointLights.length);
+      const radius = 22 + Math.sin(elapsedTime * 0.4 + index) * 3;
+      const height = Math.sin(elapsedTime * 0.3 + index) * 6;
+      
+      light.position.x = Math.cos(angle) * radius;
+      light.position.z = Math.sin(angle) * radius;
+      light.position.y = height;
 
-      light.intensity = 0.8 + Math.sin(elapsedTime * 3 + index) * 0.3;
+      light.intensity = 2.2 + Math.sin(elapsedTime * 2.2 + index) * 0.5;
     });
   }
 
@@ -313,7 +449,7 @@ export class ThreejsService {
     this.performanceStats.update(stats => ({
       ...stats,
       objectCount: this.hologramObjects.length,
-      particleCount: 1000
+      particleCount: this.hologramObjects.length * 4
     }));
   }
 
@@ -380,15 +516,65 @@ export class ThreejsService {
     return this.isInitialized();
   }
 
+  dispose(): void {
+    this.cleanup();
+  }
+
+  // ✅ MEJORADO - Actualizar dimensiones móviles
+  updateMobileDimensions(compactMode: boolean): void {
+    if (!this.scene) return;
+
+    console.log(`📏 Updating dimensions: compact=${compactMode}`);
+
+    // Recrear hologramas con nuevas dimensiones
+    this.hologramObjects.forEach(hologram => {
+      this.scene.remove(hologram.mesh);
+      // Limpiar materiales y geometrías
+      hologram.mesh.children.forEach(child => {
+        if (child instanceof THREE.Mesh) {
+          child.geometry?.dispose();
+          if (Array.isArray(child.material)) {
+            child.material.forEach(mat => mat.dispose());
+          } else {
+            child.material?.dispose();
+          }
+        }
+      });
+    });
+
+    this.hologramObjects = [];
+    
+    const projects = this.projectsService.getProjects();
+    const isMobile = true; // Solo se llama desde móvil
+    const performanceMode = false; // Asumir modo normal para recalculo
+
+    projects.forEach((project, index) => {
+      const hologram = this.createGalacticProjectHologram(project, index, performanceMode, isMobile, compactMode);
+      this.hologramObjects.push(hologram);
+      this.scene.add(hologram.mesh);
+    });
+
+    this.updatePerformanceStats();
+    console.log(`✅ Dimensions updated: ${this.hologramObjects.length} holograms recreated`);
+  }
+
   cleanup(): void {
     if (this.animationId) {
       cancelAnimationFrame(this.animationId);
     }
 
-    // NO DISPONER EL RENDERER
-    // if (this.renderer) {
-    //   this.renderer.dispose();
-    // }
+    this.hologramObjects.forEach(hologram => {
+      hologram.mesh.children.forEach(child => {
+        if (child instanceof THREE.Mesh) {
+          child.geometry?.dispose();
+          if (Array.isArray(child.material)) {
+            child.material.forEach(mat => mat.dispose());
+          } else {
+            child.material?.dispose();
+          }
+        }
+      });
+    });
 
     if (this.scene) {
       this.scene.clear();

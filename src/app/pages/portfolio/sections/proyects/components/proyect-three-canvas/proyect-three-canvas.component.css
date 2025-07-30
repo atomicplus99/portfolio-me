@@ -1,32 +1,148 @@
+/* 🎮 CANVAS THREEJS MEJORADO */
 .threejs-container {
-      position: relative;
-      height: 100vh;
-      overflow: visible;
-      background: transparent;
-      -webkit-transform: translateZ(0);
-      transform: translateZ(0);
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
-    }
+  position: relative;
+  height: 100vh;
+  overflow: visible;
+  background: transparent;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
 
-    .threejs-canvas {
-      display: block;
-      outline: none;
-      width: 100%;
-      height: 100%;
-      border: none;
-      background: transparent;
-      cursor: grab;
-      touch-action: pan-x pan-y;
-      -webkit-touch-callout: none;
-      -webkit-user-select: none;
-      user-select: none;
-    }
+.threejs-canvas {
+  display: block;
+  outline: none;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  cursor: grab;
+  touch-action: pan-x pan-y; /* Default - permite scroll */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: all 0.3s ease;
+}
 
-    .threejs-canvas:active {
-      cursor: grabbing;
-    }
+.threejs-canvas:active {
+  cursor: grabbing;
+}
 
-    .threejs-canvas.mobile {
-      cursor: auto;
-    }
+/* 📱 MODO MÓVIL */
+.threejs-canvas.mobile {
+  cursor: auto;
+  touch-action: none; /* Bloquea scroll por defecto en móvil */
+}
+
+/* 🔄 MODO SCROLL ACTIVO */
+.threejs-canvas.scroll-mode {
+  touch-action: auto !important; /* Permite scroll nativo */
+  cursor: auto;
+  filter: brightness(0.8); /* Indicador visual de modo scroll */
+  transition: filter 0.3s ease;
+}
+
+.threejs-canvas.scroll-mode::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    45deg,
+    transparent 40%,
+    rgba(16, 185, 129, 0.1) 50%,
+    transparent 60%
+  );
+  pointer-events: none;
+  z-index: 1;
+  animation: scrollIndicator 2s infinite;
+}
+
+@keyframes scrollIndicator {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+/* 🖥️ MODO DESKTOP */
+@media (min-width: 1025px) {
+  .threejs-canvas {
+    touch-action: auto; /* Desktop siempre permite scroll */
+  }
+  
+  .threejs-canvas.mobile {
+    cursor: grab; /* En desktop, mantener cursor incluso si se detecta como móvil */
+    touch-action: auto;
+  }
+}
+
+/* 📱 RESPONSIVE MOBILE */
+@media (max-width: 1024px) {
+  .threejs-container {
+    height: 100vh;
+    overflow: hidden; /* Importante para evitar scroll accidental */
+  }
+  
+  .threejs-canvas {
+    touch-action: none; /* Por defecto en móvil, bloquear scroll */
+  }
+  
+  .threejs-canvas.scroll-mode {
+    touch-action: auto; /* Permitir cuando está en modo scroll */
+  }
+}
+
+@media (max-width: 768px) {
+  .threejs-container {
+    height: 100vh;
+    min-height: -webkit-fill-available; /* iOS viewport fix */
+  }
+}
+
+@media (max-width: 480px) {
+  .threejs-container {
+    height: 100vh;
+    height: 100dvh; /* Dynamic viewport height */
+  }
+}
+
+/* 🎯 ESTADOS DE INTERACCIÓN */
+.threejs-canvas:focus {
+  outline: 2px solid rgba(59, 130, 246, 0.5);
+  outline-offset: 2px;
+}
+
+.threejs-canvas:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ⚡ PERFORMANCE OPTIMIZATIONS */
+.threejs-canvas {
+  will-change: transform; /* GPU acceleration hint */
+  contain: layout style paint; /* CSS containment */
+}
+
+/* 🌙 MODO OSCURO */
+@media (prefers-color-scheme: dark) {
+  .threejs-canvas.scroll-mode {
+    filter: brightness(0.7);
+  }
+}
+
+/* 🔄 REDUCED MOTION */
+@media (prefers-reduced-motion: reduce) {
+  .threejs-canvas,
+  .threejs-canvas.scroll-mode::after {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* 🖨️ PRINT STYLES */
+@media print {
+  .threejs-container {
+    display: none;
+  }
+}

@@ -5,7 +5,6 @@ import { MobileDetectionService } from '../../services/mobile-detection.service'
 import * as THREE from 'three';
 import { ThreejsService } from '../../services/three.service';
 
-
 interface TouchInfo {
   id: number;
   x: number;
@@ -19,7 +18,22 @@ interface TouchInfo {
   selector: 'app-threejs-canvas',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './proyect-three-canvas.component.html',
+  template: `
+    <div class="threejs-container">
+      <canvas 
+        #threeCanvas 
+        class="threejs-canvas" 
+        [class.mobile]="isMobileClass"
+        [class.scroll-mode]="scrollModeActive"
+        (mousedown)="onMouseDown($event)"
+        (mousemove)="onMouseMove($event)" 
+        (mouseup)="onMouseUp()" 
+        (wheel)="onWheel($event)"
+        (mouseleave)="onMouseLeave()"
+      >
+      </canvas>
+    </div>
+  `,
   styleUrls: ['./proyect-three-canvas.component.css']
 })
 export class ThreejsCanvasComponent implements AfterViewInit, OnDestroy {
@@ -27,10 +41,13 @@ export class ThreejsCanvasComponent implements AfterViewInit, OnDestroy {
 
   @Input() performanceMode = false;
   @Input() isMobile = false;
+  @Input() scrollModeActive = false; // ✅ NUEVO - Controla el modo scroll
+  @Input() mobileCompactMode = false; // ✅ NUEVO - Dimensiones compactas móvil
 
   @Output() projectSelected = new EventEmitter<number>();
   @Output() firstInteraction = new EventEmitter<void>();
   @Output() cursorChanged = new EventEmitter<string>();
+  @Output() mouseleave = new EventEmitter<void>(); // ✅ NUEVO
 
   private isMouseDown = false;
   private mouseX = 0;
@@ -45,7 +62,7 @@ export class ThreejsCanvasComponent implements AfterViewInit, OnDestroy {
   private touchStartTime = 0;
   private touchMoved = false;
   private lastMobileState = false;
-
+  private lastCompactMode = false; // ✅ NUEVO
 
   private mouse = new THREE.Vector2();
 
@@ -59,7 +76,7 @@ export class ThreejsCanvasComponent implements AfterViewInit, OnDestroy {
     this.ngZone.runOutsideAngular(() => {
       this.initThreeJS();
       this.setupTouchEventListeners();
-      this.setupMouseEventListeners(); // ← AGREGAR ESTA LÍNEA
+      this.setupMouseEventListeners();
       this.setupResizeListener();
     });
   }
@@ -69,40 +86,89 @@ export class ThreejsCanvasComponent implements AfterViewInit, OnDestroy {
     this.touches.clear();
   }
 
+  // ✅ NUEVO - Detectar cambios en inputs
+  ngOnChanges(): void {
+    if (this.threejsService.getIsInitialized()) {
+      // Cambio en modo scroll
+      if (this.scrollModeActive !== undefined) {
+        this.updateTouchAction();
+      }
+
+      // Cambio en modo compacto móvil
+      if (this.mobileCompactMode !== this.lastCompactMode) {
+        this.lastCompactMode = this.mobileCompactMode;
+        this.threejsService.updateMobileDimensions(this.mobileCompactMode);
+      }
+    }
+  }
+
   private initThreeJS(): void {
     if (!this.canvasRef?.nativeElement) return;
 
-    // Guardar el estado móvil actual
     this.lastMobileState = this.isMobile;
+    this.lastCompactMode = this.mobileCompactMode;
 
     this.threejsService.initializeScene(
       this.canvasRef.nativeElement,
       this.performanceMode,
-      this.isMobile
+      this.isMobile,
+      this.mobileCompactMode // ✅ NUEVO parámetro
     );
+
+    this.updateTouchAction();
+  }
+
+  // ✅ NUEVO - Actualizar touch-action según modo
+  private updateTouchAction(): void {
+    if (!this.canvasRef?.nativeElement) return;
+
+    const canvas = this.canvasRef.nativeElement;
+    
+    if (this.isMobile) {
+      if (this.scrollModeActive) {
+        // Permitir scroll nativo
+        canvas.style.touchAction = 'auto';
+      } else {
+        // Bloquear scroll para interacciones 3D
+        canvas.style.touchAction = 'none';
+      }
+    } else {
+      canvas.style.touchAction = 'auto';
+    }
   }
 
   private setupTouchEventListeners(): void {
     const canvas = this.canvasRef.nativeElement;
 
     canvas.addEventListener('touchstart', (e) => {
-      if (e.touches.length > 1) {
-        e.preventDefault();
+      // ✅ Solo manejar si NO está en modo scroll
+      if (!this.scrollModeActive) {
+        if (e.touches.length > 1) {
+          e.preventDefault();
+        }
+        this.onTouchStart(e);
       }
-      this.onTouchStart(e);
     }, { passive: false });
 
     canvas.addEventListener('touchmove', (e) => {
-      e.preventDefault();
-      this.onTouchMove(e);
+      // ✅ Solo manejar si NO está en modo scroll
+      if (!this.scrollModeActive) {
+        e.preventDefault();
+        this.onTouchMove(e);
+      }
     }, { passive: false });
 
     canvas.addEventListener('touchend', (e) => {
-      this.onTouchEnd(e);
+      // ✅ Solo manejar si NO está en modo scroll
+      if (!this.scrollModeActive) {
+        this.onTouchEnd(e);
+      }
     }, { passive: true });
 
     canvas.addEventListener('touchcancel', (e) => {
-      this.onTouchEnd(e);
+      if (!this.scrollModeActive) {
+        this.onTouchEnd(e);
+      }
     }, { passive: true });
   }
 
@@ -116,6 +182,7 @@ export class ThreejsCanvasComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  // ✅ MOUSE EVENTS - Sin cambios
   onMouseDown(event: MouseEvent): void {
     if (this.isMobile) return;
 
@@ -159,6 +226,12 @@ export class ThreejsCanvasComponent implements AfterViewInit, OnDestroy {
     this.isMouseDown = false;
   }
 
+  // ✅ NUEVO
+  onMouseLeave(): void {
+    this.mouseleave.emit();
+    this.isMouseDown = false;
+  }
+
   onWheel(event: WheelEvent): void {
     if (this.isMobile) return;
 
@@ -169,7 +242,7 @@ export class ThreejsCanvasComponent implements AfterViewInit, OnDestroy {
       const minDistance = 12;
       const maxDistance = 40;
 
-      const currentDistance = 20; // Obtener distancia actual del servicio
+      const currentDistance = 20;
       const newDistance = Math.max(minDistance, Math.min(maxDistance,
         currentDistance + event.deltaY * zoomSpeed * 0.01));
 
@@ -177,6 +250,7 @@ export class ThreejsCanvasComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  // ✅ TOUCH EVENTS - Sin cambios pero solo activos si NO está en scroll mode
   private onTouchStart(event: TouchEvent): void {
     this.firstInteraction.emit();
     this.touchStartTime = Date.now();
@@ -245,7 +319,7 @@ export class ThreejsCanvasComponent implements AfterViewInit, OnDestroy {
         const minDistance = 15;
         const maxDistance = 50;
 
-        const currentCameraDistance = 25; // Obtener del servicio
+        const currentCameraDistance = 25;
         const newDistance = Math.max(minDistance, Math.min(maxDistance,
           currentCameraDistance - deltaDistance * zoomSpeed));
 
@@ -303,33 +377,43 @@ export class ThreejsCanvasComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  // ✅ MEJORADO - Detección F12 responsive
   private onWindowResize(): void {
-  const rect = this.canvasRef.nativeElement.getBoundingClientRect();
-  
-  this.mobileService.updateMobileStatus();
-  const currentMobileState = this.mobileService.getIsMobile();
-  
-
-  
-  if (currentMobileState !== this.lastMobileState) {
-
+    const rect = this.canvasRef.nativeElement.getBoundingClientRect();
     
-    this.lastMobileState = currentMobileState;
-    this.isMobile = currentMobileState; // ✅ CORRECTO
+    this.mobileService.updateMobileStatus();
+    const currentMobileState = this.mobileService.getIsMobile();
     
-    // AGREGAR LA RE-INICIALIZACIÓN:
-    this.threejsService.cleanup();
-    this.threejsService.initializeScene(
-      this.canvasRef.nativeElement,
-      this.performanceMode,
-      currentMobileState
-    );
-    
-  } else {
-
-    this.threejsService.onWindowResize(rect.width, rect.height);
+    // ✅ DETECCIÓN MEJORADA F12
+    if (currentMobileState !== this.lastMobileState) {
+      console.log(`📱 Cambio detectado: ${this.lastMobileState ? 'Móvil' : 'Desktop'} → ${currentMobileState ? 'Móvil' : 'Desktop'}`);
+      
+      this.lastMobileState = currentMobileState;
+      this.isMobile = currentMobileState;
+      
+      // ✅ FORZAR REDIMENSIONAMIENTO COMPLETO
+      this.threejsService.cleanup();
+      
+      // Pequeño delay para asegurar cleanup completo
+      setTimeout(() => {
+        this.threejsService.initializeScene(
+          this.canvasRef.nativeElement,
+          this.performanceMode,
+          currentMobileState,
+          currentMobileState ? this.mobileCompactMode : false // Desktop siempre full size
+        );
+        
+        // Actualizar touch action
+        this.updateTouchAction();
+        
+        console.log(`✅ Escena reinicializada para ${currentMobileState ? 'móvil' : 'desktop'}`);
+      }, 100);
+      
+    } else {
+      // Solo redimensionar canvas
+      this.threejsService.onWindowResize(rect.width, rect.height);
+    }
   }
-}
 
   get isMobileClass(): boolean {
     return this.mobileService.getIsMobile();
@@ -346,7 +430,6 @@ export class ThreejsCanvasComponent implements AfterViewInit, OnDestroy {
   }
 
   private handleMouseClick(event: MouseEvent): void {
-
     const canvasRect = this.canvasRef.nativeElement.getBoundingClientRect();
     this.mouse.x = ((event.clientX - canvasRect.left) / canvasRect.width) * 2 - 1;
     this.mouse.y = -((event.clientY - canvasRect.top) / canvasRect.height) * 2 + 1;
@@ -371,7 +454,10 @@ export class ThreejsCanvasComponent implements AfterViewInit, OnDestroy {
   resetView(): void {
     this.targetRotationX = 0;
     this.targetRotationY = 0;
-    this.threejsService.updateCameraZoom(20);
+    
+    // ✅ DISTANCIA SEGÚN DISPOSITIVO
+    const resetDistance = this.isMobile ? 16 : 25;
+    this.threejsService.updateCameraZoom(resetDistance);
 
     if (this.mobileService.getVibrationSupported()) {
       this.mobileService.vibrate(50);

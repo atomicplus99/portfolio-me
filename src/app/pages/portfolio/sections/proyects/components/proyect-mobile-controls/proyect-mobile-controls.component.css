@@ -1,102 +1,227 @@
+/* 📱 CONTROLES MÓVILES MEJORADOS */
 .mobile-controls {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      z-index: 35;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
-    }
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(100px);
+  transition: all 0.3s ease;
+}
 
-    .control-btn {
-      width: 48px;
-      height: 48px;
-      border: none;
-      border-radius: 50%;
-      color: white;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(8px);
-      position: relative;
-      overflow: hidden;
-      -webkit-tap-highlight-color: transparent;
-      touch-action: manipulation;
-    }
+.mobile-controls.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
 
-    .control-btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      transition: left 0.3s ease;
-    }
+/* 🎮 BOTONES BASE */
+.control-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 120px;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #1e293b, #334155);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 12px;
+  color: #f1f5f9;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
 
-    .control-btn:active::before {
-      left: 100%;
-    }
+.control-btn:active {
+  transform: scale(0.95);
+}
 
-    .control-btn:active {
-      transform: scale(0.9);
-    }
+.control-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
 
-    .control-btn.reset {
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-    }
+/* 🔄 TOGGLE SCROLL BUTTON */
+.toggle-btn {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  border-color: rgba(59, 130, 246, 0.5);
+}
 
-    .control-btn.performance {
-      background: #10b981;
-    }
+.toggle-btn.scroll-mode {
+  background: linear-gradient(135deg, #10b981, #059669);
+  border-color: rgba(16, 185, 129, 0.5);
+}
 
-    .control-btn.performance.eco {
-      background: #f59e0b;
-    }
+.toggle-btn:active {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+}
 
-    .control-icon {
-      font-size: 20px;
-      font-weight: bold;
-      transition: transform 0.2s ease;
-    }
+.toggle-btn.scroll-mode:active {
+  background: linear-gradient(135deg, #059669, #047857);
+}
 
-    .control-btn:active .control-icon {
-      transform: scale(0.9);
-    }
+/* 🎯 RESET BUTTON */
+.reset-btn {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  border-color: rgba(139, 92, 246, 0.5);
+}
 
-    
-    @media (max-width: 480px) {
-      .mobile-controls {
-        bottom: 20px;
-        right: 20px;
-      }
+.reset-btn:active {
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+}
 
-      .control-btn {
-        width: 44px;
-        height: 44px;
-      }
+/* ⚡ PERFORMANCE BUTTON */
+.performance-btn {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  border-color: rgba(245, 158, 11, 0.5);
+}
 
-      .control-icon {
-        font-size: 18px;
-      }
-    }
+.performance-btn.active {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  border-color: rgba(239, 68, 68, 0.5);
+}
 
-    
-    .control-btn:focus,
-    .control-btn:focus-visible {
-      outline: 2px solid rgba(59, 130, 246, 0.8);
-      outline-offset: 2px;
-    }
+.performance-btn:active {
+  background: linear-gradient(135deg, #d97706, #b45309);
+}
 
-    
-    @media (prefers-reduced-motion: reduce) {
-      .control-btn {
-        transition: none;
-      }
-    }
+/* 📏 SIZE BUTTON */
+.size-btn {
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
+  border-color: rgba(6, 182, 212, 0.5);
+}
+
+.size-btn:active {
+  background: linear-gradient(135deg, #0891b2, #0e7490);
+}
+
+/* 📝 ICONOS Y TEXTO */
+.btn-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.btn-text {
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* 🔔 NOTIFICACIÓN SCROLL */
+.scroll-notification {
+  position: fixed;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  z-index: 50;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.scroll-notification.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.notification-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #1f2937, #374151);
+  border: 1px solid rgba(75, 85, 99, 0.5);
+  border-radius: 12px;
+  color: #f9fafb;
+  font-size: 14px;
+  font-weight: 500;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  max-width: 280px;
+}
+
+.notification-icon {
+  font-size: 18px;
+}
+
+.notification-text {
+  flex: 1;
+}
+
+.close-hint {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.close-hint:hover {
+  background: rgba(75, 85, 99, 0.3);
+  color: #f9fafb;
+}
+
+/* 📱 RESPONSIVE */
+@media (max-width: 480px) {
+  .mobile-controls {
+    bottom: 16px;
+    right: 16px;
+    gap: 10px;
+  }
+
+  .control-btn {
+    min-width: 100px;
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .btn-icon {
+    font-size: 14px;
+  }
+
+  .btn-text {
+    font-size: 11px;
+  }
+
+  .notification-content {
+    padding: 10px 14px;
+    font-size: 13px;
+    max-width: 260px;
+  }
+}
+
+/* 🎯 ACCESIBILIDAD */
+@media (prefers-reduced-motion: reduce) {
+  .mobile-controls,
+  .control-btn,
+  .scroll-notification {
+    transition: none;
+  }
+}
+
+/* 🌙 MODO OSCURO MEJORADO */
+@media (prefers-color-scheme: dark) {
+  .control-btn {
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    border-color: rgba(148, 163, 184, 0.2);
+  }
+
+  .notification-content {
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    border-color: rgba(148, 163, 184, 0.3);
+  }
+}

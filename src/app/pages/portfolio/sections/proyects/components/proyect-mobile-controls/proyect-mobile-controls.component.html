@@ -1,10 +1,54 @@
-<div class="mobile-controls" *ngIf="isMobile && !isProjectSelected">
+<div class="mobile-controls" [class.visible]="isMobile && isProjectSelected">
+      
+      <!-- 🔄 TOGGLE SCROLL/INTERACCIÓN -->
       <button 
-        class="control-btn reset" 
-        (click)="onResetView()" 
-        title="Resetear vista"
-        type="button">
-        <span class="control-icon">↻</span>
+        class="control-btn toggle-btn"
+        [class.scroll-mode]="scrollMode()"
+        (click)="toggleScrollMode()"
+        [attr.aria-label]="scrollMode() ? 'Activar modo interacción' : 'Activar modo scroll'"
+      >
+        <span class="btn-icon">{{ scrollMode() ? '🎮' : '📜' }}</span>
+        <span class="btn-text">{{ scrollMode() ? 'Interactuar' : 'Scroll' }}</span>
       </button>
 
+      <!-- 🎯 RESET VIEW -->
+      <button 
+        class="control-btn reset-btn"
+        (click)="onResetView()"
+        [disabled]="scrollMode()"
+        aria-label="Resetear vista"
+      >
+        <span class="btn-icon">🔄</span>
+        <span class="btn-text">Reset</span>
+      </button>
+
+      <!-- ⚡ PERFORMANCE MODE -->
+      <button 
+        class="control-btn performance-btn"
+        [class.active]="isPerformanceMode"
+        (click)="onTogglePerformanceMode()"
+        aria-label="Alternar modo rendimiento"
+      >
+        <span class="btn-icon">{{ isPerformanceMode ? '🚀' : '⚡' }}</span>
+        <span class="btn-text">{{ isPerformanceMode ? 'Normal' : 'Turbo' }}</span>
+      </button>
+
+      <!-- 📏 DIMENSIONES MÓVIL -->
+      <button 
+        class="control-btn size-btn"
+        (click)="toggleMobileSize()"
+        aria-label="Cambiar tamaño hologramas"
+      >
+        <span class="btn-icon">{{ mobileCompactMode() ? '🔍' : '📐' }}</span>
+        <span class="btn-text">{{ mobileCompactMode() ? 'Grande' : 'Compacto' }}</span>
+      </button>
+    </div>
+
+    <!-- 🔔 NOTIFICACIÓN MODO SCROLL -->
+    <div class="scroll-notification" [class.visible]="scrollMode() && showScrollHint()">
+      <div class="notification-content">
+        <span class="notification-icon">📜</span>
+        <span class="notification-text">Modo scroll activo - Desliza para navegar</span>
+        <button class="close-hint" (click)="hideScrollHint()">✕</button>
+      </div>
     </div>

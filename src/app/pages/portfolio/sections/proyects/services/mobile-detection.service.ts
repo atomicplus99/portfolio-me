@@ -21,7 +21,13 @@ export class MobileDetectionService {
   }
 
   updateMobileStatus() {
-    this.isMobile.set(this.detectMobile());
+    const newMobileState = this.detectMobile();
+    const currentState = this.isMobile();
+    
+    if (newMobileState !== currentState) {
+      console.log(`🔄 Mobile detection changed: ${currentState} → ${newMobileState}`);
+      this.isMobile.set(newMobileState);
+    }
   }
 
   vibrate(pattern: number | number[]) {
@@ -31,7 +37,7 @@ export class MobileDetectionService {
   }
 
   private detectMobile(): boolean {
-    // Obtener el ancho real del viewport
+    // ✅ DETECCIÓN MEJORADA PARA F12
     const screenWidth = Math.min(
       window.innerWidth,
       document.documentElement.clientWidth
@@ -40,11 +46,20 @@ export class MobileDetectionService {
     const userAgentMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     const widthMobile = screenWidth <= 1024;
 
-    // En modo responsive, priorizar el ancho sobre userAgent
-    const isResponsiveMode = window.innerWidth !== window.screen.width;
-    const isMobile = isResponsiveMode ? widthMobile : (userAgentMobile || widthMobile);
+    // ✅ DETECCIÓN ESPECÍFICA DE DEVTOOLS
+    const isDevTools = window.outerHeight - window.innerHeight > 100 || 
+                      window.outerWidth - window.innerWidth > 100;
+    
+    // ✅ PRIORIZAR ANCHO SOBRE USER AGENT EN DEVTOOLS
+    if (isDevTools) {
+      console.log(`🛠️ DevTools detected - Using width-based detection: ${widthMobile ? 'Mobile' : 'Desktop'} (width: ${screenWidth}px)`);
+      return widthMobile;
+    }
 
-
+    // ✅ DETECCIÓN NORMAL
+    const isMobile = userAgentMobile || widthMobile;
+    console.log(`📱 Normal detection: UserAgent=${userAgentMobile}, Width=${widthMobile}, Final=${isMobile}`);
+    
     return isMobile;
   }
 

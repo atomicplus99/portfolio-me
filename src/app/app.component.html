@@ -18,16 +18,14 @@
                         opacity-40 md:opacity-45 lg:opacity-50
                         transition-opacity duration-300 transform-gpu scale-100"></app-particles>
   
-  <!-- Content wrapper con transición -->
-  <div class="content-wrapper relative z-10 pt-20 lg:pt-0 transform-gpu
+  <!-- Header GARANTIZADO FIJO -->
+  <app-header class="header-mobile-fixed"></app-header>
+  
+  <!-- Content wrapper con padding ajustado -->
+  <div class="content-wrapper relative z-10 pt-16 lg:pt-0 transform-gpu
               transition-opacity duration-800 ease-out"
        [class.opacity-0]="loaderService.state().isLoading"
        [class.fade-in-content]="!loaderService.state().isLoading">
-    
-    <!-- Header fijo móvil -->
-    <app-header class="fixed lg:relative top-0 left-0 right-0 z-[1000]
-                       h-20 lg:h-auto bg-slate-900/95 lg:bg-transparent
-                       backdrop-blur-sm lg:backdrop-blur-none transform-gpu"></app-header>
     
     <main class="main-content">
       
@@ -76,8 +74,8 @@
         </div>
       </section>
       
-      <!-- PROJECTS -->
-      <section id="projects" class="section-item section-container 
+      <!-- PROJECTS con tamaño ajustado -->
+      <section id="projects" class="section-item projects-section 
                                    min-h-screen flex items-center justify-center
                                    relative w-full z-[15]
                                    bg-slate-900/5 lg:bg-transparent px-4 lg:px-0"

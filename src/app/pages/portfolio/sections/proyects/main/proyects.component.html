@@ -1,49 +1,137 @@
-<div class="projects-container">
+<!-- ✅ CONTAINER OPTIMIZADO -->
+<div class="projects-container" [class.modal-open]="getShowDetailModal()">
 
-  <app-project-details-modal [isVisible]="showDetailModal()" [project]="modalProject()" [projects]="projects()"
-    [isMobile]="isMobile()" (closed)="onModalClosed()" (projectChanged)="onModalProjectChanged($event)"
-    (actionClicked)="onModalActionClicked($event)">
-  </app-project-details-modal>
+  <!-- ✅ MODAL - Solo si está cargado -->
+  @if (getComponentsLoaded() && lazyComponents.ProjectDetailsModalComponent) {
+    <app-project-details-modal 
+      [isVisible]="showDetailModal()" 
+      [project]="modalProject()" 
+      [projects]="projects()"
+      [isMobile]="isMobile()" 
+      (closed)="onModalClosed()" 
+      (projectChanged)="onModalProjectChanged($event)"
+      (actionClicked)="onModalActionClicked($event)">
+    </app-project-details-modal>
+  }
 
-
-  <app-floating-particles [isMobile]="isMobile()"></app-floating-particles>
-  <app-matrix-rain [isMobile]="isMobile()"></app-matrix-rain>
-  <app-threejs-canvas #threejsCanvas [performanceMode]="performanceMode()" [isMobile]="isMobile()"
-    (projectSelected)="onProjectSelected($event)" (firstInteraction)="onFirstInteraction()"
-    (cursorChanged)="onCursorChanged($event)" (mouseleave)="onCanvasMouseLeave()"> <!-- 👈 NUEVO -->
-  </app-threejs-canvas>
+  <!-- ✅ COMPONENTES ESENCIALES - Siempre cargados -->
   <app-hero-header [stats]="projectStats()"></app-hero-header>
-  <app-loading-overlay [isVisible]="isLoading()"></app-loading-overlay>
-  <app-interaction-guide [isVisible]="showInstructions()" [isMobile]="isMobile()" [showMobileHint]="showMobileHint()"
-    (hintDismissed)="onHintDismissed()">
-  </app-interaction-guide>
-  <app-project-panel [project]="selectedProject()" [isVisible]="showPanel()" [isMobile]="isMobile()"
-    [currentIndex]="currentProjectIndex()" [totalProjects]="projects().length" (detailsRequested)="onOpenDetailModal()"
-    (actionClicked)="onActionClicked($event)" (navigate)="onNavigate($event)" (close)="onCloseProject()">
-  </app-project-panel>
-  <app-mobile-controls [isMobile]="isMobile()" [isProjectSelected]="anyProjectSelected()"
-    [isPerformanceMode]="performanceMode()" (resetView)="onResetView()"
-    (togglePerformanceMode)="onTogglePerformanceMode()">
-  </app-mobile-controls>
-  <app-stats-panel [isVisible]="showStats()" [stats]="performanceStats()" [isMobile]="isMobile()"
-    [isPerformanceMode]="performanceMode()">
-  </app-stats-panel>
-  <div class="sr-only" aria-live="polite">
-    <span *ngIf="selectedProject() && !showDetailModal()">
-      Proyecto seleccionado: {{ selectedProject()!.name }}. {{ selectedProject()!.description }}
-      Presiona Enter para ver detalles completos.
-    </span>
-    <span *ngIf="modalProject() && showDetailModal()">
-      Modal abierto: {{ modalProject()!.name }}. Usa las flechas para navegar o Escape para cerrar.
-    </span>
-    <span *ngIf="!selectedProject() && !modalProject() && !isLoading()">
-      Vista 3D de proyectos cargada. {{ isMobile() ? 'Usa gestos táctiles para navegar.' : 'Usa el mouse para navegar.'
-      }}
-    </span>
+  <app-loading-overlay [isVisible]="getIsLoading()"></app-loading-overlay>
+
+  <!-- ✅ COMPONENTES LAZY - Solo cuando están disponibles -->
+  @if (getComponentsLoaded()) {
+    
+    <!-- Partículas flotantes -->
+    @if (lazyComponents.FloatingParticlesComponent) {
+      <app-floating-particles [isMobile]="isMobile()"></app-floating-particles>
+    }
+
+    <!-- Lluvia de Matrix -->
+    @if (lazyComponents.MatrixRainComponent) {
+      <app-matrix-rain [isMobile]="isMobile()"></app-matrix-rain>
+    }
+
+    <!-- ✅ CANVAS THREEJS - El más importante -->
+    @if (lazyComponents.ThreejsCanvasComponent) {
+      <app-threejs-canvas 
+        #threejsCanvas
+        [performanceMode]="getPerformanceMode()"
+        [isMobile]="isMobile()"
+        [scrollModeActive]="getScrollModeActive()"
+        [mobileCompactMode]="getMobileCompactMode()"
+        (projectSelected)="onProjectSelected($event)"
+        (firstInteraction)="onFirstInteraction()"
+        (cursorChanged)="onCursorChanged($event)"
+        (mouseleave)="onCanvasMouseLeave()"
+      >
+      </app-threejs-canvas>
+    }
+
+    <!-- Guía de interacción -->
+    @if (lazyComponents.InteractionGuideComponent) {
+      <app-interaction-guide
+        [isVisible]="getShowInstructions()"
+        [isMobile]="isMobile()"
+        [showMobileHint]="getShowMobileHint()"
+        (hintDismissed)="onHintDismissed()"
+      >
+      </app-interaction-guide>
+    }
+
+    <!-- Panel de proyecto -->
+    @if (lazyComponents.ProjectPanelComponent && getShowPanel()) {
+      <app-project-panel
+        [project]="getSelectedProject()"
+        [isVisible]="getShowPanel()"
+        [isMobile]="isMobile()"
+        [currentIndex]="getCurrentProjectIndex()"
+        [totalProjects]="projects().length"
+        (detailsRequested)="onOpenDetailModal()"
+        (actionClicked)="onActionClicked($event)"
+        (navigate)="onNavigate($event)"
+        (close)="onCloseProject()"
+      >
+      </app-project-panel>
+    }
+
+    <!-- Controles móviles -->
+    @if (lazyComponents.MobileControlsComponent && isMobile()) {
+      <app-mobile-controls
+        [isMobile]="isMobile()"
+        [isProjectSelected]="getAnyProjectSelected()"
+        [isPerformanceMode]="getPerformanceMode()"
+        (resetView)="onResetView()"
+        (togglePerformanceMode)="onTogglePerformanceMode()"
+        (scrollModeChanged)="onScrollModeChanged($event)"
+        (mobileSizeChanged)="onMobileSizeChanged($event)"
+      >
+      </app-mobile-controls>
+    }
+
+    <!-- Panel de estadísticas -->
+    @if (lazyComponents.StatsPanelComponent && getShowStats()) {
+      <app-stats-panel
+        [isVisible]="getShowStats()"
+        [stats]="performanceStats()"
+        [isMobile]="isMobile()"
+        [isPerformanceMode]="getPerformanceMode()"
+      >
+      </app-stats-panel>
+    }
+
+    <!-- Indicador de scroll -->
+    @if (lazyComponents.ScrollIndicatorComponent) {
+      <app-scroll-indicator></app-scroll-indicator>
+    }
+
+  } @else {
+    <!-- ✅ LOADING PLACEHOLDER para componentes pesados -->
+    <div class="lazy-loading-placeholder" aria-hidden="true">
+      <div class="placeholder-shimmer"></div>
+    </div>
+  }
+
+  <!-- ✅ ACCESIBILIDAD MEJORADA -->
+  <div class="sr-only" aria-live="polite" [attr.aria-busy]="!getComponentsLoaded()">
+    @if (!getComponentsLoaded()) {
+      <span>Cargando experiencia 3D...</span>
+    } @else if (getSelectedProject() && !getShowDetailModal()) {
+      <span>
+        Proyecto seleccionado: {{ getSelectedProject()!.name }}. 
+        {{ getSelectedProject()!.description }}
+        Presiona Enter para ver detalles completos.
+      </span>
+    } @else if (getModalProject() && getShowDetailModal()) {
+      <span>
+        Modal abierto: {{ getModalProject()!.name }}. 
+        Usa las flechas para navegar o Escape para cerrar.
+      </span>
+    } @else if (!getSelectedProject() && !getModalProject() && !getIsLoading()) {
+      <span>
+        Vista 3D de proyectos cargada. 
+        {{ isMobile() ? 'Usa gestos táctiles para navegar.' : 'Usa el mouse para navegar.' }}
+      </span>
+    }
   </div>
+
 </div>
-
-
-
-<!-- ✅ SCROLL INDICATOR MOVIDO AL FINAL -->
-<app-scroll-indicator></app-scroll-indicator>
