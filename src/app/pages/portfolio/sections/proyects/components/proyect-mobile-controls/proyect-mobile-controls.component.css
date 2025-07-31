@@ -1,8 +1,8 @@
 /* 📱 CONTROLES MÓVILES - SOLO SCROLL */
 .mobile-controls {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 80px; /* ✅ Ajustado: Más arriba para evitar barras de navegación */
+  right: 16px;
   z-index: 40;
   display: flex;
   flex-direction: column;
@@ -128,11 +128,11 @@
   color: #f1f5f9;
 }
 
-/* 📱 RESPONSIVE */
+/* 📱 RESPONSIVE - MEJORADO PARA TODOS LOS DISPOSITIVOS */
 @media (max-width: 480px) {
   .mobile-controls {
-    bottom: 16px;
-    right: 16px;
+    bottom: 100px; /* ✅ Ajustado: Más arriba para pantallas pequeñas */
+    right: 12px;
   }
 
   .control-btn {
@@ -151,6 +151,29 @@
   .notification-content {
     padding: 10px 16px;
     font-size: 12px;
+  }
+}
+
+/* 📱 DISPOSITIVOS CON BARRAS DE NAVEGACIÓN ALTAS */
+@media (max-width: 360px) {
+  .mobile-controls {
+    bottom: 120px; /* ✅ Ajustado: Para dispositivos con barras de navegación más altas */
+    right: 10px;
+  }
+}
+
+/* 📱 DISPOSITIVOS CON NOTCH O PANTALLAS IRREGULARES */
+@media (max-height: 600px) {
+  .mobile-controls {
+    bottom: 70px; /* ✅ Ajustado: Para pantallas más cortas */
+  }
+}
+
+/* 📱 DISPOSITIVOS CON SAFE AREA (iPhone X, etc.) */
+@supports (padding: max(0px)) {
+  .mobile-controls {
+    bottom: max(80px, env(safe-area-inset-bottom) + 20px);
+    right: max(16px, env(safe-area-inset-right) + 8px);
   }
 }
 
