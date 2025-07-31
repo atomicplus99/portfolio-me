@@ -475,6 +475,445 @@
   color: #68a063;
 }
 
+/* ✅ NUEVOS COLORES PARA TECNOLOGÍAS */
+.tech-item.tech-nestjs { 
+  background: linear-gradient(135deg, rgba(232, 74, 95, 0.1), rgba(232, 74, 95, 0.05));
+  border-color: rgba(232, 74, 95, 0.3);
+  color: #e84a5f;
+}
+
+.tech-item.tech-mysql { 
+  background: linear-gradient(135deg, rgba(0, 117, 143, 0.1), rgba(0, 117, 143, 0.05));
+  border-color: rgba(0, 117, 143, 0.3);
+  color: #00758f;
+}
+
+.tech-item.tech-tailwind { 
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(6, 182, 212, 0.05));
+  border-color: rgba(6, 182, 212, 0.3);
+  color: #06b6d4;
+}
+
+.tech-item.tech-vue { 
+  background: linear-gradient(135deg, rgba(65, 184, 131, 0.1), rgba(65, 184, 131, 0.05));
+  border-color: rgba(65, 184, 131, 0.3);
+  color: #41b883;
+}
+
+.tech-item.tech-svelte { 
+  background: linear-gradient(135deg, rgba(255, 62, 0, 0.1), rgba(255, 62, 0, 0.05));
+  border-color: rgba(255, 62, 0, 0.3);
+  color: #ff3e00;
+}
+
+.tech-item.tech-nextjs { 
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.05));
+  border-color: rgba(0, 0, 0, 0.3);
+  color: #000000;
+}
+
+.tech-item.tech-nuxt { 
+  background: linear-gradient(135deg, rgba(0, 130, 48, 0.1), rgba(0, 130, 48, 0.05));
+  border-color: rgba(0, 130, 48, 0.3);
+  color: #008230;
+}
+
+.tech-item.tech-python { 
+  background: linear-gradient(135deg, rgba(55, 118, 171, 0.1), rgba(55, 118, 171, 0.05));
+  border-color: rgba(55, 118, 171, 0.3);
+  color: #3776ab;
+}
+
+.tech-item.tech-java { 
+  background: linear-gradient(135deg, rgba(255, 119, 0, 0.1), rgba(255, 119, 0, 0.05));
+  border-color: rgba(255, 119, 0, 0.3);
+  color: #ff7700;
+}
+
+.tech-item.tech-php { 
+  background: linear-gradient(135deg, rgba(119, 123, 192, 0.1), rgba(119, 123, 192, 0.05));
+  border-color: rgba(119, 123, 192, 0.3);
+  color: #777bc0;
+}
+
+.tech-item.tech-dart { 
+  background: linear-gradient(135deg, rgba(0, 180, 171, 0.1), rgba(0, 180, 171, 0.05));
+  border-color: rgba(0, 180, 171, 0.3);
+  color: #00b4ab;
+}
+
+.tech-item.tech-csharp { 
+  background: linear-gradient(135deg, rgba(102, 17, 221, 0.1), rgba(102, 17, 221, 0.05));
+  border-color: rgba(102, 17, 221, 0.3);
+  color: #6611dd;
+}
+
+.tech-item.tech-kotlin { 
+  background: linear-gradient(135deg, rgba(127, 82, 255, 0.1), rgba(127, 82, 255, 0.05));
+  border-color: rgba(127, 82, 255, 0.3);
+  color: #7f52ff;
+}
+
+.tech-item.tech-swift { 
+  background: linear-gradient(135deg, rgba(255, 94, 58, 0.1), rgba(255, 94, 58, 0.05));
+  border-color: rgba(255, 94, 58, 0.3);
+  color: #ff5e3a;
+}
+
+.tech-item.tech-go { 
+  background: linear-gradient(135deg, rgba(0, 173, 216, 0.1), rgba(0, 173, 216, 0.05));
+  border-color: rgba(0, 173, 216, 0.3);
+  color: #00add8;
+}
+
+.tech-item.tech-rust { 
+  background: linear-gradient(135deg, rgba(222, 165, 132, 0.1), rgba(222, 165, 132, 0.05));
+  border-color: rgba(222, 165, 132, 0.3);
+  color: #dea584;
+}
+
+.tech-item.tech-express { 
+  background: linear-gradient(135deg, rgba(104, 160, 99, 0.1), rgba(104, 160, 99, 0.05));
+  border-color: rgba(104, 160, 99, 0.3);
+  color: #68a063;
+}
+
+.tech-item.tech-laravel { 
+  background: linear-gradient(135deg, rgba(255, 45, 85, 0.1), rgba(255, 45, 85, 0.05));
+  border-color: rgba(255, 45, 85, 0.3);
+  color: #ff2d55;
+}
+
+.tech-item.tech-django { 
+  background: linear-gradient(135deg, rgba(44, 62, 80, 0.1), rgba(44, 62, 80, 0.05));
+  border-color: rgba(44, 62, 80, 0.3);
+  color: #2c3e50;
+}
+
+.tech-item.tech-flask { 
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.05));
+  border-color: rgba(0, 0, 0, 0.3);
+  color: #000000;
+}
+
+.tech-item.tech-spring { 
+  background: linear-gradient(135deg, rgba(108, 179, 63, 0.1), rgba(108, 179, 63, 0.05));
+  border-color: rgba(108, 179, 63, 0.3);
+  color: #6cb33f;
+}
+
+.tech-item.tech-dotnet { 
+  background: linear-gradient(135deg, rgba(102, 17, 221, 0.1), rgba(102, 17, 221, 0.05));
+  border-color: rgba(102, 17, 221, 0.3);
+  color: #6611dd;
+}
+
+.tech-item.tech-fastapi { 
+  background: linear-gradient(135deg, rgba(0, 150, 136, 0.1), rgba(0, 150, 136, 0.05));
+  border-color: rgba(0, 150, 136, 0.3);
+  color: #009688;
+}
+
+.tech-item.tech-postgresql { 
+  background: linear-gradient(135deg, rgba(51, 103, 145, 0.1), rgba(51, 103, 145, 0.05));
+  border-color: rgba(51, 103, 145, 0.3);
+  color: #336791;
+}
+
+.tech-item.tech-mongodb { 
+  background: linear-gradient(135deg, rgba(67, 153, 132, 0.1), rgba(67, 153, 132, 0.05));
+  border-color: rgba(67, 153, 132, 0.3);
+  color: #439984;
+}
+
+.tech-item.tech-firebase { 
+  background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 193, 7, 0.05));
+  border-color: rgba(255, 193, 7, 0.3);
+  color: #ffc107;
+}
+
+.tech-item.tech-redis { 
+  background: linear-gradient(135deg, rgba(220, 53, 69, 0.1), rgba(220, 53, 69, 0.05));
+  border-color: rgba(220, 53, 69, 0.3);
+  color: #dc3545;
+}
+
+.tech-item.tech-sqlite { 
+  background: linear-gradient(135deg, rgba(0, 80, 130, 0.1), rgba(0, 80, 130, 0.05));
+  border-color: rgba(0, 80, 130, 0.3);
+  color: #005082;
+}
+
+.tech-item.tech-oracle { 
+  background: linear-gradient(135deg, rgba(255, 0, 0, 0.1), rgba(255, 0, 0, 0.05));
+  border-color: rgba(255, 0, 0, 0.3);
+  color: #ff0000;
+}
+
+.tech-item.tech-supabase { 
+  background: linear-gradient(135deg, rgba(62, 207, 142, 0.1), rgba(62, 207, 142, 0.05));
+  border-color: rgba(62, 207, 142, 0.3);
+  color: #3ecf8e;
+}
+
+.tech-item.tech-bootstrap { 
+  background: linear-gradient(135deg, rgba(102, 16, 242, 0.1), rgba(102, 16, 242, 0.05));
+  border-color: rgba(102, 16, 242, 0.3);
+  color: #6610f2;
+}
+
+.tech-item.tech-scss { 
+  background: linear-gradient(135deg, rgba(204, 102, 153, 0.1), rgba(204, 102, 153, 0.05));
+  border-color: rgba(204, 102, 153, 0.3);
+  color: #cc6699;
+}
+
+.tech-item.tech-css { 
+  background: linear-gradient(135deg, rgba(38, 77, 228, 0.1), rgba(38, 77, 228, 0.05));
+  border-color: rgba(38, 77, 228, 0.3);
+  color: #264de4;
+}
+
+.tech-item.tech-styled-components { 
+  background: linear-gradient(135deg, rgba(219, 112, 147, 0.1), rgba(219, 112, 147, 0.05));
+  border-color: rgba(219, 112, 147, 0.3);
+  color: #db7093;
+}
+
+.tech-item.tech-chakra { 
+  background: linear-gradient(135deg, rgba(126, 58, 242, 0.1), rgba(126, 58, 242, 0.05));
+  border-color: rgba(126, 58, 242, 0.3);
+  color: #7e3af2;
+}
+
+.tech-item.tech-material { 
+  background: linear-gradient(135deg, rgba(25, 118, 210, 0.1), rgba(25, 118, 210, 0.05));
+  border-color: rgba(25, 118, 210, 0.3);
+  color: #1976d2;
+}
+
+.tech-item.tech-docker { 
+  background: linear-gradient(135deg, rgba(13, 36, 99, 0.1), rgba(13, 36, 99, 0.05));
+  border-color: rgba(13, 36, 99, 0.3);
+  color: #0db7ed;
+}
+
+.tech-item.tech-kubernetes { 
+  background: linear-gradient(135deg, rgba(96, 125, 139, 0.1), rgba(96, 125, 139, 0.05));
+  border-color: rgba(96, 125, 139, 0.3);
+  color: #326ce5;
+}
+
+.tech-item.tech-aws { 
+  background: linear-gradient(135deg, rgba(255, 153, 0, 0.1), rgba(255, 153, 0, 0.05));
+  border-color: rgba(255, 153, 0, 0.3);
+  color: #ff9900;
+}
+
+.tech-item.tech-azure { 
+  background: linear-gradient(135deg, rgba(0, 120, 212, 0.1), rgba(0, 120, 212, 0.05));
+  border-color: rgba(0, 120, 212, 0.3);
+  color: #0078d4;
+}
+
+.tech-item.tech-gcp { 
+  background: linear-gradient(135deg, rgba(66, 133, 244, 0.1), rgba(66, 133, 244, 0.05));
+  border-color: rgba(66, 133, 244, 0.3);
+  color: #4285f4;
+}
+
+.tech-item.tech-vercel { 
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.05));
+  border-color: rgba(0, 0, 0, 0.3);
+  color: #000000;
+}
+
+.tech-item.tech-netlify { 
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.05));
+  border-color: rgba(0, 0, 0, 0.3);
+  color: #000000;
+}
+
+.tech-item.tech-heroku { 
+  background: linear-gradient(135deg, rgba(103, 58, 183, 0.1), rgba(103, 58, 183, 0.05));
+  border-color: rgba(103, 58, 183, 0.3);
+  color: #6756b7;
+}
+
+.tech-item.tech-git { 
+  background: linear-gradient(135deg, rgba(240, 81, 51, 0.1), rgba(240, 81, 51, 0.05));
+  border-color: rgba(240, 81, 51, 0.3);
+  color: #f05133;
+}
+
+.tech-item.tech-github { 
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.05));
+  border-color: rgba(0, 0, 0, 0.3);
+  color: #000000;
+}
+
+.tech-item.tech-gitlab { 
+  background: linear-gradient(135deg, rgba(252, 109, 67, 0.1), rgba(252, 109, 67, 0.05));
+  border-color: rgba(252, 109, 67, 0.3);
+  color: #fc6d43;
+}
+
+.tech-item.tech-jenkins { 
+  background: linear-gradient(135deg, rgba(208, 208, 208, 0.1), rgba(208, 208, 208, 0.05));
+  border-color: rgba(208, 208, 208, 0.3);
+  color: #d0d0d0;
+}
+
+.tech-item.tech-webpack { 
+  background: linear-gradient(135deg, rgba(142, 68, 173, 0.1), rgba(142, 68, 173, 0.05));
+  border-color: rgba(142, 68, 173, 0.3);
+  color: #8e44ad;
+}
+
+.tech-item.tech-vite { 
+  background: linear-gradient(135deg, rgba(100, 204, 197, 0.1), rgba(100, 204, 197, 0.05));
+  border-color: rgba(100, 204, 197, 0.3);
+  color: #64ccc5;
+}
+
+.tech-item.tech-flutter { 
+  background: linear-gradient(135deg, rgba(0, 180, 171, 0.1), rgba(0, 180, 171, 0.05));
+  border-color: rgba(0, 180, 171, 0.3);
+  color: #00b4ab;
+}
+
+.tech-item.tech-react-native { 
+  background: linear-gradient(135deg, rgba(97, 218, 251, 0.1), rgba(97, 218, 251, 0.05));
+  border-color: rgba(97, 218, 251, 0.3);
+  color: #61dafb;
+}
+
+.tech-item.tech-ionic { 
+  background: linear-gradient(135deg, rgba(88, 86, 214, 0.1), rgba(88, 86, 214, 0.05));
+  border-color: rgba(88, 86, 214, 0.3);
+  color: #5856d6;
+}
+
+.tech-item.tech-android { 
+  background: linear-gradient(135deg, rgba(164, 198, 57, 0.1), rgba(164, 198, 57, 0.05));
+  border-color: rgba(164, 198, 57, 0.3);
+  color: #a4c639;
+}
+
+.tech-item.tech-ios { 
+  background: linear-gradient(135deg, rgba(0, 122, 255, 0.1), rgba(0, 122, 255, 0.05));
+  border-color: rgba(0, 122, 255, 0.3);
+  color: #007aff;
+}
+
+.tech-item.tech-jest { 
+  background: linear-gradient(135deg, rgba(198, 54, 60, 0.1), rgba(198, 54, 60, 0.05));
+  border-color: rgba(198, 54, 60, 0.3);
+  color: #c63d14;
+}
+
+.tech-item.tech-cypress { 
+  background: linear-gradient(135deg, rgba(68, 68, 68, 0.1), rgba(68, 68, 68, 0.05));
+  border-color: rgba(68, 68, 68, 0.3);
+  color: #444444;
+}
+
+.tech-item.tech-selenium { 
+  background: linear-gradient(135deg, rgba(0, 150, 136, 0.1), rgba(0, 150, 136, 0.05));
+  border-color: rgba(0, 150, 136, 0.3);
+  color: #009688;
+}
+
+.tech-item.tech-testing { 
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(76, 175, 80, 0.05));
+  border-color: rgba(76, 175, 80, 0.3);
+  color: #4caf50;
+}
+
+.tech-item.tech-tableau { 
+  background: linear-gradient(135deg, rgba(230, 81, 0, 0.1), rgba(230, 81, 0, 0.05));
+  border-color: rgba(230, 81, 0, 0.3);
+  color: #e65100;
+}
+
+.tech-item.tech-pandas { 
+  background: linear-gradient(135deg, rgba(130, 36, 227, 0.1), rgba(130, 36, 227, 0.05));
+  border-color: rgba(130, 36, 227, 0.3);
+  color: #8224e3;
+}
+
+.tech-item.tech-numpy { 
+  background: linear-gradient(135deg, rgba(77, 166, 255, 0.1), rgba(77, 166, 255, 0.05));
+  border-color: rgba(77, 166, 255, 0.3);
+  color: #4da6ff;
+}
+
+.tech-item.tech-jupyter { 
+  background: linear-gradient(135deg, rgba(247, 118, 142, 0.1), rgba(247, 118, 142, 0.05));
+  border-color: rgba(247, 118, 142, 0.3);
+  color: #f7768e;
+}
+
+.tech-item.tech-r { 
+  background: linear-gradient(135deg, rgba(0, 66, 113, 0.1), rgba(0, 66, 113, 0.05));
+  border-color: rgba(0, 66, 113, 0.3);
+  color: #004271;
+}
+
+.tech-item.tech-wordpress { 
+  background: linear-gradient(135deg, rgba(18, 137, 216, 0.1), rgba(18, 137, 216, 0.05));
+  border-color: rgba(18, 137, 216, 0.3);
+  color: #1298d8;
+}
+
+.tech-item.tech-shopify { 
+  background: linear-gradient(135deg, rgba(149, 128, 247, 0.1), rgba(149, 128, 247, 0.05));
+  border-color: rgba(149, 128, 247, 0.3);
+  color: #9580f7;
+}
+
+.tech-item.tech-magento { 
+  background: linear-gradient(135deg, rgba(238, 54, 37, 0.1), rgba(238, 54, 37, 0.05));
+  border-color: rgba(238, 54, 37, 0.3);
+  color: #ee3625;
+}
+
+.tech-item.tech-strapi { 
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(139, 92, 246, 0.05));
+  border-color: rgba(139, 92, 246, 0.3);
+  color: #8b5cf6;
+}
+
+.tech-item.tech-excel { 
+  background: linear-gradient(135deg, rgba(23, 162, 184, 0.1), rgba(23, 162, 184, 0.05));
+  border-color: rgba(23, 162, 184, 0.3);
+  color: #17a2b8;
+}
+
+.tech-item.tech-vba { 
+  background: linear-gradient(135deg, rgba(0, 123, 255, 0.1), rgba(0, 123, 255, 0.05));
+  border-color: rgba(0, 123, 255, 0.3);
+  color: #007bff;
+}
+
+.tech-item.tech-powerbi { 
+  background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 193, 7, 0.05));
+  border-color: rgba(255, 193, 7, 0.3);
+  color: #ffc107;
+}
+
+.tech-item.tech-office { 
+  background: linear-gradient(135deg, rgba(220, 53, 69, 0.1), rgba(220, 53, 69, 0.05));
+  border-color: rgba(220, 53, 69, 0.3);
+  color: #dc3545;
+}
+
+.tech-item.tech-sharepoint { 
+  background: linear-gradient(135deg, rgba(0, 120, 212, 0.1), rgba(0, 120, 212, 0.05));
+  border-color: rgba(0, 120, 212, 0.3);
+  color: #0078d4;
+}
+
 .tech-item.tech-default { 
   background: linear-gradient(135deg, rgba(107, 114, 128, 0.1), rgba(107, 114, 128, 0.05));
   border-color: rgba(107, 114, 128, 0.3);
