@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, signal } from '@angular/core';
+import { Component, Input, Output, EventEmitter, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -8,20 +8,40 @@ import { CommonModule } from '@angular/common';
   templateUrl: './proyect-mobile-controls.component.html',
   styleUrls: ['./proyect-mobile-controls.component.css']
 })
-export class MobileControlsComponent {
+export class MobileControlsComponent implements OnInit {
   @Input() isMobile = false;
   @Input() isProjectSelected = false;
-  @Input() isPerformanceMode = false;
 
-  @Output() resetView = new EventEmitter<void>();
-  @Output() togglePerformanceMode = new EventEmitter<void>();
   @Output() scrollModeChanged = new EventEmitter<boolean>();
-  @Output() mobileSizeChanged = new EventEmitter<boolean>();
 
   // 🎮 SEÑALES REACTIVAS
-  public readonly scrollMode = signal(false);
-  public readonly mobileCompactMode = signal(false);
+  public readonly scrollMode = signal(true); // Siempre en modo scroll por defecto
   public readonly showScrollHint = signal(false);
+
+  ngOnInit(): void {
+    // En móvil, siempre activar modo scroll al inicializar
+    if (this.isMobile) {
+      this.activateScrollMode();
+    }
+  }
+
+  // ✅ NUEVO: Activar modo scroll automáticamente cuando se selecciona proyecto
+  ngOnChanges(): void {
+    if (this.isMobile && !this.scrollMode()) {
+      // Si no está en modo scroll, activarlo
+      this.activateScrollMode();
+    }
+  }
+
+  // ✅ NUEVO: Método para activar modo scroll
+  private activateScrollMode(): void {
+    this.scrollMode.set(true);
+    this.scrollModeChanged.emit(true);
+    
+    // Mostrar hint
+    this.showScrollHint.set(true);
+    setTimeout(() => this.showScrollHint.set(false), 3000);
+  }
 
   toggleScrollMode(): void {
     const newScrollMode = !this.scrollMode();
@@ -36,22 +56,6 @@ export class MobileControlsComponent {
     }
   }
 
-  toggleMobileSize(): void {
-    const newCompactMode = !this.mobileCompactMode();
-    this.mobileCompactMode.set(newCompactMode);
-    this.mobileSizeChanged.emit(newCompactMode);
-  }
-
-  onResetView(): void {
-    if (!this.scrollMode()) {
-      this.resetView.emit();
-    }
-  }
-
-  onTogglePerformanceMode(): void {
-    this.togglePerformanceMode.emit();
-  }
-
   hideScrollHint(): void {
     this.showScrollHint.set(false);
   }
@@ -59,9 +63,5 @@ export class MobileControlsComponent {
   // 📱 MÉTODO PARA OBTENER ESTADO SCROLL (para uso externo)
   getScrollMode(): boolean {
     return this.scrollMode();
-  }
-
-  getMobileCompactMode(): boolean {
-    return this.mobileCompactMode();
   }
 }

@@ -78,12 +78,7 @@
     @if (lazyComponents.MobileControlsComponent && isMobile()) {
       <app-mobile-controls
         [isMobile]="isMobile()"
-        [isProjectSelected]="getAnyProjectSelected()"
-        [isPerformanceMode]="getPerformanceMode()"
-        (resetView)="onResetView()"
-        (togglePerformanceMode)="onTogglePerformanceMode()"
         (scrollModeChanged)="onScrollModeChanged($event)"
-        (mobileSizeChanged)="onMobileSizeChanged($event)"
       >
       </app-mobile-controls>
     }

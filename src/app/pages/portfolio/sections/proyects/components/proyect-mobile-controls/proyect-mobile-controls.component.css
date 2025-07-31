@@ -1,4 +1,4 @@
-/* 📱 CONTROLES MÓVILES MEJORADOS */
+/* 📱 CONTROLES MÓVILES - SOLO SCROLL */
 .mobile-controls {
   position: fixed;
   bottom: 20px;
@@ -19,7 +19,7 @@
   transform: translateX(0);
 }
 
-/* 🎮 BOTONES BASE */
+/* 🎮 BOTÓN DE SCROLL */
 .control-btn {
   display: flex;
   align-items: center;
@@ -45,12 +45,6 @@
   transform: scale(0.95);
 }
 
-.control-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none !important;
-}
-
 /* 🔄 TOGGLE SCROLL BUTTON */
 .toggle-btn {
   background: linear-gradient(135deg, #3b82f6, #1d4ed8);
@@ -70,59 +64,21 @@
   background: linear-gradient(135deg, #059669, #047857);
 }
 
-/* 🎯 RESET BUTTON */
-.reset-btn {
-  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-  border-color: rgba(139, 92, 246, 0.5);
-}
-
-.reset-btn:active {
-  background: linear-gradient(135deg, #7c3aed, #6d28d9);
-}
-
-/* ⚡ PERFORMANCE BUTTON */
-.performance-btn {
-  background: linear-gradient(135deg, #f59e0b, #d97706);
-  border-color: rgba(245, 158, 11, 0.5);
-}
-
-.performance-btn.active {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
-  border-color: rgba(239, 68, 68, 0.5);
-}
-
-.performance-btn:active {
-  background: linear-gradient(135deg, #d97706, #b45309);
-}
-
-/* 📏 SIZE BUTTON */
-.size-btn {
-  background: linear-gradient(135deg, #06b6d4, #0891b2);
-  border-color: rgba(6, 182, 212, 0.5);
-}
-
-.size-btn:active {
-  background: linear-gradient(135deg, #0891b2, #0e7490);
-}
-
-/* 📝 ICONOS Y TEXTO */
 .btn-icon {
   font-size: 16px;
-  line-height: 1;
 }
 
 .btn-text {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
-  white-space: nowrap;
 }
 
-/* 🔔 NOTIFICACIÓN SCROLL */
+/* 🔔 NOTIFICACIÓN MODO SCROLL */
 .scroll-notification {
   position: fixed;
-  top: 100px;
+  top: 20px;
   left: 50%;
-  transform: translateX(-50%) translateY(-20px);
+  transform: translateX(-50%);
   z-index: 50;
   opacity: 0;
   visibility: hidden;
@@ -132,47 +88,44 @@
 .scroll-notification.visible {
   opacity: 1;
   visibility: visible;
-  transform: translateX(-50%) translateY(0);
 }
 
 .notification-content {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 16px;
-  background: linear-gradient(135deg, #1f2937, #374151);
-  border: 1px solid rgba(75, 85, 99, 0.5);
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #1e293b, #334155);
+  border: 1px solid rgba(148, 163, 184, 0.3);
   border-radius: 12px;
-  color: #f9fafb;
+  color: #f1f5f9;
   font-size: 14px;
   font-weight: 500;
   backdrop-filter: blur(8px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-  max-width: 280px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .notification-icon {
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .notification-text {
-  flex: 1;
+  white-space: nowrap;
 }
 
 .close-hint {
   background: none;
   border: none;
-  color: #9ca3af;
+  color: #94a3b8;
   font-size: 16px;
   cursor: pointer;
   padding: 4px;
   border-radius: 4px;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease;
 }
 
 .close-hint:hover {
-  background: rgba(75, 85, 99, 0.3);
-  color: #f9fafb;
+  color: #f1f5f9;
 }
 
 /* 📱 RESPONSIVE */
@@ -180,13 +133,11 @@
   .mobile-controls {
     bottom: 16px;
     right: 16px;
-    gap: 10px;
   }
 
   .control-btn {
     min-width: 100px;
-    padding: 10px 12px;
-    font-size: 12px;
+    padding: 10px 14px;
   }
 
   .btn-icon {
@@ -194,17 +145,16 @@
   }
 
   .btn-text {
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .notification-content {
-    padding: 10px 14px;
-    font-size: 13px;
-    max-width: 260px;
+    padding: 10px 16px;
+    font-size: 12px;
   }
 }
 
-/* 🎯 ACCESIBILIDAD */
+/* ♿ ACCESSIBILITY */
 @media (prefers-reduced-motion: reduce) {
   .mobile-controls,
   .control-btn,
@@ -213,7 +163,7 @@
   }
 }
 
-/* 🌙 MODO OSCURO MEJORADO */
+/* 🌙 DARK MODE */
 @media (prefers-color-scheme: dark) {
   .control-btn {
     background: linear-gradient(135deg, #0f172a, #1e293b);
@@ -222,6 +172,6 @@
 
   .notification-content {
     background: linear-gradient(135deg, #0f172a, #1e293b);
-    border-color: rgba(148, 163, 184, 0.3);
+    border-color: rgba(148, 163, 184, 0.2);
   }
 }
