@@ -1,7 +1,7 @@
 /* 📱 CONTROLES MÓVILES - SOLO SCROLL */
 .mobile-controls {
   position: fixed;
-  bottom: 80px; /* ✅ Ajustado: Más arriba para evitar barras de navegación */
+  bottom: 200px; /* ✅ SUBIDO: Mucho más arriba para ser accesible */
   right: 16px;
   z-index: 40;
   display: flex;
@@ -128,10 +128,10 @@
   color: #f1f5f9;
 }
 
-/* 📱 RESPONSIVE - MEJORADO PARA TODOS LOS DISPOSITIVOS */
+/* 📱 RESPONSIVE - POSICIÓN ALTA PARA TODOS */
 @media (max-width: 480px) {
   .mobile-controls {
-    bottom: 100px; /* ✅ Ajustado: Más arriba para pantallas pequeñas */
+    bottom: 180px; /* ✅ SUBIDO: Posición alta para pantallas pequeñas */
     right: 12px;
   }
 
@@ -157,7 +157,7 @@
 /* 📱 DISPOSITIVOS CON BARRAS DE NAVEGACIÓN ALTAS */
 @media (max-width: 360px) {
   .mobile-controls {
-    bottom: 120px; /* ✅ Ajustado: Para dispositivos con barras de navegación más altas */
+    bottom: 160px; /* ✅ SUBIDO: Para dispositivos con barras altas */
     right: 10px;
   }
 }
@@ -165,14 +165,14 @@
 /* 📱 DISPOSITIVOS CON NOTCH O PANTALLAS IRREGULARES */
 @media (max-height: 600px) {
   .mobile-controls {
-    bottom: 70px; /* ✅ Ajustado: Para pantallas más cortas */
+    bottom: 150px; /* ✅ SUBIDO: Para pantallas más cortas */
   }
 }
 
 /* 📱 DISPOSITIVOS CON SAFE AREA (iPhone X, etc.) */
 @supports (padding: max(0px)) {
   .mobile-controls {
-    bottom: max(80px, env(safe-area-inset-bottom) + 20px);
+    bottom: max(200px, env(safe-area-inset-bottom) + 150px);
     right: max(16px, env(safe-area-inset-right) + 8px);
   }
 }
