@@ -1,0 +1,72 @@
+[33m08a2c1f[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{0}: commit: proyects perfomance en movil mejorado v1
+[33m15fb0f8[m HEAD@{1}: commit: perfomance galaxy movil
+[33m503db8e[m HEAD@{2}: commit: perfomance de inicializacion de componentes
+[33m81274f2[m HEAD@{3}: commit: perfomance loader movil v2
+[33mecc5b5f[m HEAD@{4}: commit: perfomance de loader en movil
+[33md158a4b[m HEAD@{5}: commit: configuracion de scroll modal de proyects
+[33m9b38aed[m HEAD@{6}: commit: perfomance contact pantalla movil mejorado
+[33m040015d[m HEAD@{7}: commit: configuracion angular.json
+[33m18611d4[m HEAD@{8}: commit: configuracion environments v3
+[33m7462e67[m HEAD@{9}: commit: prueba de environments v2
+[33m0295387[m HEAD@{10}: commit: prueba de environments
+[33m3b59b40[m HEAD@{11}: commit: perfomance hero section v1
+[33me1482c2[m HEAD@{12}: commit: loader service testing
+[33m94a2bff[m HEAD@{13}: commit: perfomance de loader v1
+[33m3e8789d[m HEAD@{14}: commit: Force redeploy to correct version
+[33m964b667[m HEAD@{15}: reset: moving to 964b667
+[33m015ab7e[m HEAD@{16}: commit: mejora de perfomance loader v2
+[33m47e276e[m HEAD@{17}: pull: Fast-forward
+[33m964b667[m HEAD@{18}: reset: moving to 964b667
+[33m47e276e[m HEAD@{19}: reset: moving to 47e276e
+[33m47e276e[m HEAD@{20}: commit: mejora de perfomance loader
+[33m964b667[m HEAD@{21}: commit: configuracion de particulas de inicio
+[33mb15762a[m HEAD@{22}: commit: vercel.json config again
+[33m9bf6631[m HEAD@{23}: commit: vercel.json config
+[33m098cb79[m HEAD@{24}: commit: deployment
+[33mb0ec035[m HEAD@{25}: commit: deplyoment
+[33m3d782dd[m HEAD@{26}: commit: configuracion terminada
+[33m656cb0c[m HEAD@{27}: commit: terminando configuracion
+[33me4de340[m HEAD@{28}: commit: configuracion vercel
+[33mead2562[m HEAD@{29}: commit: actualizacion de emailservice de mensajes con la api de recepcion de mensajes
+[33m8aa400f[m HEAD@{30}: commit: actualizacion de section de proyectos, se añadio nuevos proyectos de muestra
+[33m5e20c40[m HEAD@{31}: commit: actualizacion de componente de proyects, subida de imagenes y descripcion detallada de 2 proyectos
+[33ma64c5af[m HEAD@{32}: commit: descripcion de proyecto1 en section de projects
+[33m30dc883[m HEAD@{33}: commit: perfomance de skills y componente de contact
+[33m50fa027[m HEAD@{34}: commit: optimizacion de componentes del proyectos, se compacto componente de skills
+[33me60fe20[m HEAD@{35}: commit: perfomance de componente about-me, mejora de diseño de la seccion
+[33m43e42ca[m HEAD@{36}: reset: moving to 43e42ca
+[33m43e42ca[m HEAD@{37}: commit: implementacion con threejs de un galaxy component
+[33m60674a6[m HEAD@{38}: commit: component cursor custom removido temporalmente por motivo de cambio de componente
+[33m4ba5f6f[m HEAD@{39}: commit: ajustes adicionales en el perfomance de loader, fondo nebulosa optimizado
+[33m80c8f47[m HEAD@{40}: commit: nebulosa loader perfomance
+[33m778a6df[m HEAD@{41}: reset: moving to 778a6df
+[33m778a6df[m HEAD@{42}: reset: moving to 778a6df
+[33m429d87a[m HEAD@{43}: revert: Revert "mejora perfomance de modal v2"
+[33m778a6df[m HEAD@{44}: reset: moving to 778a6df
+[33m778a6df[m HEAD@{45}: reset: moving to 778A6df
+[33m778a6df[m HEAD@{46}: commit: mejora perfomance de modal v2
+[33m38eecc4[m HEAD@{47}: commit: perfomance de responsive modal
+[33m55b65e0[m HEAD@{48}: reset: moving to 55b65e0
+[33m55b65e0[m HEAD@{49}: commit: threejs hologramas responsive completado
+[33m69402c7[m HEAD@{50}: reset: moving to 69402c7
+[33m69402c7[m HEAD@{51}: reset: moving to 69402c7
+[33m69402c7[m HEAD@{52}: reset: moving to 69402c7
+[33m69402c7[m HEAD@{53}: commit: perfomance mejorado del header component
+[33m1a9fa01[m HEAD@{54}: commit: formulario contact responsive agregado
+[33m9309dba[m HEAD@{55}: reset: moving to 9309dba
+[33m9309dba[m HEAD@{56}: reset: moving to 9309dba
+[33m9309dba[m HEAD@{57}: reset: moving to 9309dba
+[33m9309dba[m HEAD@{58}: checkout: moving from master to master
+[33m9309dba[m HEAD@{59}: commit: perfomances particulas v2 + scroll animation integrado
+[33mb2e2ed1[m HEAD@{60}: commit: perfomances de loader
+[33mba8ca1f[m HEAD@{61}: checkout: moving from 64b52ff5ee0c0de1f80cbabfa21a2041948f24b2 to master
+[33m64b52ff[m HEAD@{62}: checkout: moving from master to HEAD~1
+[33mba8ca1f[m HEAD@{63}: reset: moving to HEAD
+[33mba8ca1f[m HEAD@{64}: checkout: moving from master to master
+[33mba8ca1f[m HEAD@{65}: checkout: moving from master to master
+[33mba8ca1f[m HEAD@{66}: commit: perfomance de particulas de three.js
+[33m64b52ff[m HEAD@{67}: commit: mejora de perfomance de custom cursor
+[33mbfa64d0[m HEAD@{68}: commit: mejora de perfomance en hero section, contact, proyect y cursor custom
+[33m3e8d5df[m HEAD@{69}: commit (merge): README actualizado
+[33m17c6eaa[m HEAD@{70}: commit: Portoflio web completado, v1
+[33m394db54[m HEAD@{71}: commit (initial): initial commit

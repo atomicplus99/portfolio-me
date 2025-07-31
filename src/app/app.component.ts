@@ -82,6 +82,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   private _metricsTimestamp = 0;
 
   async ngOnInit(): Promise<void> {
+    // ✅ Resetear scroll al inicio
+    this.resetScrollToTop();
+    
     // ✅ Detectar si es desktop
     this.detectScreenSize();
     
@@ -103,12 +106,19 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       requestIdleCallback(() => {
         this.lifecycleManager.initializeAfterViewInit();
         this.validateSectionsLoaded();
+        
+        // ✅ Asegurar que el scroll esté en el inicio después de cargar la vista
+        this.resetScrollToTop();
       });
     } else {
+      // Fallback para navegadores que no soportan requestIdleCallback
       setTimeout(() => {
         this.lifecycleManager.initializeAfterViewInit();
         this.validateSectionsLoaded();
-      }, 0);
+        
+        // ✅ Asegurar que el scroll esté en el inicio después de cargar la vista
+        this.resetScrollToTop();
+      }, 100);
     }
   }
 
@@ -143,6 +153,37 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
   scrollToTop = (): void => {
     this.lenisService.scrollToTop();
+  }
+
+  // ✅ Resetear scroll al inicio de la página
+  private resetScrollToTop(): void {
+    // Resetear scroll inmediatamente
+    window.scrollTo(0, 0);
+    
+    // También resetear con Lenis si está disponible
+    if (this.lenisService.getInstance()) {
+      this.lenisService.scrollTo(0, { duration: 0 });
+    }
+    
+    // Listener para resetear scroll antes de recargar
+    window.addEventListener('beforeunload', () => {
+      window.scrollTo(0, 0);
+    });
+    
+    // Listener para resetear scroll cuando se carga la página
+    window.addEventListener('load', () => {
+      window.scrollTo(0, 0);
+    });
+    
+    // Listener para resetear scroll cuando se navega (back/forward)
+    window.addEventListener('popstate', () => {
+      window.scrollTo(0, 0);
+    });
+    
+    // Listener para resetear scroll cuando se cambia de página
+    window.addEventListener('pageshow', () => {
+      window.scrollTo(0, 0);
+    });
   }
 
   setPerformanceMode = (mode: 'high' | 'medium' | 'low'): void => {

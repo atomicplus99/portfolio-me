@@ -19,6 +19,9 @@ export class LenisScrollService implements OnDestroy {
         direction: 'vertical'
       } as any);
 
+      // ✅ Resetear scroll al inicio inmediatamente
+      this.resetScrollToTop();
+
       const raf = (time: number) => {
         this.lenis?.raf(time);
         this.animationId = requestAnimationFrame(raf);
@@ -29,6 +32,25 @@ export class LenisScrollService implements OnDestroy {
     } catch (error) {
       console.error('Error initializing Lenis:', error);
     }
+  }
+
+  // ✅ Resetear scroll al inicio
+  resetScrollToTop(): void {
+    // Resetear scroll nativo
+    window.scrollTo(0, 0);
+    
+    // Resetear scroll de Lenis si está disponible
+    if (this.lenis) {
+      this.lenis.scrollTo(0, { duration: 0 });
+    }
+    
+    // Asegurar que el scroll esté en el inicio
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+      if (this.lenis) {
+        this.lenis.scrollTo(0, { duration: 0 });
+      }
+    }, 100);
   }
 
   scrollTo(target: string | HTMLElement | number, options: any = {}): Promise<void> {
