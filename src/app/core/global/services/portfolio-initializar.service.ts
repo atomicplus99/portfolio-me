@@ -32,7 +32,6 @@ export class AppInitializationService {
     this.loaderService.startNormalLoading().subscribe({
       next: (state) => {},
       complete: () => {
-        console.log();
       },
       error: (error) => {
         this.loaderService.finishLoading();
@@ -74,13 +73,13 @@ export class AppInitializationService {
   // ✅ Método de utilidad para diferentes modos de carga
   startQuickLoading(): void {
     this.loaderService.startQuickLoading().subscribe({
-      complete: () => console.log()
+      complete: () => {}
     });
   }
 
   startRealisticLoading(): void {
     this.loaderService.startRealisticLoading().subscribe({
-      complete: () => console.log()
+      complete: () => {}
     });
   }
 

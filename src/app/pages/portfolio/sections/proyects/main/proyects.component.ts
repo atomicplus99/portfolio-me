@@ -148,6 +148,32 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   private initializeSignals(): void {
     this.isMobile.set(this.mobileService.getIsMobile());
     this.projects.set(this.projectsService.getProjects());
+    
+    // ✅ LISTENER PARA CAMBIOS DE ESTADO MÓVIL
+    this.setupMobileStateListener();
+  }
+
+  // ✅ NUEVO: Listener para cambios de estado móvil
+  private setupMobileStateListener(): void {
+    // Actualizar estado móvil en cada cambio de ventana
+    const updateMobileState = () => {
+      this.mobileService.updateMobileStatus();
+      const newMobileState = this.mobileService.getIsMobile();
+      
+      if (newMobileState !== this.isMobile()) {
+        this.isMobile.set(newMobileState);
+      }
+    };
+
+    // Listener para resize
+    window.addEventListener('resize', () => {
+      setTimeout(updateMobileState, 100);
+    });
+
+    // Listener para orientación
+    window.addEventListener('orientationchange', () => {
+      setTimeout(updateMobileState, 300);
+    });
   }
 
   private setupOptimizedEffects(): void {

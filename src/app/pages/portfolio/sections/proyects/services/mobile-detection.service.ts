@@ -25,7 +25,6 @@ export class MobileDetectionService {
     const currentState = this.isMobile();
     
     if (newMobileState !== currentState) {
-      console.log(`🔄 Mobile detection changed: ${currentState} → ${newMobileState}`);
       this.isMobile.set(newMobileState);
     }
   }
@@ -37,30 +36,30 @@ export class MobileDetectionService {
   }
 
   private detectMobile(): boolean {
-    // ✅ DETECCIÓN MEJORADA PARA F12
-    const screenWidth = Math.min(
-      window.innerWidth,
-      document.documentElement.clientWidth
-    );
-
-    const userAgentMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    const widthMobile = screenWidth <= 1024;
-
-    // ✅ DETECCIÓN ESPECÍFICA DE DEVTOOLS
+    // ✅ DETECCIÓN MEJORADA Y MÁS PRECISA
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+    
+    // ✅ DETECCIÓN DE DEVTOOLS MÁS PRECISA
     const isDevTools = window.outerHeight - window.innerHeight > 100 || 
                       window.outerWidth - window.innerWidth > 100;
     
-    // ✅ PRIORIZAR ANCHO SOBRE USER AGENT EN DEVTOOLS
-    if (isDevTools) {
-      console.log(`🛠️ DevTools detected - Using width-based detection: ${widthMobile ? 'Mobile' : 'Desktop'} (width: ${screenWidth}px)`);
-      return widthMobile;
-    }
-
-    // ✅ DETECCIÓN NORMAL
-    const isMobile = userAgentMobile || widthMobile;
-    console.log(`📱 Normal detection: UserAgent=${userAgentMobile}, Width=${widthMobile}, Final=${isMobile}`);
+    // ✅ DETECCIÓN POR ANCHO DE PANTALLA
+    const isMobileByWidth = screenWidth <= 768; // Breakpoint móvil estándar
+    const isTabletByWidth = screenWidth > 768 && screenWidth <= 1024;
     
-    return isMobile;
+    // ✅ DETECCIÓN POR USER AGENT
+    const userAgentMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    // ✅ LÓGICA DE DETECCIÓN MEJORADA
+    if (isDevTools) {
+      // En DevTools, priorizar el ancho de pantalla
+      return isMobileByWidth;
+    } else {
+      // En dispositivo real, combinar user agent y ancho
+      const isMobile = userAgentMobile || isMobileByWidth;
+      return isMobile;
+    }
   }
 
   private detectVibrationSupport(): boolean {

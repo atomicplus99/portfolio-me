@@ -503,9 +503,33 @@ export class ThreejsService {
   onWindowResize(width: number, height: number): void {
     if (!this.camera || !this.renderer) return;
 
+    // ✅ DETECCIÓN MEJORADA DE DISPOSITIVO
+    const isMobile = width <= 768;
+    const isTablet = width > 768 && width <= 1024;
+    
+    // ✅ AJUSTES ESPECÍFICOS POR DISPOSITIVO
+    if (isMobile) {
+      // Móvil: FOV más amplio, distancia ajustada
+      this.camera.fov = 75;
+      this.camera.position.z = 16;
+    } else if (isTablet) {
+      // Tablet: FOV intermedio
+      this.camera.fov = 70;
+      this.camera.position.z = 20;
+    } else {
+      // Desktop: FOV estándar
+      this.camera.fov = 65;
+      this.camera.position.z = 25;
+    }
+    
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
+    
     this.renderer.setSize(width, height);
+    
+    // ✅ OPTIMIZACIÓN DE PIXEL RATIO POR DISPOSITIVO
+    const pixelRatio = isMobile ? 1 : Math.min(window.devicePixelRatio, 2);
+    this.renderer.setPixelRatio(pixelRatio);
   }
 
   getPerformanceStats() {
@@ -522,40 +546,27 @@ export class ThreejsService {
 
   // ✅ MEJORADO - Actualizar dimensiones móviles
   updateMobileDimensions(compactMode: boolean): void {
-    if (!this.scene) return;
+    if (!this.camera || !this.scene) return;
 
-    console.log(`📏 Updating dimensions: compact=${compactMode}`);
-
-    // Recrear hologramas con nuevas dimensiones
-    this.hologramObjects.forEach(hologram => {
-      this.scene.remove(hologram.mesh);
-      // Limpiar materiales y geometrías
-      hologram.mesh.children.forEach(child => {
-        if (child instanceof THREE.Mesh) {
-          child.geometry?.dispose();
-          if (Array.isArray(child.material)) {
-            child.material.forEach(mat => mat.dispose());
-          } else {
-            child.material?.dispose();
-          }
-        }
-      });
-    });
-
-    this.hologramObjects = [];
+    // ✅ AJUSTES RÁPIDOS PARA MÓVIL
+    const scale = compactMode ? 0.7 : 1.0;
+    const radius = compactMode ? 10 : 12;
+    const cameraZ = compactMode ? 14 : 16;
+    const fov = compactMode ? 78 : 75;
     
-    const projects = this.projectsService.getProjects();
-    const isMobile = true; // Solo se llama desde móvil
-    const performanceMode = false; // Asumir modo normal para recalculo
-
-    projects.forEach((project, index) => {
-      const hologram = this.createGalacticProjectHologram(project, index, performanceMode, isMobile, compactMode);
-      this.hologramObjects.push(hologram);
-      this.scene.add(hologram.mesh);
+    // ✅ APLICAR CAMBIOS RÁPIDAMENTE
+    this.hologramObjects.forEach((hologram, index) => {
+      hologram.mesh.scale.set(scale, scale, scale);
+      
+      const angle = (index / this.hologramObjects.length) * Math.PI * 2;
+      hologram.mesh.position.x = Math.cos(angle) * radius;
+      hologram.mesh.position.y = Math.sin(angle) * radius * 0.3;
+      hologram.mesh.position.z = 0;
     });
-
-    this.updatePerformanceStats();
-    console.log(`✅ Dimensions updated: ${this.hologramObjects.length} holograms recreated`);
+    
+    this.camera.position.z = cameraZ;
+    this.camera.fov = fov;
+    this.camera.updateProjectionMatrix();
   }
 
   cleanup(): void {

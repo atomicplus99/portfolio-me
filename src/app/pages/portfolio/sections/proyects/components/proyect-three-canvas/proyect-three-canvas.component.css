@@ -146,3 +146,66 @@
     display: none;
   }
 }
+
+/* ✅ LOADER PARA CAMBIOS DE DIMENSIONES */
+.canvas-loader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+  transition: opacity 0.3s ease;
+}
+
+.loader-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(59, 130, 246, 0.3);
+  border-top: 3px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+.loader-text {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  opacity: 0.9;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ✅ ESTADO DE REDIMENSIONAMIENTO */
+.threejs-canvas.resizing {
+  opacity: 0.3;
+  transition: opacity 0.3s ease;
+}
+
+/* ✅ RESPONSIVE LOADER */
+@media (max-width: 768px) {
+  .canvas-loader {
+    background: rgba(0, 0, 0, 0.95);
+  }
+  
+  .loader-spinner {
+    width: 32px;
+    height: 32px;
+    border-width: 2px;
+  }
+  
+  .loader-text {
+    font-size: 12px;
+  }
+}

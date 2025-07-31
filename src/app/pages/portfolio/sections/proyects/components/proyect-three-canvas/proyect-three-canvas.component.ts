@@ -20,11 +20,18 @@ interface TouchInfo {
   imports: [CommonModule],
   template: `
     <div class="threejs-container">
+      <!-- ✅ LOADER PARA CAMBIOS DE DIMENSIONES -->
+      <div class="canvas-loader" *ngIf="isResizing">
+        <div class="loader-spinner"></div>
+        <span class="loader-text">Adaptando vista...</span>
+      </div>
+      
       <canvas 
         #threeCanvas 
         class="threejs-canvas" 
         [class.mobile]="isMobileClass"
         [class.scroll-mode]="scrollModeActive"
+        [class.resizing]="isResizing"
         (mousedown)="onMouseDown($event)"
         (mousemove)="onMouseMove($event)" 
         (mouseup)="onMouseUp()" 
@@ -63,6 +70,12 @@ export class ThreejsCanvasComponent implements AfterViewInit, OnDestroy {
   private touchMoved = false;
   private lastMobileState = false;
   private lastCompactMode = false; // ✅ NUEVO
+  private lastWindowWidth = 0;
+  private lastWindowHeight = 0;
+  private resizeTimeout: any = null;
+
+  // ✅ LOADER STATE
+  isResizing = false;
 
   private mouse = new THREE.Vector2();
 
@@ -86,7 +99,7 @@ export class ThreejsCanvasComponent implements AfterViewInit, OnDestroy {
     this.touches.clear();
   }
 
-  // ✅ NUEVO - Detectar cambios en inputs
+  // ✅ CORREGIDO - Detectar cambios en inputs
   ngOnChanges(): void {
     if (this.threejsService.getIsInitialized()) {
       // Cambio en modo scroll
@@ -98,6 +111,18 @@ export class ThreejsCanvasComponent implements AfterViewInit, OnDestroy {
       if (this.mobileCompactMode !== this.lastCompactMode) {
         this.lastCompactMode = this.mobileCompactMode;
         this.threejsService.updateMobileDimensions(this.mobileCompactMode);
+      }
+      
+      // ✅ NUEVO: Cambio en estado móvil
+      if (this.isMobile !== this.lastMobileState) {
+        this.lastMobileState = this.isMobile;
+        
+        // Actualizar touch action
+        this.updateTouchAction();
+        
+        // Redimensionar canvas
+        const rect = this.canvasRef.nativeElement.getBoundingClientRect();
+        this.threejsService.onWindowResize(rect.width, rect.height);
       }
     }
   }
@@ -173,13 +198,41 @@ export class ThreejsCanvasComponent implements AfterViewInit, OnDestroy {
   }
 
   private setupResizeListener(): void {
-    window.addEventListener('resize', () => this.onWindowResize());
+    // ✅ INICIALIZAR DIMENSIONES
+    this.lastWindowWidth = window.innerWidth;
+    this.lastWindowHeight = window.innerHeight;
+    this.lastMobileState = this.mobileService.getIsMobile();
+    
+    // ✅ LISTENER MEJORADO PARA RESIZE
+    window.addEventListener('resize', () => {
+      // Debounce para evitar múltiples llamadas
+      if (this.resizeTimeout) {
+        clearTimeout(this.resizeTimeout);
+      }
+      
+      this.resizeTimeout = setTimeout(() => {
+        this.onWindowResize();
+      }, 100);
+    });
 
-    if (this.isMobile) {
-      window.addEventListener('orientationchange', () => {
-        setTimeout(() => this.onWindowResize(), 100);
-      });
-    }
+    // ✅ LISTENER PARA CAMBIOS DE ORIENTACIÓN
+    window.addEventListener('orientationchange', () => {
+      // Delay más largo para cambios de orientación
+      setTimeout(() => {
+        this.onWindowResize();
+      }, 300);
+    });
+    
+    // ✅ LISTENER PARA CAMBIOS DE VIEWPORT (F12 responsive)
+    window.addEventListener('resize', () => {
+      // Detectar si es un cambio de viewport (F12)
+      const isViewportChange = window.innerWidth !== this.lastWindowWidth || 
+                              window.innerHeight !== this.lastWindowHeight;
+      
+      if (isViewportChange) {
+        this.onWindowResize();
+      }
+    });
   }
 
   // ✅ MOUSE EVENTS - Sin cambios
@@ -377,40 +430,57 @@ export class ThreejsCanvasComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  // ✅ MEJORADO - Detección F12 responsive
+  // ✅ CORREGIDO - Detección móvil con loader
   private onWindowResize(): void {
     const rect = this.canvasRef.nativeElement.getBoundingClientRect();
+    const currentWidth = window.innerWidth;
+    const currentHeight = window.innerHeight;
     
     this.mobileService.updateMobileStatus();
     const currentMobileState = this.mobileService.getIsMobile();
     
-    // ✅ DETECCIÓN MEJORADA F12
-    if (currentMobileState !== this.lastMobileState) {
-      console.log(`📱 Cambio detectado: ${this.lastMobileState ? 'Móvil' : 'Desktop'} → ${currentMobileState ? 'Móvil' : 'Desktop'}`);
+    // ✅ DETECCIÓN DE CAMBIOS REALES
+    const hasSizeChanged = currentWidth !== this.lastWindowWidth || currentHeight !== this.lastWindowHeight;
+    const hasMobileStateChanged = currentMobileState !== this.lastMobileState;
+    
+    if (hasSizeChanged || hasMobileStateChanged) {
+      // ✅ MOSTRAR LOADER
+      this.isResizing = true;
+      
+      // Limpiar timeout anterior
+      if (this.resizeTimeout) {
+        clearTimeout(this.resizeTimeout);
+      }
       
       this.lastMobileState = currentMobileState;
+      this.lastWindowWidth = currentWidth;
+      this.lastWindowHeight = currentHeight;
       this.isMobile = currentMobileState;
       
       // ✅ FORZAR REDIMENSIONAMIENTO COMPLETO
       this.threejsService.cleanup();
       
-      // Pequeño delay para asegurar cleanup completo
-      setTimeout(() => {
+      // Delay para mostrar loader y asegurar cleanup completo
+      this.resizeTimeout = setTimeout(() => {
         this.threejsService.initializeScene(
           this.canvasRef.nativeElement,
           this.performanceMode,
           currentMobileState,
-          currentMobileState ? this.mobileCompactMode : false // Desktop siempre full size
+          currentMobileState ? this.mobileCompactMode : false
         );
         
         // Actualizar touch action
         this.updateTouchAction();
         
-        console.log(`✅ Escena reinicializada para ${currentMobileState ? 'móvil' : 'desktop'}`);
-      }, 100);
+        // ✅ OCULTAR LOADER
+        setTimeout(() => {
+          this.isResizing = false;
+        }, 500);
+        
+      }, 300);
       
     } else {
-      // Solo redimensionar canvas
+      // Solo redimensionar canvas sin loader
       this.threejsService.onWindowResize(rect.width, rect.height);
     }
   }
