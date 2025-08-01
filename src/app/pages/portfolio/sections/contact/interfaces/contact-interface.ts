@@ -19,6 +19,7 @@ export interface ContactFormData {
   email: string;       // → {{from_email}} y {{reply_to}}
   subject: string;     // → {{subject}}
   message: string;     // → {{message}}
+  website?: string;    // 🛡️ Campo honeypot para detectar bots
   brand?: string;      // Nueva propiedad opcional → {{brand}}
   bcc?: string;        // Nueva propiedad opcional → {{bcc}}
   cc?: string;         // Nueva propiedad opcional → {{cc}}

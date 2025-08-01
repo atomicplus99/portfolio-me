@@ -92,6 +92,15 @@
           </div>
         </div>
 
+        <!-- 🛡️ Campo Honeypot (oculto para detectar bots) -->
+        <div class="honeypot-field" style="position: absolute; left: -9999px; opacity: 0;">
+          <input type="text" formControlName="website" 
+                 tabindex="-1" 
+                 autocomplete="off"
+                 aria-hidden="true"
+                 style="position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden;">
+        </div>
+
         <!-- Botón Submit -->
         <button type="submit" [disabled]="isSubmitting" 
           class="w-full bg-blue-300/20 text-white font-semibold py-4 px-6 
