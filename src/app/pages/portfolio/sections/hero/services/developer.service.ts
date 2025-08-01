@@ -32,7 +32,7 @@ export class DeveloperService {
 
 
   openCV(): void {
-    const cvUrl = 'assets/cv/CV-ARIASABEL-2025.pdf';
+    const cvUrl = 'assets/cv/CV-ABEL-ARIAS-2025.pdf';
     const newWindow = window.open(cvUrl, '_blank', 'noopener,noreferrer');
 
     if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
